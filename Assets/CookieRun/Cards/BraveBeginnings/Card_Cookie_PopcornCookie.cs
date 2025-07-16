@@ -9,7 +9,7 @@ public class Card_Cookie_PopcornCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Red;
-    public override string ImagePath => "BS1_018.png";
+    public override string ImageName => "BS1_018.png";
     public override int CardHealth => 1;
     public override int CardLevel => 1;
 }

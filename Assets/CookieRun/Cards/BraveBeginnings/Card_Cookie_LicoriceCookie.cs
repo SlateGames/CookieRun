@@ -9,7 +9,7 @@ public class Card_Cookie_LicoriceCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.Rare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Blue;
-    public override string ImagePath => "BS2_022.png";
+    public override string ImageName => "BS2_022.png";
     public override int CardHealth => 4;
     public override int CardLevel => 3;
 }

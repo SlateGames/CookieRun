@@ -9,7 +9,7 @@ public class Card_Cookie_CyborgCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.Rare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Yellow;
-    public override string ImagePath => "BS1_033.png";
+    public override string ImageName => "BS1_033.png";
     public override int CardHealth => 2;
     public override int CardLevel => 1;
 }

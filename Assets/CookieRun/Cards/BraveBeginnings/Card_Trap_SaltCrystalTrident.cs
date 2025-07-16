@@ -9,5 +9,5 @@ public class Card_Trap_SaltCrystalTrident : Card_Trap
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Trap;
     public override CardColour ColourIdentity => CardColour.Blue;
-    public override string ImagePath => "BS2_049.png";
+    public override string ImageName => "BS2_049.png";
 }

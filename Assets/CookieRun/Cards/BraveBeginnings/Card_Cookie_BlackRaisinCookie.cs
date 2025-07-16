@@ -9,7 +9,7 @@ public class Card_Cookie_BlackRaisinCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.SuperRare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Blue;
-    public override string ImagePath => "BS2_031.png";
+    public override string ImageName => "BS2_031.png";
     public override int CardHealth => 5;
     public override int CardLevel => 3;
 }

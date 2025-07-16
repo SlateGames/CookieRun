@@ -9,5 +9,5 @@ public class Card_Item_JellyPomPoms : Card_Item
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Item;
     public override CardColour ColourIdentity => CardColour.Yellow;
-    public override string ImagePath => "BS1_048.png";
+    public override string ImageName => "BS1_048.png";
 }

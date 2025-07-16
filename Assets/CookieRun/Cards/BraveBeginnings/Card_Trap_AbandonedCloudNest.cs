@@ -9,5 +9,5 @@ public class Card_Trap_AbandonedCloudNest : Card_Trap
     public override CardRarity CardRarity => CardRarity.Rare;
     public override CardType CardType => CardType.Trap;
     public override CardColour ColourIdentity => CardColour.Purple;
-    public override string ImagePath => "BS2_080.png";
+    public override string ImageName => "BS2_080.png";
 }

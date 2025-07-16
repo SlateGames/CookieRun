@@ -9,7 +9,7 @@ public class Card_Cookie_ParfaitCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.SuperRare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Blue;
-    public override string ImagePath => "BS2_045.png";
+    public override string ImageName => "BS2_045.png";
     public override int CardHealth => 2;
     public override int CardLevel => 1;
 }

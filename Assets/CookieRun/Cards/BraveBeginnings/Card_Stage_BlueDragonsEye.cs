@@ -9,5 +9,5 @@ public class Card_Stage_BlueDragonsEye : Card_Stage
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Stage;
     public override CardColour ColourIdentity => CardColour.Purple;
-    public override string ImagePath => "BS2_081.png";
+    public override string ImageName => "BS2_081.png";
 }

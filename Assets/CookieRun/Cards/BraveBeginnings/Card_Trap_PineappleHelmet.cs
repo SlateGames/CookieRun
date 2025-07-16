@@ -9,5 +9,5 @@ public class Card_Trap_PineappleHelmet : Card_Trap
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Trap;
     public override CardColour ColourIdentity => CardColour.Red;
-    public override string ImagePath => "BS1_025.png";
+    public override string ImageName => "BS1_025.png";
 }

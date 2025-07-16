@@ -9,7 +9,7 @@ public class Card_Cookie_SherbetCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.UltraRare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Invalid;
-    public override string ImagePath => "BS2_036.png";
+    public override string ImageName => "BS2_036.png";
     public override int CardHealth => 5;
     public override int CardLevel => 2;
 }

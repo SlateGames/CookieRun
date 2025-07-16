@@ -9,5 +9,5 @@ public class Card_Stage_DesertOasis : Card_Stage
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Stage;
     public override CardColour ColourIdentity => CardColour.Red;
-    public override string ImagePath => "BS1_026.png";
+    public override string ImageName => "BS1_026.png";
 }

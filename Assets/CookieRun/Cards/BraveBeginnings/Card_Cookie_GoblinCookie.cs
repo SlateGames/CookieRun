@@ -9,7 +9,7 @@ public class Card_Cookie_GoblinCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.Common;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Invalid;
-    public override string ImagePath => "BS1_001.png";
+    public override string ImageName => "BS1_001.png";
     public override int CardHealth => 2;
     public override int CardLevel => 1;
 }

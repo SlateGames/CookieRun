@@ -9,7 +9,7 @@ public class Card_Cookie_ChocolateBonbonCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Blue;
-    public override string ImagePath => "BS2_037.png";
+    public override string ImageName => "BS2_037.png";
     public override int CardHealth => 3;
     public override int CardLevel => 3;
 }

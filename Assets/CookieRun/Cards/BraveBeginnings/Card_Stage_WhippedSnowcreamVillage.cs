@@ -9,5 +9,5 @@ public class Card_Stage_WhippedSnowcreamVillage : Card_Stage
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Stage;
     public override CardColour ColourIdentity => CardColour.Blue;
-    public override string ImagePath => "BS2_051.png";
+    public override string ImageName => "BS2_051.png";
 }

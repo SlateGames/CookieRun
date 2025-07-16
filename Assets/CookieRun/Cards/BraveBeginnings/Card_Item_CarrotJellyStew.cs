@@ -9,5 +9,5 @@ public class Card_Item_CarrotJellyStew : Card_Item
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Item;
     public override CardColour ColourIdentity => CardColour.Green;
-    public override string ImagePath => "BS2_020.png";
+    public override string ImageName => "BS2_020.png";
 }

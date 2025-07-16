@@ -9,5 +9,5 @@ public class Card_Trap_SuperVitaJellyBar : Card_Trap
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Trap;
     public override CardColour ColourIdentity => CardColour.Yellow;
-    public override string ImagePath => "BS1_051.png";
+    public override string ImageName => "BS1_051.png";
 }

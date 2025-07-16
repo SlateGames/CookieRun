@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Card_Base : MonoBehaviour
+public class Card_Base : ScriptableObject
 {
     public virtual string CardId => "";
     public virtual string CardNumber => "";
@@ -10,7 +10,12 @@ public class Card_Base : MonoBehaviour
     public virtual CardRarity CardRarity => CardRarity.Common;
     public virtual CardType CardType => CardType.Invalid;
     public virtual CardColour ColourIdentity => CardColour.Invalid;
-    public virtual string ImagePath => "";
+    public virtual string ImageName => "";
 
-    public Image CardImage;
+    public GameObject CardVisual;
+
+    public Card_Base() 
+    { 
+        //TODO: Set the data, populate the card visual
+    }
 }

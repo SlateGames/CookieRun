@@ -9,7 +9,7 @@ public class Card_Cookie_WindArcherCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.UltraRare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Purple;
-    public override string ImagePath => "BS2_058.png";
+    public override string ImageName => "BS2_058.png";
     public override int CardHealth => 5;
     public override int CardLevel => 3;
 }

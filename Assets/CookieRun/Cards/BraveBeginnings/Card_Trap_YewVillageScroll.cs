@@ -9,5 +9,5 @@ public class Card_Trap_YewVillageScroll : Card_Trap
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Trap;
     public override CardColour ColourIdentity => CardColour.Purple;
-    public override string ImagePath => "BS2_079.png";
+    public override string ImageName => "BS2_079.png";
 }
