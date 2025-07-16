@@ -9,5 +9,5 @@ public class Card_Item_PricklyCactiGloves : Card_Item
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Item;
     public override CardColour ColourIdentity => CardColour.Red;
-    public override string ImagePath => "BS2_006.png.webp";
+    public override string ImagePath => "BS2_006.png";
 }

@@ -9,5 +9,5 @@ public class Card_Trap_ErraticYakgwaRobot : Card_Trap
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Trap;
     public override CardColour ColourIdentity => CardColour.Yellow;
-    public override string ImagePath => "BS2_014.png.webp";
+    public override string ImagePath => "BS2_014.png";
 }

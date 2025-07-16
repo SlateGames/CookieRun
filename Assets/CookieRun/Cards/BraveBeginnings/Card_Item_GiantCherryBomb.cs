@@ -9,5 +9,5 @@ public class Card_Item_GiantCherryBomb : Card_Item
     public override CardRarity CardRarity => CardRarity.Rare;
     public override CardType CardType => CardType.Item;
     public override CardColour ColourIdentity => CardColour.Red;
-    public override string ImagePath => "BS1_022.png.webp";
+    public override string ImagePath => "BS1_022.png";
 }

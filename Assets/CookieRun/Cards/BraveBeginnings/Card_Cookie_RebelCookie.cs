@@ -9,7 +9,7 @@ public class Card_Cookie_RebelCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.Rare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Red;
-    public override string ImagePath => "BS2_003.png.webp";
+    public override string ImagePath => "BS2_003.png";
     public override int CardHealth => 4;
     public override int CardLevel => 2;
 }

@@ -9,5 +9,5 @@ public class Card_Item_DivingGoggles : Card_Item
     public override CardRarity CardRarity => CardRarity.Rare;
     public override CardType CardType => CardType.Item;
     public override CardColour ColourIdentity => CardColour.Blue;
-    public override string ImagePath => "BS2_047.png.webp";
+    public override string ImagePath => "BS2_047.png";
 }

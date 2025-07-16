@@ -9,7 +9,7 @@ public class Card_Cookie_HydrangeaCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.Rare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Purple;
-    public override string ImagePath => "BS2_061.png.webp";
+    public override string ImagePath => "BS2_061.png";
     public override int CardHealth => 2;
     public override int CardLevel => 1;
 }

@@ -9,7 +9,7 @@ public class Card_Cookie_MoonRabbitCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.SuperRare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Green;
-    public override string ImagePath => "BS1_056.png.webp";
+    public override string ImagePath => "BS1_056.png";
     public override int CardHealth => 3;
     public override int CardLevel => 2;
 }

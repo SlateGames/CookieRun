@@ -9,7 +9,7 @@ public class Card_Cookie_FrostQueenCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.Rare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Blue;
-    public override string ImagePath => "BS2_034.png.webp";
+    public override string ImagePath => "BS2_034.png";
     public override int CardHealth => 3;
     public override int CardLevel => 3;
 }

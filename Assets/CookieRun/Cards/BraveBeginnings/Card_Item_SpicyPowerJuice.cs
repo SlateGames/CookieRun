@@ -9,5 +9,5 @@ public class Card_Item_SpicyPowerJuice : Card_Item
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Item;
     public override CardColour ColourIdentity => CardColour.Red;
-    public override string ImagePath => "BS1_023.png.webp";
+    public override string ImagePath => "BS1_023.png";
 }

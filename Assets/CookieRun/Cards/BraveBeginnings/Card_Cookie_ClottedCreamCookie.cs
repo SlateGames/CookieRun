@@ -9,7 +9,7 @@ public class Card_Cookie_ClottedCreamCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.SuperRare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Purple;
-    public override string ImagePath => "BS2_069.png.webp";
+    public override string ImagePath => "BS2_069.png";
     public override int CardHealth => 4;
     public override int CardLevel => 2;
 }

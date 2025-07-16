@@ -9,7 +9,7 @@ public class Card_Cookie_BlueLilyCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.SuperRare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Green;
-    public override string ImagePath => "BS1_054.png.webp";
+    public override string ImagePath => "BS1_054.png";
     public override int CardHealth => 5;
     public override int CardLevel => 3;
 }

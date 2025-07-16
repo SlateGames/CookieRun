@@ -9,7 +9,7 @@ public class Card_Cookie_SnakeFruitCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.SuperRare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Yellow;
-    public override string ImagePath => "BS1_036.png.webp";
+    public override string ImagePath => "BS1_036.png";
     public override int CardHealth => 4;
     public override int CardLevel => 2;
 }

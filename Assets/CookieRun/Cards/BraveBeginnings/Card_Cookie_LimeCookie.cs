@@ -9,7 +9,7 @@ public class Card_Cookie_LimeCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Yellow;
-    public override string ImagePath => "BS1_029.png.webp";
+    public override string ImagePath => "BS1_029.png";
     public override int CardHealth => 2;
     public override int CardLevel => 1;
 }

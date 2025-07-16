@@ -9,7 +9,7 @@ public class Card_Cookie_RoseCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Red;
-    public override string ImagePath => "BS1_015.png.webp";
+    public override string ImagePath => "BS1_015.png";
     public override int CardHealth => 3;
     public override int CardLevel => 3;
 }

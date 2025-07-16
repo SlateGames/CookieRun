@@ -9,5 +9,5 @@ public class Card_Trap_TastyFirstAidKit : Card_Trap
     public override CardRarity CardRarity => CardRarity.Uncommon;
     public override CardType CardType => CardType.Trap;
     public override CardColour ColourIdentity => CardColour.Green;
-    public override string ImagePath => "BS1_077.png.webp";
+    public override string ImagePath => "BS1_077.png";
 }

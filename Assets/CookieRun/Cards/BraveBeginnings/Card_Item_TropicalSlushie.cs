@@ -9,5 +9,5 @@ public class Card_Item_TropicalSlushie : Card_Item
     public override CardRarity CardRarity => CardRarity.Rare;
     public override CardType CardType => CardType.Item;
     public override CardColour ColourIdentity => CardColour.Yellow;
-    public override string ImagePath => "BS1_049.png.webp";
+    public override string ImagePath => "BS1_049.png";
 }

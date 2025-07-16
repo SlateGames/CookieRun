@@ -9,7 +9,7 @@ public class Card_Cookie_CreamUnicornCookie : Card_Cookie
     public override CardRarity CardRarity => CardRarity.SuperRare;
     public override CardType CardType => CardType.Cookie;
     public override CardColour ColourIdentity => CardColour.Invalid;
-    public override string ImagePath => "BS2_068.png.webp";
+    public override string ImagePath => "BS2_068.png";
     public override int CardHealth => 5;
     public override int CardLevel => 2;
 }
