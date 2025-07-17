@@ -4,12 +4,13 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
+//TODO: Convert from webp to png
 public class CookieRunCardDownloader : MonoBehaviour
 {
     [Header("Download Settings")]
     public string cardJsonUrl = "https://cookierunbraverse.com/en/cardList/card.json";
     public string cardImageBaseUrl = "https://assets.cookierunbraverse.com/braverse/images/card_webp/card/en/";
-    public string cardImageFormat = "BS1_{0:000}.png.webp";
+    public string cardImageFormat = "BS2_{0:000}.png.webp";
 
     [Header("File Names")]
     public string cardDataFileName = "cardData.json";
@@ -55,7 +56,7 @@ public class CookieRunCardDownloader : MonoBehaviour
     {
         //ParseCardData();
         //DownloadCardJson();
-        //DownloadAllCardImages();
+        DownloadAllCardImages();
     }
 
     /// <summary>
@@ -114,72 +115,6 @@ public class CookieRunCardDownloader : MonoBehaviour
     }
 
     /// <summary>
-    /// Downloads a single card image by card number
-    /// </summary>
-    public void DownloadSingleCardImage(int cardNumber)
-    {
-        if (isDownloading)
-        {
-            Debug.LogWarning("Download already in progress!");
-            return;
-        }
-
-        StartCoroutine(DownloadSingleCardImageCoroutine(cardNumber));
-    }
-
-    private IEnumerator DownloadSingleCardImageCoroutine(int cardNumber)
-    {
-        isDownloading = true;
-        lastError = "";
-
-        string imageUrl = cardImageBaseUrl + string.Format(cardImageFormat, cardNumber);
-        string fileName = string.Format("BS1_{0:000}.png.webp", cardNumber);
-
-        Debug.Log($"Downloading card image: {imageUrl}");
-        OnDownloadProgress?.Invoke($"Downloading card {cardNumber:000}...", 0f);
-
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(imageUrl))
-        {
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.result != UnityWebRequest.Result.Success)
-            {
-                lastError = $"Failed to download card image {cardNumber}: {webRequest.error}";
-                Debug.LogError(lastError);
-                OnDownloadError?.Invoke(lastError);
-                isDownloading = false;
-                yield break;
-            }
-
-            byte[] imageData = webRequest.downloadHandler.data;
-            string folderPath = Path.Combine(Application.persistentDataPath, cardImageFolderName);
-
-            // Create folder if it doesn't exist
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-
-            string filePath = Path.Combine(folderPath, fileName);
-
-            try
-            {
-                File.WriteAllBytes(filePath, imageData);
-                Debug.Log($"Card image saved to: {filePath}");
-                OnDownloadComplete?.Invoke(filePath);
-            }
-            catch (System.Exception ex)
-            {
-                lastError = $"Failed to save card image: {ex.Message}";
-                Debug.LogError(lastError);
-                OnDownloadError?.Invoke(lastError);
-            }
-        }
-
-        isDownloading = false;
-    }
-
-    /// <summary>
     /// Downloads all card images from 001 to 081
     /// </summary>
     public void DownloadAllCardImages()
@@ -208,14 +143,14 @@ public class CookieRunCardDownloader : MonoBehaviour
             Directory.CreateDirectory(folderPath);
         }
 
-        int totalCards = 81;
+        int totalCards = 100;
         int downloadedCards = 0;
         int failedDownloads = 0;
 
         for (int cardNumber = 1; cardNumber <= totalCards; cardNumber++)
         {
             string imageUrl = cardImageBaseUrl + string.Format(cardImageFormat, cardNumber);
-            string fileName = string.Format("BS1_{0:000}.png.webp", cardNumber);
+            string fileName = string.Format("BS2_{0:000}.png.webp", cardNumber);
 
             Debug.Log($"Downloading card {cardNumber}/81: {imageUrl}");
             OnDownloadProgress?.Invoke($"Downloading card {cardNumber}/81...", (float)cardNumber / totalCards);

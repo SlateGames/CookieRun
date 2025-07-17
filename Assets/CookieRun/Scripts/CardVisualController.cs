@@ -1,0 +1,52 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class CardVisualController : MonoBehaviour
+{
+    [SerializeField] private Image cardImage;
+
+    public void LoadImageFromName(string name)
+    {
+        string imageName = name.Replace(".png", "");
+        Texture2D texture = Resources.Load<Texture2D>("Cards/BraveBeginnings/" + imageName);
+        if (texture != null)
+        {
+            Sprite cardSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            if (cardImage != null)
+            {
+                cardImage.sprite = cardSprite;
+            }
+            else
+            {
+                Debug.LogWarning("No Image component found on " + gameObject.name);
+            }
+        }
+        else
+        {
+            Debug.LogError("Could not load card image: " + name + " from path: Cards/BraveBeginnings/" + imageName);
+        }
+    }
+
+    public void ClearCard()
+    {
+        Texture2D texture = Resources.Load<Texture2D>("Cards/card-back");
+        if (texture != null)
+        {
+            Sprite cardSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            if (cardImage != null)
+            {
+                cardImage.sprite = cardSprite;
+            }
+            else
+            {
+                Debug.LogWarning("No Image component found on " + gameObject.name);
+            }
+        }
+        else
+        {
+            Debug.LogError("Could not load card image from path: Cards/card-back");
+        }
+    }
+}
