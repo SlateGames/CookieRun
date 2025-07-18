@@ -26,6 +26,7 @@ public class DeckEditorController : MenuControllerBase
     private List<Card_Base> allCards = new List<Card_Base>();
     private int currentPage = 0;
     private const int CARDS_PER_PAGE = 18;
+    private List<Deck> _decks = new List<Deck>();
 
     private Deck currentDeck = new Deck();
 
@@ -40,7 +41,11 @@ public class DeckEditorController : MenuControllerBase
         SetupDeckDropdown();        
     }
 
-    private List<Deck> _decks = new List<Deck>();
+    public override void HideOverlay()
+    {
+        ClientStorageManager.Instance.ChosenDeckID = currentDeck.DeckID;
+        base.HideOverlay();
+    }
 
     private void SetupDeckDropdown()
     {

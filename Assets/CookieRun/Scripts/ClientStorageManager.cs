@@ -3,6 +3,8 @@ public enum GameQueue
 {
     Singleplayer,
     Competitive,
+    LocalHost,
+    LocalClient
 }
 
 public class ClientStorageManager
