@@ -17,6 +17,8 @@ public class DeckEditorController : MenuControllerBase
     [SerializeField] private Button previousPageButton;
     [SerializeField] private Button saveButton;
     [SerializeField] private Button cancelButton;
+    [SerializeField] private Button newDeckButton;
+    [SerializeField] private TMP_Dropdown deckSelectDropdown;
     
     public TMP_InputField deckName;
     public TMP_InputField cardFilterInput;
@@ -35,7 +37,45 @@ public class DeckEditorController : MenuControllerBase
         SetupButtons();
         SetupCardSlotButtons();
         DisplayCurrentPage();
+        SetupDeckDropdown();        
     }
+
+    private List<Deck> _decks = new List<Deck>();
+
+    private void SetupDeckDropdown()
+    {
+        Debug.Log("DeckEditorController::SetupDeckDropdown");
+
+        deckSelectDropdown.ClearOptions();
+
+        _decks = ClientStorageManager.Instance.DeckDataManager.GetAllDecks();
+        List<string> deckNames = new List<string>();
+        foreach (Deck deck in _decks)
+        {
+            deckNames.Add(deck.Name);
+        }
+
+        deckSelectDropdown.AddOptions(deckNames);
+        deckSelectDropdown.onValueChanged.RemoveAllListeners();
+        deckSelectDropdown.onValueChanged.AddListener(OnDeckSelected);
+
+        if (_decks.Count > 0)
+        {
+            deckSelectDropdown.value = 0;
+            deckSelectDropdown.RefreshShownValue();
+            LoadDeck(_decks[0].DeckID);
+        }
+    }
+
+    private void OnDeckSelected(int index)
+    {
+        if (index >= 0 && index < _decks.Count)
+        {
+            string selectedDeckID = _decks[index].DeckID;
+            LoadDeck(selectedDeckID);
+        }
+    }
+
 
     public void LoadDeck(string deckId)
     {
@@ -60,6 +100,8 @@ public class DeckEditorController : MenuControllerBase
 
         currentDeck = ClientStorageManager.Instance.DeckDataManager.GetDeck(deckId);
         deckName.text = currentDeck.Name;
+
+        DisplayCurrentPage();
     }
 
 
@@ -83,6 +125,11 @@ public class DeckEditorController : MenuControllerBase
         if (cancelButton != null)
         {
             cancelButton.onClick.AddListener(OnCancelClicked);
+        }
+
+        if (newDeckButton != null)
+        {
+            newDeckButton.onClick.AddListener(OnNewDeckClicked);
         }
     }
 
@@ -290,6 +337,7 @@ public class DeckEditorController : MenuControllerBase
     {
         // Button 00 = Set quantity to 0 (remove card)
         SetCardQuantityInDeck(card.CardId, 0);
+        UpdateButtonColorsForSlot(slotIndex, 0);
         Debug.Log($"Button 00 clicked for slot {slotIndex}, card ID: {card.CardId}, card Name: {card.CardName} - Removed from deck");
     }
 
@@ -297,6 +345,7 @@ public class DeckEditorController : MenuControllerBase
     {
         // Button 01 = Set quantity to 1
         SetCardQuantityInDeck(card.CardId, 1);
+        UpdateButtonColorsForSlot(slotIndex, 1);
         Debug.Log($"Button 01 clicked for slot {slotIndex}, card ID: {card.CardId}, card Name: {card.CardName} - Set to 1");
     }
 
@@ -304,6 +353,7 @@ public class DeckEditorController : MenuControllerBase
     {
         // Button 02 = Set quantity to 2
         SetCardQuantityInDeck(card.CardId, 2);
+        UpdateButtonColorsForSlot(slotIndex, 2);
         Debug.Log($"Button 02 clicked for slot {slotIndex}, card ID: {card.CardId}, card Name: {card.CardName} - Set to 2");
     }
 
@@ -311,6 +361,7 @@ public class DeckEditorController : MenuControllerBase
     {
         // Button 03 = Set quantity to 3
         SetCardQuantityInDeck(card.CardId, 3);
+        UpdateButtonColorsForSlot(slotIndex, 3);
         Debug.Log($"Button 03 clicked for slot {slotIndex}, card ID: {card.CardId}, card Name: {card.CardName} - Set to 3");
     }
 
@@ -318,7 +369,43 @@ public class DeckEditorController : MenuControllerBase
     {
         // Button 04 = Set quantity to 4
         SetCardQuantityInDeck(card.CardId, 4);
+        UpdateButtonColorsForSlot(slotIndex, 4);
         Debug.Log($"Button 04 clicked for slot {slotIndex}, card ID: {card.CardId}, card Name: {card.CardName} - Set to 4");
+    }
+
+    private void UpdateButtonColorsForSlot(int slotIndex, int currentQuantity)
+    {
+        GameObject slot = deckEditorCardSlots[slotIndex];
+
+        for (int buttonIndex = 0; buttonIndex < 5; buttonIndex++)
+        {
+            string buttonName = $"Button_{buttonIndex:00}";
+            Button button = FindButtonInSlot(slot, buttonName);
+
+            if (button != null)
+            {
+                Color targetColor;
+
+                if (buttonIndex == 0)
+                {
+                    targetColor = Color.red;
+                }
+                else if (buttonIndex <= currentQuantity)
+                {
+                    targetColor = Color.green;
+                }
+                else
+                {
+                    targetColor = Color.white;
+                }
+
+                Image buttonImage = button.GetComponent<Image>();
+                if (buttonImage != null)
+                {
+                    buttonImage.color = targetColor;
+                }
+            }
+        }
     }
 
     private void SetCardQuantityInDeck(string cardId, int quantity)
@@ -463,6 +550,11 @@ public class DeckEditorController : MenuControllerBase
     {
         currentDeck = new Deck();
         HideOverlay();
+    }
+
+    private void OnNewDeckClicked()
+    {
+        LoadDeck("");
     }
 
     private List<Type> GetAllCardTypes()

@@ -4,5 +4,29 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/CookieRun/Scenes/CardSyncScene.unity
+    guid: b6537a9176e59a74bad5be750c67d940
+  - enabled: 1
+    path: Assets/CookieRun/Scenes/DedicatedServer.unity
+    guid: 425b63802e12c2b4e90357c29706649f
+  - enabled: 1
+    path: Assets/CookieRun/Scenes/GameBoard.unity
+    guid: a830ddad54fe1394d9db612dc78754c2
+  - enabled: 1
+    path: Assets/CookieRun/Scenes/LoginScreen.unity
+    guid: 48f60c0907623b94e8cf9dd74373ebb6
+  - enabled: 1
+    path: Assets/CookieRun/Scenes/MainMenu.unity
+    guid: e9fb59f72a11e0644a36bd3c6e52f360
+  - enabled: 1
+    path: Assets/CookieRun/Scenes/Overlays/DeckEditor.unity
+    guid: 5e27e6b1f349fa34180525227922e6a0
+  - enabled: 1
+    path: Assets/CookieRun/Scenes/Overlays/DeckSelector.unity
+    guid: 804d238c6674ac340b51d89afc521cfa
+  - enabled: 1
+    path: Assets/CookieRun/Scenes/Overlays/GameModeSelector.unity
+    guid: d56c778761306d24eae4976543b25d8d
   m_configObjects: {}

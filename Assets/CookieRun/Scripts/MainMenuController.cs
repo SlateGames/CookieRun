@@ -43,7 +43,7 @@ public class MainMenuController : MenuControllerBase
     public void ShowDeckEditorOverlay()
     {
         Debug.Log("MenuDisplayController::DisplayDeckEditor");
-        SceneManager.LoadScene("DeckEditScene", LoadSceneMode.Additive);
+        SceneManager.LoadScene("DeckEditor", LoadSceneMode.Additive);
     }
 
     public void ShowDeckSelectorOverlay()

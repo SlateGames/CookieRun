@@ -14,7 +14,7 @@ public class AuthenticationManager : MonoBehaviour
 
     public string UserEmail = "";
 
-    public const string EnvironmentName = "cookie-run";
+    public const string EnvironmentName = "production";
 
     private void Awake()
     {

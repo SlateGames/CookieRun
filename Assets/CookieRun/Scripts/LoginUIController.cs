@@ -268,7 +268,6 @@ public class LoginUIController : MonoBehaviour
         {
             Debug.Log($"Successfully authenticated. User ID: {result.UserId}");
             SceneManager.LoadSceneAsync("MainMenu");
-
         }
         else
         {
