@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class RulesEngine : NetworkBehaviour
 {
+    public const int INVALID_CARD_ID = 99999;
+
     public static RulesEngine Instance { get; private set; }
 
     public event Action TestAction;
+    public event Action<ulong> DeckShuffledEvent;
 
     public override void OnNetworkSpawn()
     {
@@ -44,5 +47,11 @@ public class RulesEngine : NetworkBehaviour
         yield return new WaitForSeconds(5f);
         Debug.Log("RulesEngine::Firing TestAction after 5 seconds");
         TestAction?.Invoke();
+    }
+
+    public void BroadcastDeckShuffledEvent(ulong playerId)
+    {
+        Debug.Log("RulesEngine::BroadcastDeckShuffledEvent");
+        DeckShuffledEvent?.Invoke(playerId);
     }
 }
