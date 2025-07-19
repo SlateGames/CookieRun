@@ -10,7 +10,7 @@ public class CardVisualController : MonoBehaviour
     public void LoadImageFromName(string name)
     {
         string imageName = name.Replace(".png", "");
-        Texture2D texture = Resources.Load<Texture2D>("Cards/BraveBeginnings/" + imageName);
+        Texture2D texture = Resources.Load<Texture2D>("Cards/Images/BraveBeginnings/" + imageName);
         if (texture != null)
         {
             Sprite cardSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
@@ -25,7 +25,7 @@ public class CardVisualController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Could not load card image: " + name + " from path: Cards/BraveBeginnings/" + imageName);
+            Debug.LogError("Could not load card image: " + name + " from path: Cards/Images/BraveBeginnings/" + imageName);
         }
     }
 

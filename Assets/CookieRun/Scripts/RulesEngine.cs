@@ -1,3 +1,4 @@
+using ChronoCCG.Game;
 using System;
 using System.Collections;
 using Unity.Netcode;
@@ -5,12 +6,32 @@ using UnityEngine;
 
 public class RulesEngine : NetworkBehaviour
 {
+    public const int GAME_ACTION = 1234567890;
     public const int INVALID_CARD_ID = 99999;
+    public const int INVALID_PLAYER_ID = 88888;
 
     public static RulesEngine Instance { get; private set; }
 
+    private GameStateManager _gameStateManager;
+    private CardManager _cardManager;
+
     public event Action TestAction;
+    public event Action<DeckDataPayload> DeckRegisteredForPlayerEvent;
     public event Action<ulong> DeckShuffledEvent;
+    public event Action<ulong, int, GameZoneType, GameZoneType> CardChangeZoneEvent;
+    public event Action MulligansStartEvent;
+    public event Action MulligansEndEvent;
+    public event Action GameStartEvent;
+    public event Action<Card_Base> CardGenericUpdateEvent;
+
+    public GameStateManager GetGameStateManager()
+    {
+        return _gameStateManager;
+    }
+    public CardManager GetCardManager()
+    {
+        return _cardManager;
+    }
 
     public override void OnNetworkSpawn()
     {
@@ -40,6 +61,11 @@ public class RulesEngine : NetworkBehaviour
         Debug.Log("RulesEngine::InitializeServerServices");
 
         // Here is where we instantiate all the server classes
+        Debug.Log("RulesEngine: Instantiating GameStateManager.");
+        _gameStateManager = new GameStateManager();
+
+        Debug.Log("RulesEngine: Instantiating CardManager.");
+        _cardManager = new CardManager();
     }
 
     private IEnumerator FireTestActionAfterDelay()
@@ -48,10 +74,43 @@ public class RulesEngine : NetworkBehaviour
         Debug.Log("RulesEngine::Firing TestAction after 5 seconds");
         TestAction?.Invoke();
     }
+    public void BroadcastDeckRegisteredForPlayerEvent(DeckDataPayload deckRegistration)
+    {
+        Debug.Log("RulesEngine::BroadcastDeckRegisteredForPlayerEvent");
+        DeckRegisteredForPlayerEvent?.Invoke(deckRegistration);
+    }
 
     public void BroadcastDeckShuffledEvent(ulong playerId)
     {
         Debug.Log("RulesEngine::BroadcastDeckShuffledEvent");
         DeckShuffledEvent?.Invoke(playerId);
+    }
+
+    public void BroadcastCardGenericUpdateEvent(Card_Base card)
+    {
+        Debug.Log("RulesEngine::BroadcastCardGenericUpdateEvent");
+        CardGenericUpdateEvent?.Invoke(card);
+    }
+
+    public void BroadcastCardMovedFromZoneToZone(ulong playerId, int cardMatchId, GameZoneType sourceZone, GameZoneType destinationZone)
+    {
+        Debug.Log("RulesEngine::BroadcastCardEnterZone");
+        CardChangeZoneEvent?.Invoke(playerId, cardMatchId, sourceZone, destinationZone);
+    }
+
+    public void BroadcastMulligansStartEvent()
+    {
+        Debug.Log("RulesEngine::BroadcastMulligansStartEvent");
+        MulligansStartEvent?.Invoke();
+    }
+    public void BroadcastMulligansEndEvent()
+    {
+        Debug.Log("RulesEngine::BroadcastMulligansEndEvent");
+        MulligansEndEvent?.Invoke();
+    }
+    public void BroadcastGameStartEvent()
+    {
+        Debug.Log("RulesEngine::BroadcastGameStartEvent");
+        GameStartEvent?.Invoke();
     }
 }

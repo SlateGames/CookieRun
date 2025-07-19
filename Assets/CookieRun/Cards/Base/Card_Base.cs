@@ -14,8 +14,20 @@ public class Card_Base : ScriptableObject
 
     public GameObject CardVisual;
 
+    public int MatchID;
+
     public Card_Base() 
     { 
         //TODO: Set the data, populate the card visual
+    }
+
+    public void OnPlay()
+    {
+        //TODO: Setup health pool
+    }
+
+    public void TakeDamage(int damageAmount)
+    {
+        //TODO: Discard that many cards, check for death
     }
 }

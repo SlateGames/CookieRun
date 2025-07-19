@@ -11,6 +11,7 @@ public enum GameZoneType
     Hand,
     Stage,
     Support,
+    Invalid
 }
 
 public class GameZone_Base

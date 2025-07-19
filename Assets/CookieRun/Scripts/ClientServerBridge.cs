@@ -1,6 +1,8 @@
 using UnityEngine;
 using Unity.Netcode;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 //TODO: Make a base class for this and the Spectator? Things like the OnNetworkSpawn and InitComps could be defined there 
 
@@ -30,7 +32,8 @@ public class ClientServerBridge : NetworkBehaviour
 
             HandleSetupCompleted();
 
-            //Register player and deck with the server
+            Deck deck = ClientStorageManager.Instance.DeckDataManager.GetDeck(ClientStorageManager.Instance.ChosenDeckID);
+            RegisterPlayerServerRpc(OwnerClientId, deck);
         }
         if (IsServer)
         {
@@ -44,6 +47,14 @@ public class ClientServerBridge : NetworkBehaviour
         Debug.Log("ClientServerBridge::SubscribeToServerEvents");
 
         RulesEngine.Instance.TestAction += RulesEngine_TestAction;
+    }
+
+    //TODO: Revert the deck back to a deck id once the database is up
+    [ServerRpc]
+    public void RegisterPlayerServerRpc(ulong playerId, Deck deck)
+    {
+        Debug.Log("ClientServerBridge::RegisterPlayerServerRpc");
+        RulesEngine.Instance.GetGameStateManager().RegisterPlayer(playerId, deck);
     }
 
     private void RulesEngine_TestAction()
