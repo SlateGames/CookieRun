@@ -72,7 +72,9 @@ public class ClientNetworkManager : MonoBehaviour
 
             OnConnectionStatusChanged?.Invoke("Connecting to server...");
 
-            if (!networkManager.StartClient())
+            bool started = networkManager.StartClient();
+            Debug.Log($"StartClient returned: {started}");
+            if (!started)
             {
                 OnConnectionError?.Invoke("Failed to start client");
                 return;
