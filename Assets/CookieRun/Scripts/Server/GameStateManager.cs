@@ -361,6 +361,8 @@ public class GameStateManager
         return new List<int>(GameZonesByTypeByPlayer[playerId][GameZoneType.Battlefield].GetCards());
     }
 
+    //TODO: Make this private. Remove the broadcast. Make a series of functions for each type of movement, each with their own broadcast. `MoveCardFromDeckToHand`, for example, will fire an event `CardMovedFromDeckToHand`.
+    //I can do this because of the limited amount of movement types
     public void MoveCardFromZoneToZone(ulong playerId, int cardMatchId, GameZoneType sourceZone, GameZoneType destinationZone)
     {
         Debug.Log("GameStateManager::MoveCardFromZoneToZone");
@@ -543,13 +545,43 @@ public class GameStateManager
 
         if (damageAmount <= 0)
         {
-            Debug.Log("Damage was reduced to 0");
+            Debug.Log("Damage amount is 0");
             return;
         }
 
-        Card_Base targetCard = RulesEngine.Instance.GetCardManager().GetCardByMatchId(targetCardMatchId);
-        targetCard.TakeDamage(damageAmount);
+        Card_Cookie targetCard = (Card_Cookie)RulesEngine.Instance.GetCardManager().GetCardByMatchId(targetCardMatchId);
+        if(targetCard == null)
+        {
+            Debug.LogError("No card with Match ID " + targetCardMatchId + " exists.");
+            return;
+        }
+        for (int i = 0; i < damageAmount; i++)
+        {
+            //TODO: Flip the card and stuff
+            int cardToFlip = targetCard.TakeDamage(1);
+        }
 
+        RulesEngine.Instance.GetCardManager().GenericUpdateCard(targetCard);
+    }
+
+    public void HealCookie(int sourceCardMatchId, int targetCardMatchId, int healAmount)
+    {
+        Debug.Log("GameStateManager::HealCookie");
+
+        if (healAmount <= 0)
+        {
+            Debug.Log("Amount to heal is 0");
+            return;
+        }
+
+        Card_Cookie targetCard = (Card_Cookie)RulesEngine.Instance.GetCardManager().GetCardByMatchId(targetCardMatchId);
+        if (targetCard == null)
+        {
+            Debug.LogError("No card with Match ID " + targetCardMatchId + " exists.");
+            return;
+        }
+
+        targetCard.Heal(healAmount);
         RulesEngine.Instance.GetCardManager().GenericUpdateCard(targetCard);
     }
 }

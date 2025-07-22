@@ -25,9 +25,4 @@ public class Card_Base : ScriptableObject
     {
         //TODO: Setup health pool
     }
-
-    public void TakeDamage(int damageAmount)
-    {
-        //TODO: Discard that many cards, check for death
-    }
 }
