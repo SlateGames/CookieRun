@@ -10,13 +10,9 @@ public class GameState_Setup : GameState_Base
     private int _postMulliganPlayerCount;
     private int _registeredDeckCount;
 
-    public GameState_Setup()
-    {
-        _subPhase = SetupPhase.GamePreparation;
-    }
-
     public override void Enter()
     {
+        _gamePhase = GamePhase.Setup;
         _subPhase = SetupPhase.GamePreparation;
 
         RulesEngine.Instance.DeckRegisteredForPlayerEvent += RulesEngine_DeckRegisteredForPlayerEvent;
@@ -24,10 +20,13 @@ public class GameState_Setup : GameState_Base
         _registeredDeckCount = 0;
 
         MonitorDeckRegistration();
+
+        base.Enter();
     }
 
     public override void Exit()
     {
+        base.Exit();
     }
 
     private void RulesEngine_DeckRegisteredForPlayerEvent(DeckDataPayload deckPayload)
@@ -58,11 +57,6 @@ public class GameState_Setup : GameState_Base
                 Debug.LogError($"Unknown setup phase: {_subPhase}");
                 return;
         }
-    }
-
-    public override GamePhase GetPhase()
-    {
-        return GamePhase.Setup;
     }
 
     public SetupPhase GetSetupSubPhase()

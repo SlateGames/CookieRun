@@ -23,6 +23,8 @@ public class RulesEngine : NetworkBehaviour
     public event Action MulligansEndEvent;
     public event Action GameStartEvent;
     public event Action<Card_Base> CardGenericUpdateEvent;
+    public event Action<GamePhase> EnterGamePhaseEvent;
+    public event Action<GamePhase> ExitGamePhaseEvent;
 
     public GameStateManager GetGameStateManager()
     {
@@ -94,6 +96,18 @@ public class RulesEngine : NetworkBehaviour
     {
         Debug.Log("RulesEngine::BroadcastCardGenericUpdateEvent");
         CardGenericUpdateEvent?.Invoke(card);
+    }
+
+    public void BroadcastEnterGamePhaseEvent(GamePhase phase)
+    {
+        Debug.Log("RulesEngine::BroadcastEnterGamePhaseEvent");
+        EnterGamePhaseEvent?.Invoke(phase);
+    }
+    
+    public void BroadcastExitGamePhaseEvent(GamePhase phase)
+    {
+        Debug.Log("RulesEngine::BroadcastExitGamePhaseEvent");
+        ExitGamePhaseEvent?.Invoke(phase);
     }
 
     public void BroadcastCardMovedFromZoneToZone(ulong playerId, int cardMatchId, GameZoneType sourceZone, GameZoneType destinationZone)

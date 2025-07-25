@@ -8,18 +8,16 @@ public class GameState_Battle : GameState_Base
 {
     private BattlePhase _subPhase;
 
-    public GameState_Battle()
-    {
-        _subPhase = BattlePhase.Attack;
-    }
-
     public override void Enter()
     {
+        _gamePhase = GamePhase.Battle;
         _subPhase = BattlePhase.Attack;
+        base.Enter();
     }
 
     public override void Exit()
     {
+        base.Exit();
     }
 
     public override void PassPriority(ulong playerId)
@@ -67,11 +65,6 @@ public class GameState_Battle : GameState_Base
         }
 
         _subPhase = BattlePhase.Resolution;
-    }
-
-    public override GamePhase GetPhase()
-    {
-        return GamePhase.Battle;
     }
 
     public BattlePhase GetBattleSubPhase()

@@ -7,10 +7,13 @@ public class GameState_Draw : GameState_Base
 {
     public override void Enter()
     {
+        _gamePhase = GamePhase.Draw;
+        base.Enter();
     }
 
     public override void Exit()
     {
+        base.Exit();
     }
 
     public override void PassPriority(ulong playerId)
@@ -22,10 +25,5 @@ public class GameState_Draw : GameState_Base
         }
 
         RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Support());
-    }
-
-    public override GamePhase GetPhase()
-    {
-        return GamePhase.Draw;
     }
 }

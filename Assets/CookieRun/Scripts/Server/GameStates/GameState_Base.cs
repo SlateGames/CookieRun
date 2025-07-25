@@ -5,8 +5,21 @@ using UnityEngine;
 
 public abstract class GameState_Base
 {
-    public abstract void Enter();
-    public abstract void Exit();
+    protected GamePhase _gamePhase;
     public abstract void PassPriority(ulong playerId);
-    public abstract GamePhase GetPhase();
+
+    public virtual void Enter()
+    {
+        RulesEngine.Instance.BroadcastEnterGamePhaseEvent(_gamePhase);
+    }
+
+    public virtual void Exit()
+    {
+        RulesEngine.Instance.BroadcastExitGamePhaseEvent(_gamePhase);
+    }
+    
+    public virtual GamePhase GetPhase()
+    {
+        return _gamePhase;
+    }
 }
