@@ -15,18 +15,18 @@ public class GameState_Main : GameState_Base
 
     public override void PassPriority(ulong playerId)
     {
-        //if (playerId != RulesEngine.Instance.GetGameStateManager().GetActivePlayerId())
-        //{
-        //    Debug.LogError("Only the active player can pass priority");
-        //    return;
-        //}
+        if (playerId != RulesEngine.Instance.GetGameStateManager().GetActivePlayerId())
+        {
+            Debug.LogError("Only the active player can pass priority");
+            return;
+        }
 
-        //RulesEngine.Instance.GetGameStateManager().ChangeState(new EndState());
+        RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_End());
     }
 
-    public override void EnterBattle()
+    public void EnterBattle()
     {
-        //RulesEngine.Instance.GetGameStateManager().ChangeState(new BattleState());
+        RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Battle());
     }
 
     public override GamePhase GetPhase()

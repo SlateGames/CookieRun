@@ -26,7 +26,7 @@ public class GameState_Setup : GameState_Base
         Debug.LogError("Cannot pass priority during setup phase");
     }
 
-    public override void AdvanceSetupPhase()
+    public void AdvanceSetupPhase()
     {
         switch (_subPhase)
         {
@@ -37,7 +37,7 @@ public class GameState_Setup : GameState_Base
                 _subPhase = SetupPhase.PreGameCookiePlacement;
                 break;
             case SetupPhase.PreGameCookiePlacement:
-                //RulesEngine.Instance.GetGameStateManager().ChangeState(new ActiveState());
+                RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Active());
                 break;
             default:
                 Debug.LogError($"Unknown setup phase: {_subPhase}");

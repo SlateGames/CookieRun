@@ -40,7 +40,8 @@ public class GameStateManager
     private Deck _player1Deck;
     private Deck _player2Deck;
 
-    public GamePhase CurrentPhase;
+    private ulong _activePlayerId;
+    private GameState_Base _currentState;
 
     //TODO: Make another data type? Maybe just skip the dictionaries?
     private Dictionary<ulong, Dictionary<GameZoneType, GameZone_Base>> GameZonesByTypeByPlayer;
@@ -54,8 +55,6 @@ public class GameStateManager
     {
         Debug.Log("GameStateManager::GameStateManager");
 
-        CurrentPhase = GamePhase.Setup;
-
         GameZonesByTypeByPlayer = new Dictionary<ulong, Dictionary<GameZoneType, GameZone_Base>>();
 
         _registeredDeckCount = 0;
@@ -63,6 +62,8 @@ public class GameStateManager
         CurrentTurn = 0;
 
         MonitorDeckRegistration();
+
+        ChangeState(new GameState_Setup());
 
         //RulesEngine.Instance.PlayerDeathEvent += RulesEngine_PlayerDeathEvent;
     }
@@ -200,6 +201,11 @@ public class GameStateManager
         }
 
         return false;
+    }
+    
+    public ulong GetActivePlayerId()
+    {
+        return _activePlayerId;
     }
 
     public ulong GetOpponentId(ulong playerId)
@@ -377,7 +383,7 @@ public class GameStateManager
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain an entry for {playerId}.");
             return;
         }
-        if (((sourceZone == GameZoneType.Invalid && CurrentPhase == GamePhase.Setup) == false) && GameZonesByTypeByPlayer[playerId].ContainsKey(sourceZone) == false)
+        if (((sourceZone == GameZoneType.Invalid && GetCurrentPhase() == GamePhase.Setup) == false) && GameZonesByTypeByPlayer[playerId].ContainsKey(sourceZone) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain a {sourceZone.ToString()} zone for player {playerId}.");
             return;
@@ -501,26 +507,17 @@ public class GameStateManager
     public void StartGame()
     {
         Debug.Log("GameStateManager::StartGame");
-
         RulesEngine.Instance.BroadcastGameStartEvent();
-
-        StartRound();
     }
 
-    public void StartRound()
+    public void EndTurn()
     {
-        Debug.Log("GameStateManager::StartRound");
-
-        //TODO: Enter the Active Phase, tick up turn counter, etc
-        CurrentPhase = GamePhase.Active;
+        _activePlayerId = _activePlayerId == Player1Id ? Player2Id : Player1Id;
     }
 
-    public void EndRound()
+    public GamePhase GetCurrentPhase()
     {
-        Debug.Log("GameStateManager::EndRound");
-
-        //TODO: Start a new round
-        CurrentPhase = GamePhase.End;
+        return _currentState.GetPhase();
     }
 
     public void DealCombatDamageToCookie(int sourceCardMatchId, int targetCardMatchId, int damageAmount)
@@ -592,5 +589,21 @@ public class GameStateManager
 
         targetCard.Heal(healAmount);
         RulesEngine.Instance.GetCardManager().GenericUpdateCard(targetCard);
+    }
+
+    public void ChangeState(GameState_Base newState)
+    {
+        if(newState == null)
+        {
+            Debug.LogError("New state is null");
+            return;
+        }
+
+        if(_currentState != null)
+        {
+            _currentState.Exit();
+        }
+        _currentState = newState;
+        _currentState.Enter();
     }
 }
