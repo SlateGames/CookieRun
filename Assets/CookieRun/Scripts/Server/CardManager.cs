@@ -3,158 +3,174 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-namespace ChronoCCG.Game
+public struct DeckDataPayload
 {
-    public struct DeckDataPayload
+    public ulong PlayerId;
+    public string DeckId;
+    public Deck Deck;
+}
+
+public class CardManager
+{
+    private static SynchronizationContext _mainThreadContext;
+    private string _persistentDataPath;
+
+    public int GetNextMatchId() => Interlocked.Increment(ref _nextMatchId);
+    private int _nextMatchId;
+    private ConcurrentBag<DeckDataPayload> _deckPayloads = new ConcurrentBag<DeckDataPayload>();
+    private Dictionary<int, Card_Base> _cardsByMatchId;
+    private Dictionary<string, Card_Base> _cardsByCardID;
+
+    private Deck _player1Deck;
+    private Deck _player2Deck;
+
+    public CardManager()
     {
-        public ulong PlayerId;
-        public string DeckId;
-        public Deck Deck;
+        Debug.Log("CardManager::CardManager");
+
+        InitializeCardCache();
+
+        _mainThreadContext = SynchronizationContext.Current;
+        _persistentDataPath = Application.persistentDataPath;
+
+        _cardsByMatchId = new Dictionary<int, Card_Base>();
+        _cardsByCardID = new Dictionary<string, Card_Base>();
     }
 
-    public class CardManager
+    public void InitializeCardCache()
     {
-        private static SynchronizationContext _mainThreadContext;
-        private string _persistentDataPath;
-
-        public int GetNextMatchId() => Interlocked.Increment(ref _nextMatchId);
-        private int _nextMatchId;
-        private ConcurrentBag<DeckDataPayload> _deckPayloads = new ConcurrentBag<DeckDataPayload>();
-        private Dictionary<int, Card_Base> _cardsByMatchId;
-        private Dictionary<string, Card_Base> _cardsByCardID;
-
-        public CardManager()
+        Card_Base[] allCards = Resources.LoadAll<Card_Base>("Cards");
+        foreach (Card_Base card in allCards)
         {
-            Debug.Log("CardManager::CardManager");
-
-            InitializeCardCache();
-
-            _mainThreadContext = SynchronizationContext.Current;
-            _persistentDataPath = Application.persistentDataPath;
-
-            _cardsByMatchId = new Dictionary<int, Card_Base>();
-            _cardsByCardID = new Dictionary<string, Card_Base>();
+            _cardsByCardID[card.CardId] = card;
         }
+    }
 
-        public void InitializeCardCache()
-        {
-            Card_Base[] allCards = Resources.LoadAll<Card_Base>("Cards");
-            foreach (Card_Base card in allCards)
-            {
-                _cardsByCardID[card.CardId] = card;
-            }
-        }
-
-        public void RegisterDeckForPlayer(ulong playerId, Deck deck)
-        {
-            Debug.Log("CardManager::RegisterDeckForPlayer");
+    public void RegisterDeckForPlayer(ulong playerId, Deck deck)
+    {
+        Debug.Log("CardManager::RegisterDeckForPlayer");
             
-            DeckDataPayload deckDataPayload = new DeckDataPayload();
-            deckDataPayload.PlayerId = playerId;
-            deckDataPayload.DeckId = deck.DeckID;
-            deckDataPayload.Deck = deck;
+        DeckDataPayload deckDataPayload = new DeckDataPayload();
+        deckDataPayload.PlayerId = playerId;
+        deckDataPayload.DeckId = deck.DeckID;
+        deckDataPayload.Deck = deck;
 
-            RulesEngine.Instance.BroadcastDeckRegisteredForPlayerEvent(deckDataPayload);
-            RulesEngine.Instance.GetGameStateManager().RegisterDeckForPlayer(playerId, deck);
-
-            _deckPayloads.Add(deckDataPayload);
-            if (_deckPayloads.Count >= 2)
-            {
-                LoadDecks();
-            }
+        //TODO: I should not do this here, but instead have some kind of event system that handles this
+        if (playerId == RulesEngine.Instance.GetGameStateManager().Player1Id)
+        {
+            Debug.Log($"GameState: Registering deck {deck.Name} for player {playerId}.");
+            _player1Deck = deck;
+        }
+        else if (playerId == RulesEngine.Instance.GetGameStateManager().Player2Id)
+        {
+            Debug.Log($"GameState: Registering deck {deck.Name} for player {playerId}.");
+            _player2Deck = deck;
+        }
+        else
+        {
+            Debug.Log($"GameState: Could not register deck {deck.Name} for a player, as the ID {playerId} is not associated with either player.");
+            return;
         }
 
-        private async void LoadDecks()
-        {
-            foreach (var deckPayload in _deckPayloads)
-            {
-                string deckId = deckPayload.DeckId;
-                ulong playerId = deckPayload.PlayerId;
-                Deck deck = deckPayload.Deck;
+        RulesEngine.Instance.BroadcastDeckRegisteredForPlayerEvent(deckDataPayload);
 
-                Debug.Log($"Deck ID: {deck.DeckID}, Deck Name: {deck.Name}, Cards in Deck: {deck.Cards.Count}");
-                //TODO: I should clean this up, make it better
-                ProcessDeck(deck, playerId);
-            }
+        _deckPayloads.Add(deckDataPayload);
+        if (_deckPayloads.Count >= 2)
+        {
+            LoadDecks();
+        }
+    }
+
+    private async void LoadDecks()
+    {
+        foreach (var deckPayload in _deckPayloads)
+        {
+            string deckId = deckPayload.DeckId;
+            ulong playerId = deckPayload.PlayerId;
+            Deck deck = deckPayload.Deck;
+
+            Debug.Log($"Deck ID: {deck.DeckID}, Deck Name: {deck.Name}, Cards in Deck: {deck.Cards.Count}");
+            //TODO: I should clean this up, make it better
+            ProcessDeck(deck, playerId);
+        }
+    }
+
+    private void ProcessDeck(Deck deck, ulong playerId)
+    {
+        Debug.Log("CardManager::LoadDecks");
+
+        List<string> cardIds = new List<string>();
+
+        foreach (var deckCard in deck.Cards)
+        {
+            cardIds.Add(deckCard.CardID);
         }
 
-        private void ProcessDeck(Deck deck, ulong playerId)
-        {
-            Debug.Log("CardManager::LoadDecks");
+        Debug.Log($"Card_Base IDs Count: {cardIds.Count}");
 
-            List<string> cardIds = new List<string>();
-
-            foreach (var deckCard in deck.Cards)
-            {
-                cardIds.Add(deckCard.CardID);
-            }
-
-            Debug.Log($"Card_Base IDs Count: {cardIds.Count}");
-
-            List<Card_Base> deckCards = new List<Card_Base>();
+        List<Card_Base> deckCards = new List<Card_Base>();
             
-            foreach (var deckCard in deck.Cards)
-            {
-                string cardId = deckCard.CardID;
-                int quantity = deckCard.Quantity;
+        foreach (var deckCard in deck.Cards)
+        {
+            string cardId = deckCard.CardID;
+            int quantity = deckCard.Quantity;
 
-                for (int j = 0; j < quantity; j++)
+            for (int j = 0; j < quantity; j++)
+            {
+                if (!_cardsByCardID.TryGetValue(cardId, out Card_Base card))
                 {
-                    if (!_cardsByCardID.TryGetValue(cardId, out Card_Base card))
-                    {
-                        Debug.LogError($"Card_Base {cardId} not found!");
-                        continue;
-                    }
-
-                    deckCards.Add(card);
+                    Debug.LogError($"Card_Base {cardId} not found!");
+                    continue;
                 }
-            }
 
-            RegisterDeckCards(deckCards, playerId);
+                deckCards.Add(card);
+            }
         }
 
-        private void RegisterDeckCards(List<Card_Base> cards, ulong playerId)
+        RegisterDeckCards(deckCards, playerId);
+    }
+
+    private void RegisterDeckCards(List<Card_Base> cards, ulong playerId)
+    {
+        for (int i = 0; i < cards.Count; i++)
         {
-            for (int i = 0; i < cards.Count; i++)
-            {
-                Card_Base card = cards[i];
+            Card_Base card = cards[i];
 
-                int currentMatchId = GetNextMatchId();
-                card.MatchID = currentMatchId;
-                cards[i] = card;
+            int currentMatchId = GetNextMatchId();
+            card.MatchID = currentMatchId;
+            cards[i] = card;
 
-                Debug.Log($"Registering {card.CardName} with Match ID {currentMatchId}");
-                _cardsByMatchId.TryAdd(currentMatchId, card);
+            Debug.Log($"Registering {card.CardName} with Match ID {currentMatchId}");
+            _cardsByMatchId.TryAdd(currentMatchId, card);
             
-                RulesEngine.Instance.GetGameStateManager().MoveCardFromZoneToZone(playerId, currentMatchId, GameZoneType.Invalid, GameZoneType.Deck);
-            }            
-        }
+            RulesEngine.Instance.GetGameZoneManager().MoveCardFromZoneToZone(playerId, currentMatchId, GameZoneType.Invalid, GameZoneType.Deck);
+        }            
+    }
 
-        public Card_Base GetCardByMatchId(int cardMatchId)
+    public Card_Base GetCardByMatchId(int cardMatchId)
+    {
+        Debug.Log("CardManager::GetCardByMatchId");
+
+        if (_cardsByMatchId.ContainsKey(cardMatchId) == false)
         {
-            Debug.Log("CardManager::GetCardByMatchId");
-
-            if (_cardsByMatchId.ContainsKey(cardMatchId) == false)
-            {
-                Debug.Log($"Server has no Card_Base with Match ID: {cardMatchId}.");
-                return new Card_Base();
-            }
-
-            return _cardsByMatchId[cardMatchId];
+            Debug.Log($"Server has no Card_Base with Match ID: {cardMatchId}.");
+            return new Card_Base();
         }
 
-        public void GenericUpdateCard(Card_Base card)
+        return _cardsByMatchId[cardMatchId];
+    }
+
+    public void GenericUpdateCard(Card_Base card)
+    {
+        Debug.Log("CardManager::GenericUpdateCard");
+
+        if (_cardsByMatchId.ContainsKey(card.MatchID) == false)
         {
-            Debug.Log("CardManager::GenericUpdateCard");
-
-            if (_cardsByMatchId.ContainsKey(card.MatchID) == false)
-            {
-                Debug.Log($"Server has no Card_Base with Match ID: {card.MatchID}.");
-                return;
-            }
-
-            _cardsByMatchId[card.MatchID] = card;
-            RulesEngine.Instance.BroadcastCardGenericUpdateEvent(card);
+            Debug.Log($"Server has no Card_Base with Match ID: {card.MatchID}.");
+            return;
         }
+
+        _cardsByMatchId[card.MatchID] = card;
+        RulesEngine.Instance.BroadcastCardGenericUpdateEvent(card);
     }
 }

@@ -1,4 +1,3 @@
-using ChronoCCG.Game;
 using System;
 using System.Collections;
 using Unity.Netcode;
@@ -13,6 +12,7 @@ public class RulesEngine : NetworkBehaviour
     public static RulesEngine Instance { get; private set; }
 
     private GameStateManager _gameStateManager;
+    private GameZoneManager _gameZoneManager;
     private CardManager _cardManager;
 
     public event Action TestAction;
@@ -27,6 +27,10 @@ public class RulesEngine : NetworkBehaviour
     public GameStateManager GetGameStateManager()
     {
         return _gameStateManager;
+    }
+    public GameZoneManager GetGameZoneManager()
+    {
+        return _gameZoneManager;
     }
     public CardManager GetCardManager()
     {

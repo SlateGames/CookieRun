@@ -78,4 +78,29 @@ public class GameState_Battle : GameState_Base
     {
         return _subPhase;
     }
+
+    public void DealCombatDamageToCookie(int sourceCardMatchId, int targetCardMatchId, int damageAmount)
+    {
+        Debug.Log("GameStateManager::DealCombatDamageToCookie");
+
+        if (damageAmount <= 0)
+        {
+            Debug.Log($"Cannot deal {damageAmount} damage");
+            return;
+        }
+
+        Card_Cookie targetCard = (Card_Cookie)RulesEngine.Instance.GetCardManager().GetCardByMatchId(targetCardMatchId);
+        if (targetCard == null)
+        {
+            Debug.LogError("No card with Match ID " + targetCardMatchId + " exists.");
+            return;
+        }
+        for (int i = 0; i < damageAmount; i++)
+        {
+            //TODO: Flip the card and stuff
+            int cardToFlip = targetCard.TakeDamage(1);
+        }
+
+        RulesEngine.Instance.GetCardManager().GenericUpdateCard(targetCard);
+    }
 }
