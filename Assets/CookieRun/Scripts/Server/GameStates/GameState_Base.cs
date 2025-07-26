@@ -10,12 +10,12 @@ public abstract class GameState_Base
 
     public virtual void Enter()
     {
-        RulesEngine.Instance.BroadcastPlayerPlayerEnterGamePhaseEvent(_gamePhase);
+        RulesEngine.Instance.BroadcastPlayerPlayerEnterGamePhaseEvent(RulesEngine.Instance.GetGameStateManager().GetActivePlayerId(), _gamePhase);
     }
 
     public virtual void Exit()
     {
-        RulesEngine.Instance.BroadcastPlayerPlayerExitGamePhaseEvent(_gamePhase);
+        RulesEngine.Instance.BroadcastPlayerPlayerExitGamePhaseEvent(RulesEngine.Instance.GetGameStateManager().GetActivePlayerId(), _gamePhase);
     }
     
     public virtual GamePhase GetPhase()
