@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,8 +7,7 @@ using UnityEngine.UI;
 //TODO: Actually, this should not be a state machine, but we should have more than one class that subs to the events in CSB
 public class ClientUIController : MonoBehaviour
 {
-    //TODO: Make private
-    public ulong _ownerClientId;
+    private ulong _ownerClientId;
     //TODO: Remove this var
     private ClientServerBridge _clientServerBridge;
 
@@ -32,19 +32,52 @@ public class ClientUIController : MonoBehaviour
         Debug.Log("ClientUIController::SubscribeToClientServerBridgeEvents");
 
         _clientServerBridge.TestAction += ClientServerBridge_TestAction;
-        _clientServerBridge.EnterGamePhase += ClientServerBridge_EnterGamePhase;
-        _clientServerBridge.ExitGamePhase += ClientServerBridge_ExitGamePhase;
+        _clientServerBridge.PlayerEnterGamePhase += ClientServerBridge_PlayerEnterGamePhase;
+        _clientServerBridge.PlayerExitGamePhase += ClientServerBridge_PlayerExitGamePhase;
     }
 
-    private void ClientServerBridge_EnterGamePhase(GamePhase gamePhase)
+    private void ClientServerBridge_PlayerEnterGamePhase(ulong playerId, GamePhase gamePhase)
     {
-        Debug.Log("ClientUIController::ClientServerBridge_EnterGamePhase");
+        Debug.Log("ClientUIController::ClientServerBridge_PlayerEnterGamePhase");
         DebugCurrentPhase.SetText(gamePhase.ToString());
+
+        switch (gamePhase)
+        {
+            //Setup and Battle have relevant sub-phases, but those will fire their own events for the player to make decisions on
+            case GamePhase.Setup:
+            case GamePhase.Battle:
+            case GamePhase.Active:
+            case GamePhase.Draw:
+            case GamePhase.End:
+                break;
+            case GamePhase.Support:
+                if (playerId == _ownerClientId)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
+                break;
+            case GamePhase.Main:
+                if (playerId == _ownerClientId)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
+                break;
+            default:
+                throw new InvalidOperationException($"Unknown GamePhase: {gamePhase}");
+        }
     }
 
-    private void ClientServerBridge_ExitGamePhase(GamePhase gamePhase)
+    private void ClientServerBridge_PlayerExitGamePhase(ulong playerId, GamePhase gamePhase)
     {
-        Debug.Log("ClientUIController::ClientServerBridge_ExitGamePhase");
+        Debug.Log("ClientUIController::ClientServerBridge_PlayerExitGamePhase");
         DebugPreviousPhase.SetText(gamePhase.ToString());
     }
 

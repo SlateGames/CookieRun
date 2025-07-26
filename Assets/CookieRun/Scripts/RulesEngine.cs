@@ -24,8 +24,8 @@ public class RulesEngine : NetworkBehaviour
     public event Action GameStartEvent;
     public event Action<Card_Base> CardGenericUpdateEvent;
     public event Action<ulong> NewActivePlayerEvent;
-    public event Action<GamePhase> EnterGamePhaseEvent;
-    public event Action<GamePhase> ExitGamePhaseEvent;
+    public event Action<ulong, GamePhase> PlayerPlayerEnterGamePhaseEvent;
+    public event Action<ulong, GamePhase> PlayerPlayerExitGamePhaseEvent;
 
     public GameStateManager GetGameStateManager()
     {
@@ -99,16 +99,16 @@ public class RulesEngine : NetworkBehaviour
         CardGenericUpdateEvent?.Invoke(card);
     }
 
-    public void BroadcastEnterGamePhaseEvent(GamePhase phase)
+    public void BroadcastPlayerPlayerEnterGamePhaseEvent(ulong playerId, GamePhase phase)
     {
-        Debug.Log("RulesEngine::BroadcastEnterGamePhaseEvent");
-        EnterGamePhaseEvent?.Invoke(phase);
+        Debug.Log("RulesEngine::BroadcastPlayerPlayerEnterGamePhaseEvent");
+        PlayerPlayerEnterGamePhaseEvent?.Invoke(playerId, phase);
     }
     
-    public void BroadcastExitGamePhaseEvent(GamePhase phase)
+    public void BroadcastPlayerPlayerExitGamePhaseEvent(ulong playerId, GamePhase phase)
     {
-        Debug.Log("RulesEngine::BroadcastExitGamePhaseEvent");
-        ExitGamePhaseEvent?.Invoke(phase);
+        Debug.Log("RulesEngine::BroadcastPlayerPlayerExitGamePhaseEvent");
+        PlayerPlayerExitGamePhaseEvent?.Invoke(playerId, phase);
     }
 
     public void BroadcastCardMovedFromZoneToZone(ulong playerId, int cardMatchId, GameZoneType sourceZone, GameZoneType destinationZone)

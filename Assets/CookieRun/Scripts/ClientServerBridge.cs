@@ -9,8 +9,8 @@ using System.Linq;
 public class ClientServerBridge : NetworkBehaviour
 {
     public event Action TestAction;
-    public event Action<GamePhase> EnterGamePhase;
-    public event Action<GamePhase> ExitGamePhase;
+    public event Action<ulong, GamePhase> PlayerEnterGamePhase;
+    public event Action<ulong, GamePhase> PlayerExitGamePhase;
 
     public override void OnNetworkSpawn()
     {
@@ -49,18 +49,19 @@ public class ClientServerBridge : NetworkBehaviour
 
         RulesEngine.Instance.TestAction += RulesEngine_TestAction;
 
-        RulesEngine.Instance.EnterGamePhaseEvent += RulesEngine_EnterGamePhaseEvent;
-        RulesEngine.Instance.ExitGamePhaseEvent += RulesEngine_ExitGamePhaseEvent;
+        RulesEngine.Instance.PlayerPlayerEnterGamePhaseEvent += RulesEngine_PlayerPlayerEnterGamePhaseEvent;
+        RulesEngine.Instance.PlayerPlayerExitGamePhaseEvent += RulesEngine_PlayerPlayerExitGamePhaseEvent;
     }
 
-    private void RulesEngine_EnterGamePhaseEvent(GamePhase gamePhase)
+    private void RulesEngine_PlayerPlayerEnterGamePhaseEvent(ulong playerId, GamePhase gamePhase)
     {
-        Debug.Log("ClientServerBridge::RulesEngine_EnterGamePhaseEvent");
+        Debug.Log("ClientServerBridge::RulesEngine_PlayerPlayerEnterGamePhaseEvent");
+        PlayerEnterGamePhaseClientRpc(playerId, gamePhase);
     }
     [ClientRpc]
-    private void EnterGamePhaseClientRpc(GamePhase gamePhase)
+    private void PlayerEnterGamePhaseClientRpc(ulong playerId, GamePhase gamePhase)
     {
-        Debug.Log("ClientServerBridge::EnterGamePhaseClientRpc");
+        Debug.Log("ClientServerBridge::PlayerEnterGamePhaseClientRpc");
 
         if (IsOwner == false)
         {
@@ -68,17 +69,18 @@ public class ClientServerBridge : NetworkBehaviour
             return;
         }
 
-        EnterGamePhase?.Invoke(gamePhase);
+        PlayerEnterGamePhase?.Invoke(playerId, gamePhase);
     }
 
-    private void RulesEngine_ExitGamePhaseEvent(GamePhase gamePhase)
+    private void RulesEngine_PlayerPlayerExitGamePhaseEvent(ulong playerId, GamePhase gamePhase)
     {
-        Debug.Log("ClientServerBridge::RulesEngine_ExitGamePhaseEvent");
+        Debug.Log("ClientServerBridge::RulesEngine_PlayerPlayerExitGamePhaseEvent");
+        PlayerExitGamePhaseClientRpc(playerId, gamePhase);
     }
     [ClientRpc]
-    private void ExitGamePhaseClientRpc(GamePhase gamePhase)
+    private void PlayerExitGamePhaseClientRpc(ulong playerId, GamePhase gamePhase)
     {
-        Debug.Log("ClientServerBridge::ExitGamePhaseClientRpc");
+        Debug.Log("ClientServerBridge::PlayerExitGamePhaseClientRpc");
 
         if (IsOwner == false)
         {
@@ -86,7 +88,7 @@ public class ClientServerBridge : NetworkBehaviour
             return;
         }
 
-        ExitGamePhase?.Invoke(gamePhase);
+        PlayerExitGamePhase?.Invoke(playerId, gamePhase);
     }
 
     //TODO: Revert the deck back to a deck id once the database is up
