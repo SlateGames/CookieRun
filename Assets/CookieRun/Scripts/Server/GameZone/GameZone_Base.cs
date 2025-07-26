@@ -2,18 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameZoneType
-{
-    Battlefield,
-    Break,
-    Deck,
-    Discard,
-    Hand,
-    Stage,
-    Support,
-    Invalid
-}
-
 public class GameZone_Base
 {
     //TODO: How can I remove these?
