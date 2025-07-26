@@ -267,6 +267,7 @@ public class ClientServerBridge : NetworkBehaviour
     {
         Debug.Log("ClientServerBridge::RegisterPlayerServerRpc");
         RulesEngine.Instance.GetGameStateManager().RegisterPlayer(playerId, deck);
+        RulesEngine.Instance.GetGameStateManager().RegisterBotPlayer(playerId, deck);
     }
 
     private void RulesEngine_TestAction()

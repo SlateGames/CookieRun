@@ -128,21 +128,27 @@ public class MainMenuController : MenuControllerBase
         BeginMatchmaking();
     }
 
-    private async void BeginMatchmaking()
+    private void BeginMatchmaking()
     {
         Debug.Log("GameModeSelectController::BeginMatchmaking");
 
         GameInfo gameInfo = new GameInfo();
-        gameInfo.gameQueue = GameQueue.Competitive;
+        gameInfo.gameQueue = GameQueue.Singleplayer;
 
         int elo = 1000; //await DatabaseManager.Instance.UserManager.GetPlayerEloAsync(AuthenticationManager.Instance.UserFirebaseID);
         
         string username = AuthenticationService.Instance.PlayerId; //await AuthenticationManager.Instance.GetPlayerNameAsync(true);
         UserData TournamentUserData = new UserData(username, AuthenticationService.Instance.PlayerId, 0, elo, gameInfo);
 
-        ClientStorageManager.Instance.ConnectionDataStorageManager.SaveGameQueue(GameQueue.Competitive);
+        ClientStorageManager.Instance.ConnectionDataStorageManager.SaveGameQueue(gameInfo.gameQueue);
 
         TournamentManager.Instance.JoinTournamentQueue(TournamentUserData);
+    }
+
+    private void CancelMatchmaking()
+    {
+        Debug.Log("MenuDisplayController::CancelMatchmaking");
+        TournamentManager.Instance.LeaveMatchmakingQueue();
     }
 
     public void ShowDeckEditorOverlay()

@@ -47,13 +47,12 @@ public class ConnectionDataStorageManager
 
         try
         {
-            if (!IsValidIP(ip))
+            if (IsValidIP(ip) == false)
             {
                 Debug.LogError($"Invalid IP address format: {ip}");
                 return;
             }
-
-            if (!IsValidPort(port))
+            if (IsValidPort(port) == false)
             {
                 Debug.LogError($"Invalid port number: {port}. Must be between {MIN_PORT} and {MAX_PORT}");
                 return;

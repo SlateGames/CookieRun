@@ -30,7 +30,6 @@ public class ClientStorageManager
             {
                 if (_instance == null)
                 {
-                    Debug.Log("_instance is null. Stack trace:" + new System.Diagnostics.StackTrace(true).ToString());
                     _instance = new ClientStorageManager();
                 }
                 return _instance;

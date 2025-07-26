@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -77,6 +79,12 @@ public class GameStateManager
         }
 
         return registrationResult;
+    }
+
+    public void RegisterBotPlayer(ulong playerId, Deck deck)
+    {
+        Debug.Log("GameStateManager::RegisterBotPlayer");
+        RegisterPlayer(RulesEngine.INVALID_PLAYER_ID, deck);
     }
 
     public bool ConfigurePlayer(ulong playerId)

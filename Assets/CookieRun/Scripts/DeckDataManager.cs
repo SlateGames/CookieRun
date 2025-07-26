@@ -53,7 +53,7 @@ public class DeckDataManager
             return false;
         }
 
-        //TODO: Check for Flip count and qunatities
+        //TODO: Check for Flip count and quantities
 
         if (deck.Cards.Count != 60)
         {

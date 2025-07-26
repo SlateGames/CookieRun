@@ -51,8 +51,8 @@ public class GameSceneStartupManager : MonoBehaviour
 
             if (NetworkManager.Singleton.IsServer)
             {
-                Debug.Log("[Server] Loading DedicatedServerScene...");
-                yield return SceneManager.LoadSceneAsync("DedicatedServerScene", LoadSceneMode.Additive);
+                Debug.Log("[Server] Loading DedicatedServer...");
+                yield return SceneManager.LoadSceneAsync("DedicatedServer", LoadSceneMode.Additive);
             }
         }
         else
