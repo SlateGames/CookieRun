@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -36,11 +33,14 @@ public class GameState_Setup : GameState_Base
 
     public override void PassPriority(ulong playerId)
     {
+        Debug.Log("GameState_Setup::PassPriority");
         Debug.LogError("Cannot pass priority during setup phase");
     }
 
     public void AdvanceSetupPhase()
     {
+        Debug.Log("GameState_Setup::AdvanceSetupPhase");
+
         switch (_subPhase)
         {
             case SetupPhase.GamePreparation:
@@ -66,7 +66,7 @@ public class GameState_Setup : GameState_Base
 
     private async Task MonitorDeckRegistration()
     {
-        Debug.Log("GameStateManager::MonitorDeckRegistration");
+        Debug.Log("GameState_Setup::MonitorDeckRegistration");
 
         while (true)
         {
@@ -84,7 +84,7 @@ public class GameState_Setup : GameState_Base
 
     public void StartMulligans()
     {
-        Debug.Log("GameStateManager::StartMulligans");
+        Debug.Log("GameState_Setup::StartMulligans");
 
         //TODO: Need to setup auto mulligans for after the player has made their choice. Also set it up so that they are forced to mulligan if they have no cookies the first time. 
         ulong player1Id = RulesEngine.Instance.GetGameStateManager().Player1Id;
@@ -102,7 +102,7 @@ public class GameState_Setup : GameState_Base
 
     public void PlayerRefusesMulligan(ulong playerId)
     {
-        Debug.Log("GameStateManager::PlayerRefusesMulligan");
+        Debug.Log("GameState_Setup::PlayerRefusesMulligan");
 
         _postMulliganPlayerCount++;
         if (_postMulliganPlayerCount >= 2)
@@ -113,7 +113,7 @@ public class GameState_Setup : GameState_Base
 
     public void PlayerRequestsMulligan(ulong playerId)
     {
-        Debug.Log("GameStateManager::PlayerRequestsMulligan");
+        Debug.Log("GameState_Setup::PlayerRequestsMulligan");
 
         RulesEngine.Instance.GetGameZoneManager().MulliganCardsForPlayer(playerId);
 
@@ -126,7 +126,7 @@ public class GameState_Setup : GameState_Base
 
     public void EndMulligan()
     {
-        Debug.Log("GameStateManager::EndMulligan");
+        Debug.Log("GameState_Setup::EndMulligan");
 
         RulesEngine.Instance.BroadcastMulligansEndEvent();
         StartGame();
@@ -134,13 +134,13 @@ public class GameState_Setup : GameState_Base
 
     public void StartGame()
     {
-        Debug.Log("GameStateManager::StartGame");
+        Debug.Log("GameState_Setup::StartGame");
         RulesEngine.Instance.BroadcastGameStartEvent();
     }
 
     private async void RegisterMatch()
     {
-        Debug.Log("GameStateManager::RegisterMatch");
+        Debug.Log("GameState_Setup::RegisterMatch");
         //TODO: Register on the database    
     }
 }

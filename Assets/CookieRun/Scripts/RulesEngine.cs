@@ -6,8 +6,9 @@ using UnityEngine;
 public class RulesEngine : NetworkBehaviour
 {
     public const int GAME_ACTION = 1234567890;
-    public const int INVALID_CARD_ID = 99999;
     public const int INVALID_PLAYER_ID = 88888;
+    public const string INVALID_CARD_ID = "INVALID CARD ID";
+    public const int INVALID_CARD_MATCH_ID = 99999;
 
     public static RulesEngine Instance { get; private set; }
 
@@ -18,11 +19,10 @@ public class RulesEngine : NetworkBehaviour
     public event Action TestAction;
     public event Action<DeckDataPayload> DeckRegisteredForPlayerEvent;
     public event Action<ulong> DeckShuffledEvent;
-    public event Action<ulong, int, GameZoneType, GameZoneType> CardChangeZoneEvent;
+    public event Action<ulong, string, int, GameZoneType, GameZoneType> CardChangeZoneEvent;
     public event Action MulligansStartEvent;
     public event Action MulligansEndEvent;
     public event Action GameStartEvent;
-    public event Action<Card_Base> CardGenericUpdateEvent;
     public event Action<ulong> NewActivePlayerEvent;
     public event Action<ulong, GamePhase> PlayerPlayerEnterGamePhaseEvent;
     public event Action<ulong, GamePhase> PlayerPlayerExitGamePhaseEvent;
@@ -70,6 +70,10 @@ public class RulesEngine : NetworkBehaviour
         // Here is where we instantiate all the server classes
         Debug.Log("RulesEngine: Instantiating GameStateManager.");
         _gameStateManager = new GameStateManager();
+        _gameStateManager.Initialize();
+
+        Debug.Log("RulesEngine: Instantiating GameZoneManager.");
+        _gameZoneManager = new GameZoneManager();
 
         Debug.Log("RulesEngine: Instantiating CardManager.");
         _cardManager = new CardManager();
@@ -93,12 +97,6 @@ public class RulesEngine : NetworkBehaviour
         DeckShuffledEvent?.Invoke(playerId);
     }
 
-    public void BroadcastCardGenericUpdateEvent(Card_Base card)
-    {
-        Debug.Log("RulesEngine::BroadcastCardGenericUpdateEvent");
-        CardGenericUpdateEvent?.Invoke(card);
-    }
-
     public void BroadcastPlayerPlayerEnterGamePhaseEvent(ulong playerId, GamePhase phase)
     {
         Debug.Log("RulesEngine::BroadcastPlayerPlayerEnterGamePhaseEvent");
@@ -111,10 +109,10 @@ public class RulesEngine : NetworkBehaviour
         PlayerPlayerExitGamePhaseEvent?.Invoke(playerId, phase);
     }
 
-    public void BroadcastCardMovedFromZoneToZone(ulong playerId, int cardMatchId, GameZoneType sourceZone, GameZoneType destinationZone)
+    public void BroadcastCardMovedFromZoneToZone(ulong playerId, string cardId, int cardMatchId, GameZoneType sourceZone, GameZoneType destinationZone)
     {
         Debug.Log("RulesEngine::BroadcastCardEnterZone");
-        CardChangeZoneEvent?.Invoke(playerId, cardMatchId, sourceZone, destinationZone);
+        CardChangeZoneEvent?.Invoke(playerId, cardId, cardMatchId, sourceZone, destinationZone);
     }
 
     public void BroadcastMulligansStartEvent()

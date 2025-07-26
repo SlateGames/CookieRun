@@ -16,7 +16,7 @@ public class Card_Base : ScriptableObject
 
     public int MatchID;
 
-    public Card_Base() 
+    public void Awake() 
     { 
         //TODO: Set the data, populate the card visual
     }

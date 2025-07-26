@@ -24,6 +24,8 @@ public class GameState_Draw : GameState_Base
 
     public override void PassPriority(ulong playerId)
     {
+        Debug.Log("GameState_Draw::PassPriority");
+
         if (playerId != RulesEngine.Instance.GetGameStateManager().GetActivePlayerId())
         {
             Debug.LogError("Only the active player can pass priority");

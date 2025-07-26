@@ -49,11 +49,15 @@ public class GameStateManager
         Debug.Log("GameStateManager::GameStateManager");
 
         CurrentTurn = 0;
-
-
-        ChangeState(new GameState_Setup());
+        _activePlayerId = RulesEngine.INVALID_PLAYER_ID;
 
         //RulesEngine.Instance.PlayerDeathEvent += RulesEngine_PlayerDeathEvent;
+    }
+
+    public void Initialize()
+    {
+        Debug.Log("GameStateManager::Initialize");
+        ChangeState(new GameState_Setup());
     }
 
     public bool RegisterPlayer(ulong playerId, Deck deck)
@@ -154,6 +158,7 @@ public class GameStateManager
 
     public void PassPriority(ulong passingPlayerId)
     {
+        Debug.Log("GameStateManager::PassPriority");
         _currentState.PassPriority(passingPlayerId);
     }
 
@@ -193,10 +198,8 @@ public class GameStateManager
         for (int i = 0; i < damageAmount; i++)
         {
             //TODO: Flip the card and stuff
-            int cardToFlip = targetCard.TakeDamage(1);
+            int cardToFlip = targetCard.TakeDamage();
         }
-
-        RulesEngine.Instance.GetCardManager().GenericUpdateCard(targetCard);
     }
 
     public void HealCookie(int sourceCardMatchId, int targetCardMatchId, int healAmount)
@@ -217,12 +220,13 @@ public class GameStateManager
         }
 
         targetCard.Heal(healAmount);
-        RulesEngine.Instance.GetCardManager().GenericUpdateCard(targetCard);
     }
 
     public void ChangeState(GameState_Base newState)
     {
-        if(newState == null)
+        Debug.Log("GameStateManager::ChangeState");
+
+        if (newState == null)
         {
             Debug.LogError("New state is null");
             return;
@@ -232,6 +236,7 @@ public class GameStateManager
         {
             _currentState.Exit();
         }
+
         _currentState = newState;
         _currentState.Enter();
     }

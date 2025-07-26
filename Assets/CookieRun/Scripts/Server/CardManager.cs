@@ -1,13 +1,24 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
+using Unity.Netcode;
 using UnityEngine;
 
-public struct DeckDataPayload
+public struct DeckDataPayload : INetworkSerializable
 {
     public ulong PlayerId;
     public string DeckId;
     public Deck Deck;
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+        serializer.SerializeValue(ref PlayerId);
+        serializer.SerializeValue(ref DeckId);
+        serializer.SerializeValue(ref Deck);
+    }
 }
 
 public class CardManager
@@ -28,22 +39,39 @@ public class CardManager
     {
         Debug.Log("CardManager::CardManager");
 
-        InitializeCardCache();
-
         _mainThreadContext = SynchronizationContext.Current;
         _persistentDataPath = Application.persistentDataPath;
 
         _cardsByMatchId = new Dictionary<int, Card_Base>();
         _cardsByCardID = new Dictionary<string, Card_Base>();
+
+        InitializeCardCache();
     }
 
     public void InitializeCardCache()
     {
-        Card_Base[] allCards = Resources.LoadAll<Card_Base>("Cards");
+        List<Card_Base> allCards = LoadAllCardClasses();
         foreach (Card_Base card in allCards)
         {
             _cardsByCardID[card.CardId] = card;
         }
+    }
+
+    public List<Card_Base> LoadAllCardClasses()
+    {
+        var cardTypes = Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .Where(t => t.IsSubclassOf(typeof(Card_Base)) && !t.IsAbstract);
+
+        List<Card_Base> cards = new List<Card_Base>();
+
+        foreach (var type in cardTypes)
+        {
+            Card_Base cardInstance = (Card_Base)ScriptableObject.CreateInstance(type);
+            cards.Add(cardInstance);
+        }
+
+        return cards;
     }
 
     public void RegisterDeckForPlayer(ulong playerId, Deck deck)
@@ -154,23 +182,9 @@ public class CardManager
         if (_cardsByMatchId.ContainsKey(cardMatchId) == false)
         {
             Debug.Log($"Server has no Card_Base with Match ID: {cardMatchId}.");
-            return new Card_Base();
+            return null;
         }
 
         return _cardsByMatchId[cardMatchId];
-    }
-
-    public void GenericUpdateCard(Card_Base card)
-    {
-        Debug.Log("CardManager::GenericUpdateCard");
-
-        if (_cardsByMatchId.ContainsKey(card.MatchID) == false)
-        {
-            Debug.Log($"Server has no Card_Base with Match ID: {card.MatchID}.");
-            return;
-        }
-
-        _cardsByMatchId[card.MatchID] = card;
-        RulesEngine.Instance.BroadcastCardGenericUpdateEvent(card);
     }
 }

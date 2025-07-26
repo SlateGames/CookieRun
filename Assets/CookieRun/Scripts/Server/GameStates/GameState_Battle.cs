@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class GameState_Battle : GameState_Base
@@ -22,6 +18,8 @@ public class GameState_Battle : GameState_Base
 
     public override void PassPriority(ulong playerId)
     {
+        Debug.Log("GameState_Battle::PassPriority");
+
         if (playerId != RulesEngine.Instance.GetGameStateManager().GetActivePlayerId())
         {
             Debug.LogError("Only the active player can pass priority");
@@ -91,9 +89,7 @@ public class GameState_Battle : GameState_Base
         for (int i = 0; i < damageAmount; i++)
         {
             //TODO: Flip the card and stuff
-            int cardToFlip = targetCard.TakeDamage(1);
+            int cardToFlip = targetCard.TakeDamage();
         }
-
-        RulesEngine.Instance.GetCardManager().GenericUpdateCard(targetCard);
     }
 }

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,12 @@ public class GameZoneManager : MonoBehaviour
 {
     //TODO: Skip the dictionary/ies?
 
-    private Dictionary<ulong, Dictionary<GameZoneType, GameZone_Base>> GameZonesByTypeByPlayer;
+    private Dictionary<ulong, Dictionary<GameZoneType, GameZone_Base>> _gameZonesByTypeByPlayer;
+
+    public GameZoneManager()
+    {
+        _gameZonesByTypeByPlayer = new Dictionary<ulong, Dictionary<GameZoneType, GameZone_Base>>();
+    }
 
     public void RegisterPlayer(ulong playerId)
     {
@@ -33,9 +39,9 @@ public class GameZoneManager : MonoBehaviour
         Debug.Log("GameStateManager: Adding Support Zone.");
         GameZone_ForPlayer.Add(GameZoneType.Support, new GameZone_Support());
 
-        GameZonesByTypeByPlayer.Add(playerId, GameZone_ForPlayer);
+        _gameZonesByTypeByPlayer.Add(playerId, GameZone_ForPlayer);
 
-        foreach (var GameZone_ in GameZonesByTypeByPlayer[playerId])
+        foreach (var GameZone_ in _gameZonesByTypeByPlayer[playerId])
         {
             GameZone_.Value.OwningPlayerId = playerId;
         }
@@ -44,37 +50,37 @@ public class GameZoneManager : MonoBehaviour
     //TODO: Can this, DrawCards, and MulliganCardsForPlayer be moved to CardManager?
     public void ShuffleDeckForPlayer(ulong playerId)
     {
-        if (GameZonesByTypeByPlayer.ContainsKey(playerId) == false)
+        if (_gameZonesByTypeByPlayer.ContainsKey(playerId) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain an entry for {playerId}.");
             return;
         }
-        if (GameZonesByTypeByPlayer[playerId].ContainsKey(GameZoneType.Deck) == false)
+        if (_gameZonesByTypeByPlayer[playerId].ContainsKey(GameZoneType.Deck) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain a Deck zone for player {playerId}.");
             return;
         }
 
         Debug.Log($"Player {playerId}'s deck is being shuffled.");
-        ((GameZone_Deck)GameZonesByTypeByPlayer[playerId][GameZoneType.Deck]).Shuffle();
+        ((GameZone_Deck)_gameZonesByTypeByPlayer[playerId][GameZoneType.Deck]).Shuffle();
     }
 
     public void DrawCards(ulong playerId, int amountToDraw, int sourceCardMatchId)
     {
         Debug.Log("GameStateManager::DrawCards");
 
-        if (GameZonesByTypeByPlayer.ContainsKey(playerId) == false)
+        if (_gameZonesByTypeByPlayer.ContainsKey(playerId) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain an entry for {playerId}.");
             return;
         }
-        if (GameZonesByTypeByPlayer[playerId].ContainsKey(GameZoneType.Deck) == false)
+        if (_gameZonesByTypeByPlayer[playerId].ContainsKey(GameZoneType.Deck) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain a deck zone for player {playerId}.");
             return;
         }
 
-        GameZone_Deck deck = (GameZone_Deck)GameZonesByTypeByPlayer[playerId][GameZoneType.Deck];
+        GameZone_Deck deck = (GameZone_Deck)_gameZonesByTypeByPlayer[playerId][GameZoneType.Deck];
         List<int> drawnCards = new List<int>();
         for (int i = 0; i < amountToDraw; i++)
         {
@@ -82,7 +88,7 @@ public class GameZoneManager : MonoBehaviour
             Debug.Log($"GameStateManager: Top Card_Base Match ID: {topCardId}.");
 
             drawnCards.Add(topCardId);
-            if (topCardId == RulesEngine.INVALID_CARD_ID)
+            if (topCardId == RulesEngine.INVALID_CARD_MATCH_ID)
             {
                 //TODO: Shuffle discard into library
             }
@@ -107,7 +113,7 @@ public class GameZoneManager : MonoBehaviour
     {
         Debug.Log("GameStateManager::GetZoneCardIsPresentIn");
 
-        foreach (KeyValuePair<ulong, Dictionary<GameZoneType, GameZone_Base>> kvp in GameZonesByTypeByPlayer)
+        foreach (KeyValuePair<ulong, Dictionary<GameZoneType, GameZone_Base>> kvp in _gameZonesByTypeByPlayer)
         {
             Debug.Log($"Checking zones belonging to player {kvp.Key}.");
 
@@ -131,7 +137,7 @@ public class GameZoneManager : MonoBehaviour
     {
         Debug.Log("GameStateManager::GetControllerOfCardByMatchId");
 
-        foreach (KeyValuePair<ulong, Dictionary<GameZoneType, GameZone_Base>> kvp in GameZonesByTypeByPlayer)
+        foreach (KeyValuePair<ulong, Dictionary<GameZoneType, GameZone_Base>> kvp in _gameZonesByTypeByPlayer)
         {
             Debug.Log($"Checking zones belonging to player {kvp.Key}.");
 
@@ -155,7 +161,7 @@ public class GameZoneManager : MonoBehaviour
     {
         Debug.Log("GameStateManager::GetAllCardMatchIdsForPlayer");
 
-        if (GameZonesByTypeByPlayer.ContainsKey(playerId) == false)
+        if (_gameZonesByTypeByPlayer.ContainsKey(playerId) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain an entry for {playerId}.");
             return new List<int>();
@@ -163,7 +169,7 @@ public class GameZoneManager : MonoBehaviour
 
         List<int> allCookieIds = new List<int>();
 
-        foreach (KeyValuePair<GameZoneType, GameZone_Base> zone in GameZonesByTypeByPlayer[playerId])
+        foreach (KeyValuePair<GameZoneType, GameZone_Base> zone in _gameZonesByTypeByPlayer[playerId])
         {
             allCookieIds.AddRange(zone.Value.GetCards());
         }
@@ -175,36 +181,36 @@ public class GameZoneManager : MonoBehaviour
     {
         Debug.Log("GameStateManager::GetCardsInZone");
 
-        if (GameZonesByTypeByPlayer.ContainsKey(playerId) == false)
+        if (_gameZonesByTypeByPlayer.ContainsKey(playerId) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain an entry for {playerId}.");
             return new List<int>();
         }
-        if (GameZonesByTypeByPlayer[playerId].ContainsKey(zone) == false)
+        if (_gameZonesByTypeByPlayer[playerId].ContainsKey(zone) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain a {zone.ToString()} zone for player {playerId}.");
             return new List<int>();
         }
 
-        return GameZonesByTypeByPlayer[playerId][zone].GetCards();
+        return _gameZonesByTypeByPlayer[playerId][zone].GetCards();
     }
 
     public List<int> GetCookiesPlayerControls(ulong playerId)
     {
         Debug.Log("GameStateManager::GetCookiesPlayerControls");
 
-        if (GameZonesByTypeByPlayer.ContainsKey(playerId) == false)
+        if (_gameZonesByTypeByPlayer.ContainsKey(playerId) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain an entry for {playerId}.");
             return new List<int>();
         }
-        if (GameZonesByTypeByPlayer[playerId].ContainsKey(GameZoneType.Battlefield) == false)
+        if (_gameZonesByTypeByPlayer[playerId].ContainsKey(GameZoneType.Battlefield) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain a Battlefield zone for player {playerId}.");
             return new List<int>();
         }
 
-        return new List<int>(GameZonesByTypeByPlayer[playerId][GameZoneType.Battlefield].GetCards());
+        return new List<int>(_gameZonesByTypeByPlayer[playerId][GameZoneType.Battlefield].GetCards());
     }
 
     //TODO: Make this private. Remove the broadcast. Make a series of functions for each type of movement, each with their own broadcast. `MoveCardFromDeckToHand`, for example, will fire an event `CardMovedFromDeckToHand`.
@@ -213,48 +219,52 @@ public class GameZoneManager : MonoBehaviour
     {
         Debug.Log("GameStateManager::MoveCardFromZoneToZone");
 
-        if (cardMatchId == RulesEngine.INVALID_CARD_ID)
+        if (cardMatchId == RulesEngine.INVALID_CARD_MATCH_ID)
         {
             Debug.Log("cardMatchId is invalid");
             return;
         }
-        if (GameZonesByTypeByPlayer.ContainsKey(playerId) == false)
+        if (_gameZonesByTypeByPlayer.ContainsKey(playerId) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain an entry for {playerId}.");
             return;
         }
-        if (((sourceZone == GameZoneType.Invalid && RulesEngine.Instance.GetGameStateManager().GetCurrentPhase() == GamePhase.Setup) == false) && GameZonesByTypeByPlayer[playerId].ContainsKey(sourceZone) == false)
+        if (((sourceZone == GameZoneType.Invalid && RulesEngine.Instance.GetGameStateManager().GetCurrentPhase() == GamePhase.Setup) == false) && _gameZonesByTypeByPlayer[playerId].ContainsKey(sourceZone) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain a {sourceZone.ToString()} zone for player {playerId}.");
             return;
         }
-        if (GameZonesByTypeByPlayer[playerId].ContainsKey(destinationZone) == false)
+        if (_gameZonesByTypeByPlayer[playerId].ContainsKey(destinationZone) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain a {destinationZone.ToString()} zone for player {playerId}.");
             return;
         }
 
-        GameZonesByTypeByPlayer[playerId][sourceZone].RemoveCard(cardMatchId);
-        GameZonesByTypeByPlayer[playerId][destinationZone].AddCard(cardMatchId);
+        if(sourceZone != GameZoneType.Invalid)
+        {
+            _gameZonesByTypeByPlayer[playerId][sourceZone].RemoveCard(cardMatchId);
+        }
+        _gameZonesByTypeByPlayer[playerId][destinationZone].AddCard(cardMatchId);
 
-        RulesEngine.Instance.BroadcastCardMovedFromZoneToZone(playerId, cardMatchId, sourceZone, destinationZone);
+        Card_Base card = RulesEngine.Instance.GetCardManager().GetCardByMatchId(cardMatchId);
+        RulesEngine.Instance.BroadcastCardMovedFromZoneToZone(playerId, card.CardId, cardMatchId, sourceZone, destinationZone);
     }
 
     public bool CanAddCardToZone(ulong playerId, int cardMatchId, GameZoneType zone)
     {
         Debug.Log("GameStateManager::CanAddCardToZone");
 
-        if (GameZonesByTypeByPlayer.ContainsKey(playerId) == false)
+        if (_gameZonesByTypeByPlayer.ContainsKey(playerId) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain an entry for {playerId}.");
             return false;
         }
-        if (GameZonesByTypeByPlayer[playerId].ContainsKey(zone) == false)
+        if (_gameZonesByTypeByPlayer[playerId].ContainsKey(zone) == false)
         {
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain a {zone.ToString()} zone for player {playerId}.");
             return false;
         }
-        if (GameZonesByTypeByPlayer[playerId][zone].CanAddCardToZone(cardMatchId) == false)
+        if (_gameZonesByTypeByPlayer[playerId][zone].CanAddCardToZone(cardMatchId) == false)
         {
             Debug.Log($"GameStateManager: Unable to add {cardMatchId} to {zone.ToString()} zone for player {playerId}.");
             return false;

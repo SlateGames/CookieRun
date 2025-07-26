@@ -18,6 +18,9 @@ public class ClientUIController : MonoBehaviour
     [SerializeField] private Button _buttonSkipSupport;
     [SerializeField] private Button _buttonEndTurn;
 
+    [SerializeField] private TMP_Text _playerDeckCount;
+    [SerializeField] private TMP_Text _opponentDeckCount;
+
     public void Initialize(ulong ownerId, ClientServerBridge clientServerBridge)
     {
         Debug.Log("ClientUIController::Initialize");
@@ -40,8 +43,60 @@ public class ClientUIController : MonoBehaviour
         Debug.Log("ClientUIController::SubscribeToClientServerBridgeEvents");
 
         _clientServerBridge.TestAction += ClientServerBridge_TestAction;
+        _clientServerBridge.DeckRegisteredForPlayer += ClientServerBridge_DeckRegisteredForPlayer;
+        _clientServerBridge.DeckShuffled += ClientServerBridge_DeckShuffled;
+        _clientServerBridge.CardChangeZone += ClientServerBridge_CardChangeZone;
+        _clientServerBridge.MulligansStart += ClientServerBridge_MulligansStart;
+        _clientServerBridge.MulligansEnd += ClientServerBridge_MulligansEnd;
+        _clientServerBridge.GameStart += ClientServerBridge_GameStart;
+        _clientServerBridge.NewActivePlayer += ClientServerBridge_NewActivePlayer;
         _clientServerBridge.PlayerEnterGamePhase += ClientServerBridge_PlayerEnterGamePhase;
         _clientServerBridge.PlayerExitGamePhase += ClientServerBridge_PlayerExitGamePhase;
+    }
+
+    private void ClientServerBridge_DeckRegisteredForPlayer(DeckDataPayload deckData)
+    {
+        Debug.Log("ClientUIController::ClientServerBridge_DeckRegisteredForPlayer");
+
+        if(deckData.PlayerId == _ownerClientId)
+        {
+            _playerDeckCount.SetText(deckData.Deck.Cards.Count.ToString());
+        }
+        else
+        {
+            _opponentDeckCount.SetText(deckData.Deck.Cards.Count.ToString());
+        }
+    }
+
+    private void ClientServerBridge_DeckShuffled(ulong deckId)
+    {
+        Debug.Log("ClientUIController::ClientServerBridge_DeckShuffled");
+    }
+
+    private void ClientServerBridge_CardChangeZone(ulong playerId, string cardId, int cardMatchId, GameZoneType sourceZone, GameZoneType destinationZone)
+    {
+        Debug.Log("ClientUIController::ClientServerBridge_CardChangeZone");
+    }
+
+    private void ClientServerBridge_MulligansStart()
+    {
+        Debug.Log("ClientUIController::ClientServerBridge_MulligansStart");
+    }
+
+    private void ClientServerBridge_MulligansEnd()
+    {
+        Debug.Log("ClientUIController::ClientServerBridge_MulligansEnd");
+    }
+
+    private void ClientServerBridge_GameStart()
+    {
+        Debug.Log("ClientUIController::ClientServerBridge_GameStart");
+    }
+
+    private void ClientServerBridge_NewActivePlayer(ulong playerId)
+    {
+        Debug.Log("ClientUIController::ClientServerBridge_NewActivePlayer");
+        DebugPassPriority.interactable = playerId == _ownerClientId;
     }
 
     private void ClientServerBridge_PlayerEnterGamePhase(ulong playerId, GamePhase gamePhase)
@@ -52,11 +107,14 @@ public class ClientUIController : MonoBehaviour
         switch (gamePhase)
         {
             //Setup and Battle have relevant sub-phases, but those will fire their own events for the player to make decisions on
-            case GamePhase.Setup:
             case GamePhase.Battle:
             case GamePhase.Active:
             case GamePhase.Draw:
             case GamePhase.End:
+                break;
+            case GamePhase.Setup:
+                Deck deck = ClientStorageManager.Instance.DeckDataManager.GetDeck(ClientStorageManager.Instance.ChosenDeckID);
+                _clientServerBridge.RegisterPlayerServerRpc(_ownerClientId, deck);
                 break;
             case GamePhase.Support:
                 if (playerId == _ownerClientId)

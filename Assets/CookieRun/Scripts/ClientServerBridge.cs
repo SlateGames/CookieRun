@@ -3,6 +3,8 @@ using Unity.Netcode;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Services.Matchmaker.Models;
+using UnityEngine.XR;
 
 //TODO: Make a base class for this and the Spectator? Things like the OnNetworkSpawn and InitComps could be defined there 
 
@@ -11,6 +13,13 @@ public class ClientServerBridge : NetworkBehaviour
     public event Action TestAction;
     public event Action<ulong, GamePhase> PlayerEnterGamePhase;
     public event Action<ulong, GamePhase> PlayerExitGamePhase;
+    public event Action<DeckDataPayload> DeckRegisteredForPlayer;
+    public event Action<ulong> DeckShuffled;
+    public event Action<ulong, string, int, GameZoneType, GameZoneType> CardChangeZone;
+    public event Action MulligansStart;
+    public event Action MulligansEnd;
+    public event Action GameStart;
+    public event Action<ulong> NewActivePlayer;
 
     public override void OnNetworkSpawn()
     {
@@ -32,14 +41,15 @@ public class ClientServerBridge : NetworkBehaviour
             Debug.Log($"ClientServerBridge: Spawned for Player {OwnerClientId}");
 
             HandleSetupCompleted();
-
-            Deck deck = ClientStorageManager.Instance.DeckDataManager.GetDeck(ClientStorageManager.Instance.ChosenDeckID);
-            RegisterPlayerServerRpc(OwnerClientId, deck);
         }
         if (IsServer)
         {
             Debug.Log($"ClientServerBridge: Spawned for Player {OwnerClientId}");
             SubscribeToServerEvents();
+
+            //TODO: Figure out how to register and then enter setup phase
+            var currentPhase = RulesEngine.Instance.GetGameStateManager().GetCurrentPhase();
+            RulesEngine_PlayerPlayerEnterGamePhaseEvent(OwnerClientId, currentPhase);
         }
     }
 
@@ -49,8 +59,166 @@ public class ClientServerBridge : NetworkBehaviour
 
         RulesEngine.Instance.TestAction += RulesEngine_TestAction;
 
+        RulesEngine.Instance.DeckRegisteredForPlayerEvent += RulesEngine_DeckRegisteredForPlayerEvent;
+        RulesEngine.Instance.DeckShuffledEvent += RulesEngine_DeckShuffledEvent;
+        RulesEngine.Instance.CardChangeZoneEvent += RulesEngine_CardChangeZoneEvent;
+        RulesEngine.Instance.MulligansStartEvent += RulesEngine_MulligansStartEvent;
+        RulesEngine.Instance.MulligansEndEvent += RulesEngine_MulligansEndEvent;
+        RulesEngine.Instance.GameStartEvent += RulesEngine_GameStartEvent;
+        RulesEngine.Instance.NewActivePlayerEvent += RulesEngine_NewActivePlayerEvent;
         RulesEngine.Instance.PlayerPlayerEnterGamePhaseEvent += RulesEngine_PlayerPlayerEnterGamePhaseEvent;
         RulesEngine.Instance.PlayerPlayerExitGamePhaseEvent += RulesEngine_PlayerPlayerExitGamePhaseEvent;
+    }
+
+    private void RulesEngine_DeckRegisteredForPlayerEvent(DeckDataPayload deckData)
+    {
+        Debug.Log("ClientServerBridge::RulesEngine_DeckRegisteredForPlayerEvent");
+        DeckRegisteredForPlayerClientRpc(deckData);
+    }
+
+    [ClientRpc]
+    private void DeckRegisteredForPlayerClientRpc(DeckDataPayload deckData)
+    {
+        Debug.Log("ClientServerBridge::DeckRegisteredForPlayerClientRpc");
+
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        DeckRegisteredForPlayer?.Invoke(deckData);
+    }
+
+    private void RulesEngine_DeckShuffledEvent(ulong deckId)
+    {
+        Debug.Log("ClientServerBridge::RulesEngine_DeckShuffledEvent");
+        DeckShuffledClientRpc(deckId);
+    }
+
+    [ClientRpc]
+    private void DeckShuffledClientRpc(ulong deckId)
+    {
+        Debug.Log("ClientServerBridge::DeckShuffledClientRpc");
+
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        DeckShuffled?.Invoke(deckId);
+    }
+
+    private void RulesEngine_CardChangeZoneEvent(ulong playerId, string cardId, int cardMatchId, GameZoneType sourceZone, GameZoneType destinationZone)
+    {
+        Debug.Log("ClientServerBridge::RulesEngine_CardChangeZoneEvent");
+
+        if (playerId != OwnerClientId)
+        {
+            if (destinationZone == GameZoneType.Deck || sourceZone == GameZoneType.Hand)
+            {
+                Debug.Log($"Player has ID {OwnerClientId}, which does not match passed ID {playerId}. The {destinationZone.ToString()} Zone is private, setting the Card Match ID from {cardMatchId} and the Card ID from {cardId} to UNKNOWN_CARD.");
+                cardMatchId = RulesEngine.INVALID_CARD_MATCH_ID;
+                cardId = RulesEngine.INVALID_CARD_ID;
+            }
+        }
+
+        CardChangeZoneClientRpc(playerId, cardId, cardMatchId, sourceZone, destinationZone);
+    }
+
+    [ClientRpc]
+    private void CardChangeZoneClientRpc(ulong playerId, string cardId, int cardMatchId, GameZoneType sourceZone, GameZoneType destinationZone)
+    {
+        Debug.Log("ClientServerBridge::CardChangeZoneClientRpc");
+
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        CardChangeZone?.Invoke(playerId, cardId, cardMatchId, sourceZone, destinationZone);
+    }
+
+    private void RulesEngine_MulligansStartEvent()
+    {
+        Debug.Log("ClientServerBridge::RulesEngine_MulligansStartEvent");
+        MulligansStartClientRpc();
+    }
+
+    [ClientRpc]
+    private void MulligansStartClientRpc()
+    {
+        Debug.Log("ClientServerBridge::MulligansStartClientRpc");
+
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        MulligansStart?.Invoke();
+    }
+
+    private void RulesEngine_MulligansEndEvent()
+    {
+        Debug.Log("ClientServerBridge::RulesEngine_MulligansEndEvent");
+        MulligansEndClientRpc();
+    }
+
+    [ClientRpc]
+    private void MulligansEndClientRpc()
+    {
+        Debug.Log("ClientServerBridge::MulligansEndClientRpc");
+
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        MulligansEnd?.Invoke();
+    }
+
+    private void RulesEngine_GameStartEvent()
+    {
+        Debug.Log("ClientServerBridge::RulesEngine_GameStartEvent");
+        GameStartClientRpc();
+    }
+
+    [ClientRpc]
+    private void GameStartClientRpc()
+    {
+        Debug.Log("ClientServerBridge::GameStartClientRpc");
+
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        GameStart?.Invoke();
+    }
+
+    private void RulesEngine_NewActivePlayerEvent(ulong playerId)
+    {
+        Debug.Log("ClientServerBridge::RulesEngine_NewActivePlayerEvent");
+        NewActivePlayerClientRpc(playerId);
+    }
+
+    [ClientRpc]
+    private void NewActivePlayerClientRpc(ulong playerId)
+    {
+        Debug.Log("ClientServerBridge::NewActivePlayerClientRpc");
+
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        NewActivePlayer?.Invoke(playerId);
     }
 
     private void RulesEngine_PlayerPlayerEnterGamePhaseEvent(ulong playerId, GamePhase gamePhase)
@@ -58,6 +226,7 @@ public class ClientServerBridge : NetworkBehaviour
         Debug.Log("ClientServerBridge::RulesEngine_PlayerPlayerEnterGamePhaseEvent");
         PlayerEnterGamePhaseClientRpc(playerId, gamePhase);
     }
+
     [ClientRpc]
     private void PlayerEnterGamePhaseClientRpc(ulong playerId, GamePhase gamePhase)
     {
@@ -77,6 +246,7 @@ public class ClientServerBridge : NetworkBehaviour
         Debug.Log("ClientServerBridge::RulesEngine_PlayerPlayerExitGamePhaseEvent");
         PlayerExitGamePhaseClientRpc(playerId, gamePhase);
     }
+
     [ClientRpc]
     private void PlayerExitGamePhaseClientRpc(ulong playerId, GamePhase gamePhase)
     {
@@ -120,9 +290,9 @@ public class ClientServerBridge : NetworkBehaviour
     public void PassPriorityServerRpc(ulong passingPlayerId)
     {
         Debug.Log("ClientServerBridge::PassPriorityServerRpc");
-        if (IsOwner == false)
+        if (OwnerClientId != passingPlayerId)
         {
-            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            Debug.Log($"Player {OwnerClientId} does not own this object. Passing Player: {passingPlayerId}");
             return;
         }
 
@@ -132,45 +302,46 @@ public class ClientServerBridge : NetworkBehaviour
             return;
         }
 
+        Debug.Log($"Player {passingPlayerId} is allowed to pass prioirity");
         RulesEngine.Instance.GetGameStateManager().PassPriority(passingPlayerId);
     }
 
     [ServerRpc]
-    public void SkipSupportServerRpc(ulong skippingPlayer)
+    public void SkipSupportServerRpc(ulong skippingPlayerId)
     {
         Debug.Log("ClientServerBridge::SkipSupportServerRpc");
-        if (IsOwner == false)
+        if (OwnerClientId != skippingPlayerId)
         {
-            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            Debug.Log($"Player {OwnerClientId} does not own this object. Skipping Player: {skippingPlayerId}");
             return;
         }
 
-        if(RulesEngine.Instance.GetGameStateManager().GetActivePlayerId() != skippingPlayer)
+        if (RulesEngine.Instance.GetGameStateManager().GetActivePlayerId() != skippingPlayerId)
         {
-            Debug.Log($"Player {skippingPlayer} is not the active player");
+            Debug.Log($"Player {skippingPlayerId} is not the active player");
             return;
         }
 
-        RulesEngine.Instance.GetGameStateManager().SkipSupport(skippingPlayer);
+        RulesEngine.Instance.GetGameStateManager().SkipSupport(skippingPlayerId);
     }
 
     [ServerRpc]
-    public void EndTurnServerRpc(ulong passingPlayer)
+    public void EndTurnServerRpc(ulong passingPlayerId)
     {
         Debug.Log("ClientServerBridge::EndTurnServerRpc");
-        if (IsOwner == false)
+        if (OwnerClientId != passingPlayerId)
         {
-            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            Debug.Log($"Player {OwnerClientId} does not own this object. Passing Player: {passingPlayerId}");
             return;
         }
 
-        if(RulesEngine.Instance.GetGameStateManager().GetActivePlayerId() != passingPlayer)
+        if (RulesEngine.Instance.GetGameStateManager().GetActivePlayerId() != passingPlayerId)
         {
-            Debug.Log($"Player {passingPlayer} is not the active player");
+            Debug.Log($"Player {passingPlayerId} is not the active player");
             return;
         }
 
-        RulesEngine.Instance.GetGameStateManager().EndTurn(passingPlayer);
+        RulesEngine.Instance.GetGameStateManager().EndTurn(passingPlayerId);
     }
 
     private void HandleSetupCompleted()

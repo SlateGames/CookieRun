@@ -434,6 +434,7 @@ public class DeckEditorController : MenuControllerBase
 
             DeckCard updatedCard = currentDeck.Cards[existingCardIndex];
             updatedCard.Quantity = quantity;
+            updatedCard.DeckID = currentDeck.DeckID;
             currentDeck.Cards[existingCardIndex] = updatedCard;
         }
     }

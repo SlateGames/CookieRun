@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameState_Active : GameState_Base
@@ -18,6 +15,8 @@ public class GameState_Active : GameState_Base
 
     public override void PassPriority(ulong playerId)
     {
+        Debug.Log("GameState_Active::PassPriority");
+
         if (playerId != RulesEngine.Instance.GetGameStateManager().GetActivePlayerId())
         {
             Debug.LogError("Only the active player can pass priority");
