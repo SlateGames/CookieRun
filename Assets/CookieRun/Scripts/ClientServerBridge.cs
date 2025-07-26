@@ -135,6 +135,44 @@ public class ClientServerBridge : NetworkBehaviour
         RulesEngine.Instance.GetGameStateManager().PassPriority(passingPlayerId);
     }
 
+    [ServerRpc]
+    public void SkipSupportServerRpc(ulong skippingPlayer)
+    {
+        Debug.Log("ClientServerBridge::SkipSupportServerRpc");
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        if(RulesEngine.Instance.GetGameStateManager().GetActivePlayerId() != skippingPlayer)
+        {
+            Debug.Log($"Player {skippingPlayer} is not the active player");
+            return;
+        }
+
+        RulesEngine.Instance.GetGameStateManager().SkipSupport(skippingPlayer);
+    }
+
+    [ServerRpc]
+    public void EndTurnServerRpc(ulong passingPlayer)
+    {
+        Debug.Log("ClientServerBridge::EndTurnServerRpc");
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        if(RulesEngine.Instance.GetGameStateManager().GetActivePlayerId() != passingPlayer)
+        {
+            Debug.Log($"Player {passingPlayer} is not the active player");
+            return;
+        }
+
+        RulesEngine.Instance.GetGameStateManager().EndTurn(passingPlayer);
+    }
+
     private void HandleSetupCompleted()
     {
         Debug.Log("ClientServerBridge::HandleSetupCompleted");

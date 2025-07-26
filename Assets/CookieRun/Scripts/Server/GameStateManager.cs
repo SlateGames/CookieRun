@@ -134,14 +134,39 @@ public class GameStateManager
         //TODO: Update database
     }
 
+    //TODO: One of these needs to be renamed
     public void EndTurn()
     {
         _activePlayerId = _activePlayerId == Player1Id ? Player2Id : Player1Id;
     }
 
+    public void EndTurn(ulong passingPlayer)
+    {
+        GameState_Main mainState = (GameState_Main)_currentState;
+        if(mainState == null)
+        {
+            Debug.LogWarning($"Player {passingPlayer} is attempting to end the turn while in the {_currentState.GetPhase()}");
+            return;
+        }
+
+        PassPriority(passingPlayer);
+    }
+
     public void PassPriority(ulong passingPlayerId)
     {
         _currentState.PassPriority(passingPlayerId);
+    }
+
+    public void SkipSupport(ulong skippingPlayer)
+    {
+        GameState_Support supportState = (GameState_Support)_currentState;
+        if(supportState == null)
+        {
+            Debug.LogWarning($"Player {skippingPlayer} is attempting to skip Support while in the {_currentState.GetPhase()}");
+            return;
+        }
+
+        PassPriority(skippingPlayer);
     }
 
     public GamePhase GetCurrentPhase()

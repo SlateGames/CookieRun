@@ -15,6 +15,9 @@ public class ClientUIController : MonoBehaviour
     public TMP_Text DebugPreviousPhase;
     public Button DebugPassPriority;
 
+    [SerializeField] private Button _buttonSkipSupport;
+    [SerializeField] private Button _buttonEndTurn;
+
     public void Initialize(ulong ownerId, ClientServerBridge clientServerBridge)
     {
         Debug.Log("ClientUIController::Initialize");
@@ -24,7 +27,12 @@ public class ClientUIController : MonoBehaviour
 
         SubscribeToClientServerBridgeEvents();
 
+        _buttonSkipSupport.gameObject.SetActive(false);
+        _buttonEndTurn.gameObject.SetActive(false);
+
         DebugPassPriority.onClick.AddListener(PassPriority);
+        _buttonSkipSupport.onClick.AddListener(SkipSupport);
+        _buttonEndTurn.onClick.AddListener(EndTurn);
     }
 
     private void SubscribeToClientServerBridgeEvents()
@@ -53,21 +61,21 @@ public class ClientUIController : MonoBehaviour
             case GamePhase.Support:
                 if (playerId == _ownerClientId)
                 {
-                    
+                    _buttonSkipSupport.gameObject.SetActive(true);
                 }
                 else
                 {
-                    
+                    _buttonSkipSupport.gameObject.SetActive(false);                    
                 }
                 break;
             case GamePhase.Main:
                 if (playerId == _ownerClientId)
                 {
-                    
+                    _buttonEndTurn.gameObject.SetActive(true);
                 }
                 else
                 {
-                    
+                    _buttonEndTurn.gameObject.SetActive(false);
                 }
                 break;
             default:
@@ -90,5 +98,17 @@ public class ClientUIController : MonoBehaviour
     {
         Debug.Log("ClientUIController::PassPriority");
         _clientServerBridge.PassPriorityServerRpc(_ownerClientId);
+    }
+
+    private void SkipSupport()
+    {
+        Debug.Log("ClientUIController::SkipSupport");
+        _clientServerBridge.SkipSupportServerRpc(_ownerClientId);
+    }
+
+    private void EndTurn()
+    {
+        Debug.Log("ClientUIController::EndTurn");
+        _clientServerBridge.EndTurnServerRpc(_ownerClientId);
     }
 }
