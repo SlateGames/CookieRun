@@ -8,6 +8,12 @@ public class GameState_Draw : GameState_Base
     public override void Enter()
     {
         _gamePhase = GamePhase.Draw;
+
+        if(RulesEngine.Instance.GetGameStateManager().CurrentTurn > 1)
+        {
+            RulesEngine.Instance.GetGameZoneManager().DrawCards(RulesEngine.Instance.GetGameStateManager().GetActivePlayerId(), 2, RulesEngine.GAME_ACTION);
+        }
+
         base.Enter();
     }
 
