@@ -132,6 +132,8 @@ public class MainMenuController : MenuControllerBase
     {
         Debug.Log("GameModeSelectController::BeginMatchmaking");
 
+        DisplayQueueTimer();
+
         GameInfo gameInfo = new GameInfo();
         gameInfo.gameQueue = GameQueue.Singleplayer;
 
@@ -145,10 +147,10 @@ public class MainMenuController : MenuControllerBase
         TournamentManager.Instance.JoinTournamentQueue(TournamentUserData);
     }
 
-    private void CancelMatchmaking()
+    public void DisplayQueueTimer()
     {
-        Debug.Log("MenuDisplayController::CancelMatchmaking");
-        TournamentManager.Instance.LeaveMatchmakingQueue();
+        Debug.Log("MenuDisplayController::DisplayQueueTimer");
+        SceneManager.LoadScene("QueueTimer", LoadSceneMode.Additive);
     }
 
     public void ShowDeckEditorOverlay()
