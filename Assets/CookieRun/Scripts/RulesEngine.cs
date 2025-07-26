@@ -23,6 +23,7 @@ public class RulesEngine : NetworkBehaviour
     public event Action MulligansEndEvent;
     public event Action GameStartEvent;
     public event Action<Card_Base> CardGenericUpdateEvent;
+    public event Action<ulong> NewActivePlayerEvent;
     public event Action<GamePhase> EnterGamePhaseEvent;
     public event Action<GamePhase> ExitGamePhaseEvent;
 

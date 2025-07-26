@@ -9,8 +9,9 @@ using System.Linq;
 public class ClientServerBridge : NetworkBehaviour
 {
     public event Action TestAction;
+    public event Action<GamePhase> EnterGamePhase;
+    public event Action<GamePhase> ExitGamePhase;
 
-    #region SETUP
     public override void OnNetworkSpawn()
     {
         Debug.Log("ClientServerBridge::OnNetworkSpawn");
@@ -47,6 +48,45 @@ public class ClientServerBridge : NetworkBehaviour
         Debug.Log("ClientServerBridge::SubscribeToServerEvents");
 
         RulesEngine.Instance.TestAction += RulesEngine_TestAction;
+
+        RulesEngine.Instance.EnterGamePhaseEvent += RulesEngine_EnterGamePhaseEvent;
+        RulesEngine.Instance.ExitGamePhaseEvent += RulesEngine_ExitGamePhaseEvent;
+    }
+
+    private void RulesEngine_EnterGamePhaseEvent(GamePhase gamePhase)
+    {
+        Debug.Log("ClientServerBridge::RulesEngine_EnterGamePhaseEvent");
+    }
+    [ClientRpc]
+    private void EnterGamePhaseClientRpc(GamePhase gamePhase)
+    {
+        Debug.Log("ClientServerBridge::EnterGamePhaseClientRpc");
+
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        EnterGamePhase?.Invoke(gamePhase);
+    }
+
+    private void RulesEngine_ExitGamePhaseEvent(GamePhase gamePhase)
+    {
+        Debug.Log("ClientServerBridge::RulesEngine_ExitGamePhaseEvent");
+    }
+    [ClientRpc]
+    private void ExitGamePhaseClientRpc(GamePhase gamePhase)
+    {
+        Debug.Log("ClientServerBridge::ExitGamePhaseClientRpc");
+
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        ExitGamePhase?.Invoke(gamePhase);
     }
 
     //TODO: Revert the deck back to a deck id once the database is up
@@ -74,10 +114,28 @@ public class ClientServerBridge : NetworkBehaviour
         TestAction?.Invoke();
     }
 
+    [ServerRpc]
+    public void PassPriorityServerRpc(ulong passingPlayerId)
+    {
+        Debug.Log("ClientServerBridge::PassPriorityServerRpc");
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        if(RulesEngine.Instance.GetGameStateManager().GetActivePlayerId() != passingPlayerId)
+        {
+            Debug.Log($"Player {passingPlayerId} is not the active player");
+            return;
+        }
+
+        RulesEngine.Instance.GetGameStateManager().PassPriority(passingPlayerId);
+    }
+
     private void HandleSetupCompleted()
     {
         Debug.Log("ClientServerBridge::HandleSetupCompleted");
         FindObjectOfType<ClientUIController>().Initialize(OwnerClientId, this);
     }
-    #endregion
 }

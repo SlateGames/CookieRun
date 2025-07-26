@@ -139,6 +139,11 @@ public class GameStateManager
         _activePlayerId = _activePlayerId == Player1Id ? Player2Id : Player1Id;
     }
 
+    public void PassPriority(ulong passingPlayerId)
+    {
+        _currentState.PassPriority(passingPlayerId);
+    }
+
     public GamePhase GetCurrentPhase()
     {
         return _currentState.GetPhase();
