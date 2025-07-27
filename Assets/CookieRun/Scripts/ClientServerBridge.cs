@@ -123,15 +123,8 @@ public class ClientServerBridge : NetworkBehaviour
                 cardId = CookieRunConstants.INVALID_CARD_ID;
             }
         }
-        else
-        {
-            if (destinationZone == GameZoneType.Deck)
-            {
-                Debug.Log($"The {destinationZone.ToString()} Zone is private, setting the Card Match ID from {cardMatchId} and the Card ID from {cardId} to UNKNOWN_CARD.");
-                cardMatchId = CookieRunConstants.INVALID_CARD_MATCH_ID;
-                cardId = CookieRunConstants.INVALID_CARD_ID;
-            }
-        }
+
+        //TODO: Hide cards in the player's deck
 
         CardChangeZoneClientRpc(playerId, cardId, cardMatchId, sourceZone, destinationZone);
     }

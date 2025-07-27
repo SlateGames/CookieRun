@@ -68,6 +68,7 @@ public class ClientCardManager : MonoBehaviour
 
     public GameObject GetCardInstance(string cardId)
     {
+        //TODO: Track cards after they get instantiated
         if (cardCache.TryGetValue(cardId, out Card_Base cardData))
         {
             GameObject cardInstance = Instantiate(cardPrefab);
