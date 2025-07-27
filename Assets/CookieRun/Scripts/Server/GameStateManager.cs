@@ -134,6 +134,34 @@ public class GameStateManager
         return playerId == Player1Id ? Player2Id : Player1Id;
     }
 
+    public void HandleMulliganRequestForPlayer(ulong playerId)
+    {
+        Debug.Log("GameStateManager::HandleMulliganRequestForPlayer");
+
+        GameState_Setup setupState = (GameState_Setup)_currentState;
+        if (setupState == null)
+        {
+            Debug.LogWarning($"Player {playerId} is attempting to end the turn while in the {GetCurrentPhase()} phase");
+            return;
+        }
+
+        setupState.PlayerRequestsMulligan(playerId);
+    }
+
+    public void HandleMulliganRefusalForPlayer(ulong playerId)
+    {
+        Debug.Log("GameStateManager::HandleMulliganRefusalForPlayer");
+
+        GameState_Setup setupState = (GameState_Setup)_currentState;
+        if (setupState == null)
+        {
+            Debug.LogWarning($"Player {playerId} is attempting to end the turn while in the {GetCurrentPhase()} phase");
+            return;
+        }
+
+        setupState.PlayerRefusesMulligan(playerId);
+    }
+
     private void RulesEngine_PlayerDeathEvent(ulong deadPlayerId)
     {
         Debug.Log("GameStateManager::RulesEngine_PlayerDeathEvent");

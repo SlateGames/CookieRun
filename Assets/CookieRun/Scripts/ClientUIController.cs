@@ -15,12 +15,16 @@ public class ClientUIController : MonoBehaviour
     public TMP_Text DebugPreviousPhase;
     public Button DebugPassPriority;
 
+    [Header("Player Controls")]
     [SerializeField] private Button _buttonSkipSupport;
     [SerializeField] private Button _buttonEndTurn;
+    [SerializeField] private Button _requestMulligan;
+    [SerializeField] private Button _refuseMulligan;
 
     [SerializeField] private TMP_Text _playerDeckCount;
     [SerializeField] private TMP_Text _opponentDeckCount;
 
+    [Header("Player Areas")]
     [SerializeField] private UIController_Break _playerBreakController;
     [SerializeField] private UIController_Stage _playerStageController;
     [SerializeField] private UIController_Battle _playerBattleController;
@@ -29,6 +33,7 @@ public class ClientUIController : MonoBehaviour
     [SerializeField] private UIController_Trash _playerTrashController;
     [SerializeField] private UIController_Hand _playerHandController;
 
+    [Header("Opponent Areas")]
     [SerializeField] private UIController_Break _opponentBreakController;
     [SerializeField] private UIController_Stage _opponentStageController;
     [SerializeField] private UIController_Battle _opponentBattleController;
@@ -116,15 +121,38 @@ public class ClientUIController : MonoBehaviour
         }
     }
 
-
     private void ClientServerBridge_MulligansStart()
     {
         Debug.Log("ClientUIController::ClientServerBridge_MulligansStart");
+
+        _requestMulligan.gameObject.SetActive(true);
+        _refuseMulligan.gameObject.SetActive(true);
+
+        _requestMulligan.onClick.AddListener(() => OnRequestMulliganClicked());
+        _refuseMulligan.onClick.AddListener(() => OnRefuseMulliganClicked());
     }
 
     private void ClientServerBridge_MulligansEnd()
     {
         Debug.Log("ClientUIController::ClientServerBridge_MulligansEnd");
+
+        _requestMulligan.gameObject.SetActive(false);
+        _refuseMulligan.gameObject.SetActive(false);
+
+        _requestMulligan.onClick.RemoveAllListeners();
+        _refuseMulligan.onClick.RemoveAllListeners();
+    }
+
+    private void OnRequestMulliganClicked()
+    {
+        Debug.Log("ClientUIController::OnRequestMulliganClicked");
+        _clientServerBridge.PlayerRequestsMulligansServerRpc(_ownerClientId);
+    }
+
+    private void OnRefuseMulliganClicked()
+    {
+        Debug.Log("ClientUIController::OnRefuseMulliganClicked");
+        _clientServerBridge.PlayerRefusesMulligansServerRpc(_ownerClientId);
     }
 
     private void ClientServerBridge_GameStart()

@@ -350,4 +350,32 @@ public class ClientServerBridge : NetworkBehaviour
         Debug.Log("ClientServerBridge::HandleSetupCompleted");
         FindObjectOfType<ClientUIController>().Initialize(OwnerClientId, this);
     }
+
+    [ServerRpc]
+    public void PlayerRequestsMulligansServerRpc(ulong playerId)
+    {
+        Debug.Log("ClientServerBridge::PlayerRequestsMulligansServerRpc");
+
+        if (OwnerClientId != playerId)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object. Player requesting a mulligan: {playerId}");
+            return;
+        }
+
+        RulesEngine.Instance.GetGameStateManager().HandleMulliganRequestForPlayer(playerId);
+    }
+
+    [ServerRpc]
+    public void PlayerRefusesMulligansServerRpc(ulong playerId)
+    {
+        Debug.Log("ClientServerBridge::PlayerRefusesMulligansServerRpc");
+
+        if (OwnerClientId != playerId)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object. Player requesting a mulligan: {playerId}");
+            return;
+        }
+
+        RulesEngine.Instance.GetGameStateManager().HandleMulliganRefusalForPlayer(playerId);
+    }
 }

@@ -10,17 +10,14 @@ public class CardVisualController : MonoBehaviour
     public void LoadImageFromName(string name)
     {
         string imageName = name.Replace(".png", "");
-        Texture2D texture = null; 
 
         if(name == CookieRunConstants.CARD_BACK_IMAGE_NAME)
         {
-            Resources.Load<Texture2D>("Cards/Images/" + imageName);
-        }
-        else
-        {
-            Resources.Load<Texture2D>("Cards/Images/BraveBeginnings/" + imageName);
+            ClearCard();
+            return;
         }
 
+        Texture2D texture = Resources.Load<Texture2D>("Cards/Images/BraveBeginnings/" + imageName);
         if (texture != null)
         {
             Sprite cardSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
