@@ -59,13 +59,15 @@ public class ClientUIController : MonoBehaviour
         DebugPassPriority.OnLeftClick.AddListener(PassPriority);
         _buttonSkipSupport.OnLeftClick.AddListener(SkipSupport);
         _buttonEndTurn.OnLeftClick.AddListener(EndTurn);
+
+        _playerHandController.HandCardClicked += PlayerHandController_HandCardClicked;
+        _playerSupportController.SupportCardClicked += PlayerSupportController_SupportCardClicked;
     }
 
     private void SubscribeToClientServerBridgeEvents()
     {
         Debug.Log("ClientUIController::SubscribeToClientServerBridgeEvents");
 
-        _clientServerBridge.TestAction += ClientServerBridge_TestAction;
         _clientServerBridge.DeckRegisteredForPlayer += ClientServerBridge_DeckRegisteredForPlayer;
         _clientServerBridge.DeckShuffled += ClientServerBridge_DeckShuffled;
         _clientServerBridge.CardChangeZone += ClientServerBridge_CardChangeZone;
@@ -232,11 +234,6 @@ public class ClientUIController : MonoBehaviour
         DebugPreviousPhase.SetText(gamePhase.ToString());
     }
 
-    private void ClientServerBridge_TestAction()
-    {
-        Debug.Log("Test Action triggered Client UI Controller function!");
-    }
-
     private void PassPriority()
     {
         Debug.Log("ClientUIController::PassPriority");
@@ -257,6 +254,8 @@ public class ClientUIController : MonoBehaviour
 
     private UIController_Base GetControllerByZone(GameZoneType zoneType, bool isPlayer)
     {
+        Debug.Log("ClientUIController::GetControllerByZone");
+
         if (isPlayer)
         {
             switch (zoneType)
@@ -301,5 +300,18 @@ public class ClientUIController : MonoBehaviour
                     return null;
             }
         }
+    }
+
+
+    private void PlayerHandController_HandCardClicked(int cardMatchId)
+    {
+        Debug.Log("ClientUIController::PlayerHandController_HandCardClicked");
+        _clientServerBridge.OnHandCardClickedServerRpc(_ownerClientId, cardMatchId);
+    }
+
+    private void PlayerSupportController_SupportCardClicked(int cardMatchId)
+    {
+        Debug.Log("ClientUIController::PlayerSupportController_SupportCardClicked");
+        _clientServerBridge.OnSupportCardClickedServerRpc(_ownerClientId, cardMatchId);
     }
 }

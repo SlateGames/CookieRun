@@ -11,7 +11,6 @@ public class RulesEngine : NetworkBehaviour
     private GameZoneManager _gameZoneManager;
     private CardManager _cardManager;
 
-    public event Action TestAction;
     public event Action<DeckDataPayload> DeckRegisteredForPlayerEvent;
     public event Action<ulong> DeckShuffledEvent;
     public event Action<ulong, string, int, GameZoneType, GameZoneType> CardChangeZoneEvent;
@@ -48,11 +47,6 @@ public class RulesEngine : NetworkBehaviour
         {
             Debug.Log("RulesEngine: Spawning server services");
             InitializeServerServices();
-
-            TestAction?.Invoke();
-
-            // Start coroutine to invoke TestAction after delay
-            StartCoroutine(FireTestActionAfterDelay());
         }
 
         Debug.Log($"RulesEngine spawned. IsOwner: {IsOwner}, IsClient: {IsClient}, IsServer: {IsServer}");
@@ -74,12 +68,6 @@ public class RulesEngine : NetworkBehaviour
         _cardManager = new CardManager();
     }
 
-    private IEnumerator FireTestActionAfterDelay()
-    {
-        yield return new WaitForSeconds(5f);
-        Debug.Log("RulesEngine::Firing TestAction after 5 seconds");
-        TestAction?.Invoke();
-    }
     public void BroadcastDeckRegisteredForPlayerEvent(DeckDataPayload deckRegistration)
     {
         Debug.Log("RulesEngine::BroadcastDeckRegisteredForPlayerEvent");

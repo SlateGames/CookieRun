@@ -8,11 +8,6 @@ public class CardController : MonoBehaviour
 
     [SerializeField] private CardVisualController visualController;
 
-    public int GetCardMatchId()
-    {
-        return cardMatchId;
-    }
-
     public void Initialize(Card_Base card)
     {
         if (card == null)
@@ -37,6 +32,11 @@ public class CardController : MonoBehaviour
                 visualController.LoadImageFromName(card.ImageName);
             }
         }
+    }
+
+    public int GetCardMatchId()
+    {
+        return cardMatchId;
     }
 
     public void UpdateCardMatchId(int newCardMatchId)

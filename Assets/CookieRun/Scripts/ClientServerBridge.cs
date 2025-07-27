@@ -10,7 +10,6 @@ using UnityEngine.XR;
 
 public class ClientServerBridge : NetworkBehaviour
 {
-    public event Action TestAction;
     public event Action<ulong, GamePhase> PlayerEnterGamePhase;
     public event Action<ulong, GamePhase> PlayerExitGamePhase;
     public event Action<DeckDataPayload> DeckRegisteredForPlayer;
@@ -56,8 +55,6 @@ public class ClientServerBridge : NetworkBehaviour
     private async void SubscribeToServerEvents()
     {
         Debug.Log("ClientServerBridge::SubscribeToServerEvents");
-
-        RulesEngine.Instance.TestAction += RulesEngine_TestAction;
 
         RulesEngine.Instance.DeckRegisteredForPlayerEvent += RulesEngine_DeckRegisteredForPlayerEvent;
         RulesEngine.Instance.DeckShuffledEvent += RulesEngine_DeckShuffledEvent;
@@ -272,23 +269,6 @@ public class ClientServerBridge : NetworkBehaviour
         RulesEngine.Instance.GetGameStateManager().RegisterBotPlayer(playerId, deck);
     }
 
-    private void RulesEngine_TestAction()
-    {
-        TestActionClientRpc();
-    }
-
-    [ClientRpc]
-    private void TestActionClientRpc()
-    {
-        if (IsOwner == false)
-        {
-            Debug.Log($"Player {OwnerClientId} does not own this object.");
-            return;
-        }
-
-        TestAction?.Invoke();
-    }
-
     [ServerRpc]
     public void PassPriorityServerRpc(ulong passingPlayerId)
     {
@@ -379,5 +359,33 @@ public class ClientServerBridge : NetworkBehaviour
         }
 
         RulesEngine.Instance.GetGameStateManager().HandleMulliganRefusalForPlayer(playerId);
+    }
+
+    [ServerRpc]
+    public void OnHandCardClickedServerRpc(ulong playerId, int cardMatchId)
+    {
+        Debug.Log("ClientServerBridge::OnHandCardClicked");
+
+        if (OwnerClientId != playerId)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object. Player clicking a Hand Card: {playerId}");
+            return;
+        }
+
+        
+    }
+
+    [ServerRpc]
+    public void OnSupportCardClickedServerRpc(ulong playerId, int cardMatchId)
+    {
+        Debug.Log("ClientServerBridge::OnSupportCardClicked");
+
+        if (OwnerClientId != playerId)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object. Player clicking a Support Card: {playerId}");
+            return;
+        }
+
+        
     }
 }
