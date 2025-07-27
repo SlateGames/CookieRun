@@ -6,6 +6,7 @@ public class UIController_Base : MonoBehaviour
 {
     [SerializeField] protected bool IsOpponent;
     [SerializeField] protected GameZoneType ZoneType;
+    [SerializeField] protected Vector3 Scale;
 
     protected List<GameObject> cards = new List<GameObject>();
 
@@ -13,6 +14,8 @@ public class UIController_Base : MonoBehaviour
     {
         if (card != null && !cards.Contains(card))
         {
+            card.transform.SetParent(transform, true);
+            card.transform.localScale = Scale;
             cards.Add(card);
         }
     }

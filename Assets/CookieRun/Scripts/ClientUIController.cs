@@ -21,6 +21,22 @@ public class ClientUIController : MonoBehaviour
     [SerializeField] private TMP_Text _playerDeckCount;
     [SerializeField] private TMP_Text _opponentDeckCount;
 
+    [SerializeField] private UIController_Break _playerBreakController;
+    [SerializeField] private UIController_Stage _playerStageController;
+    [SerializeField] private UIController_Battle _playerBattleController;
+    [SerializeField] private UIController_Deck _playerDeckController;
+    [SerializeField] private UIController_Support _playerSupportController;
+    [SerializeField] private UIController_Trash _playerTrashController;
+    [SerializeField] private UIController_Hand _playerHandController;
+
+    [SerializeField] private UIController_Break _opponentBreakController;
+    [SerializeField] private UIController_Stage _opponentStageController;
+    [SerializeField] private UIController_Battle _opponentBattleController;
+    [SerializeField] private UIController_Deck _opponentDeckController;
+    [SerializeField] private UIController_Support _opponentSupportController;
+    [SerializeField] private UIController_Trash _opponentTrashController;
+    [SerializeField] private UIController_Hand _opponentHandController;
+
     public void Initialize(ulong ownerId, ClientServerBridge clientServerBridge)
     {
         Debug.Log("ClientUIController::Initialize");
@@ -76,7 +92,30 @@ public class ClientUIController : MonoBehaviour
     private void ClientServerBridge_CardChangeZone(ulong playerId, string cardId, int cardMatchId, GameZoneType sourceZone, GameZoneType destinationZone)
     {
         Debug.Log("ClientUIController::ClientServerBridge_CardChangeZone");
+
+        UIController_Base sourceController = GetControllerByZone(sourceZone, playerId == _ownerClientId);
+        if (sourceController != null)
+        {
+            sourceController.RemoveCard(cardMatchId);
+        }
+
+        GameObject cardInstance = ClientCardManager.Instance.GetCardInstance(cardId);
+        if (cardInstance != null)
+        {
+            CardController cardController = cardInstance.GetComponent<CardController>();
+            if (cardController != null)
+            {
+                cardController.UpdateCardMatchId(cardMatchId);
+            }
+
+            UIController_Base destinationController = GetControllerByZone(destinationZone, playerId == _ownerClientId);
+            if (destinationController != null)
+            {
+                destinationController.AddCard(cardInstance);
+            }
+        }
     }
+
 
     private void ClientServerBridge_MulligansStart()
     {
@@ -168,5 +207,53 @@ public class ClientUIController : MonoBehaviour
     {
         Debug.Log("ClientUIController::EndTurn");
         _clientServerBridge.EndTurnServerRpc(_ownerClientId);
+    }
+
+    private UIController_Base GetControllerByZone(GameZoneType zoneType, bool isPlayer)
+    {
+        if (isPlayer)
+        {
+            switch (zoneType)
+            {
+                case GameZoneType.Break:
+                    return _playerBreakController;
+                case GameZoneType.Stage:
+                    return _playerStageController;
+                case GameZoneType.Battle:
+                    return _playerBattleController;
+                case GameZoneType.Deck:
+                    return _playerDeckController;
+                case GameZoneType.Support:
+                    return _playerSupportController;
+                case GameZoneType.Trash:
+                    return _playerTrashController;
+                case GameZoneType.Hand:
+                    return _playerHandController;
+                default:
+                    return null;
+            }
+        }
+        else
+        {
+            switch (zoneType)
+            {
+                case GameZoneType.Break:
+                    return _opponentBreakController;
+                case GameZoneType.Stage:
+                    return _opponentStageController;
+                case GameZoneType.Battle:
+                    return _opponentBattleController;
+                case GameZoneType.Deck:
+                    return _opponentDeckController;
+                case GameZoneType.Support:
+                    return _opponentSupportController;
+                case GameZoneType.Trash:
+                    return _opponentTrashController;
+                case GameZoneType.Hand:
+                    return _opponentHandController;
+                default:
+                    return null;
+            }
+        }
     }
 }

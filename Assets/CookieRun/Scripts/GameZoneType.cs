@@ -1,9 +1,9 @@
 public enum GameZoneType
 {
-    Battlefield,
+    Battle,
     Break,
     Deck,
-    Discard,
+    Trash,
     Hand,
     Stage,
     Support,

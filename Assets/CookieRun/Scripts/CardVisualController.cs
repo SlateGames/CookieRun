@@ -31,7 +31,7 @@ public class CardVisualController : MonoBehaviour
 
     public void ClearCard()
     {
-        Texture2D texture = Resources.Load<Texture2D>("Cards/card-back");
+        Texture2D texture = Resources.Load<Texture2D>("Cards/Images/card-back");
         if (texture != null)
         {
             Sprite cardSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
@@ -46,7 +46,7 @@ public class CardVisualController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Could not load card image from path: Cards/card-back");
+            Debug.LogError("Could not load card image from path: Cards/Images/card-back");
         }
     }
 }

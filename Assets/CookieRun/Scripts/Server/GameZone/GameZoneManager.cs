@@ -18,8 +18,8 @@ public class GameZoneManager : MonoBehaviour
     {
         Dictionary<GameZoneType, GameZone_Base> GameZone_ForPlayer = new Dictionary<GameZoneType, GameZone_Base>();
 
-        Debug.Log("GameStateManager: Adding Battlefield Zone.");
-        GameZone_ForPlayer.Add(GameZoneType.Battlefield, new GameZone_Battlefield());
+        Debug.Log("GameStateManager: Adding Battle Zone.");
+        GameZone_ForPlayer.Add(GameZoneType.Battle, new GameZone_Battle());
 
         Debug.Log("GameStateManager: Adding Break Zone.");
         GameZone_ForPlayer.Add(GameZoneType.Break, new GameZone_Break());
@@ -27,8 +27,8 @@ public class GameZoneManager : MonoBehaviour
         Debug.Log("GameStateManager: Adding Deck Zone.");
         GameZone_ForPlayer.Add(GameZoneType.Deck, new GameZone_Deck());
 
-        Debug.Log("GameStateManager: Adding Discard Zone.");
-        GameZone_ForPlayer.Add(GameZoneType.Discard, new GameZone_Discard());
+        Debug.Log("GameStateManager: Adding Trash Zone.");
+        GameZone_ForPlayer.Add(GameZoneType.Trash, new GameZone_Trash());
 
         Debug.Log("GameStateManager: Adding Hand Zone.");
         GameZone_ForPlayer.Add(GameZoneType.Hand, new GameZone_Hand());
@@ -90,7 +90,7 @@ public class GameZoneManager : MonoBehaviour
             drawnCards.Add(topCardId);
             if (topCardId == RulesEngine.INVALID_CARD_MATCH_ID)
             {
-                //TODO: Shuffle discard into library
+                //TODO: Shuffle Trash into library
             }
 
             MoveCardFromZoneToZone(playerId, topCardId, GameZoneType.Deck, GameZoneType.Hand);
@@ -204,13 +204,13 @@ public class GameZoneManager : MonoBehaviour
             Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain an entry for {playerId}.");
             return new List<int>();
         }
-        if (_gameZonesByTypeByPlayer[playerId].ContainsKey(GameZoneType.Battlefield) == false)
+        if (_gameZonesByTypeByPlayer[playerId].ContainsKey(GameZoneType.Battle) == false)
         {
-            Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain a Battlefield zone for player {playerId}.");
+            Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain a Battle zone for player {playerId}.");
             return new List<int>();
         }
 
-        return new List<int>(_gameZonesByTypeByPlayer[playerId][GameZoneType.Battlefield].GetCards());
+        return new List<int>(_gameZonesByTypeByPlayer[playerId][GameZoneType.Battle].GetCards());
     }
 
     //TODO: Make this private. Remove the broadcast. Make a series of functions for each type of movement, each with their own broadcast. `MoveCardFromDeckToHand`, for example, will fire an event `CardMovedFromDeckToHand`.
