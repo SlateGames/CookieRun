@@ -20,9 +20,12 @@ public class UIController_Hand : UIController_Base
 
     private void RepositionAllCards()
     {
+        float totalWidth = (cards.Count - 1) * offset;
+        float centerOffset = totalWidth / 2f;
+
         for (int i = 0; i < cards.Count; i++)
         {
-            Vector3 targetPosition = handTransform.position + new Vector3(offset * i, 0, 0);
+            Vector3 targetPosition = handTransform.position + new Vector3((offset * i) - centerOffset, 0, 0);
             StartCoroutine(LerpCardToPosition(cards[i], targetPosition));
         }
     }
