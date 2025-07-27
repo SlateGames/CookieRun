@@ -31,7 +31,7 @@ public class CookieRunButton : Button, IPointerClickHandler, IPointerEnterHandle
     protected override void Start()
     {
         base.Start();
-
+        
         OnLeftClick ??= new ButtonClickedEvent();
         OnRightClick ??= new ButtonClickedEvent();
         OnDoubleClick ??= new ButtonClickedEvent();

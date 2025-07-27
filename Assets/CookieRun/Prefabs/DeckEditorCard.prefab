@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4752056205314522115}
   - component: {fileID: 1717668198795066138}
   - component: {fileID: 1946538270297984825}
-  - component: {fileID: 8841447472663308038}
+  - component: {fileID: 4816177590263005981}
   m_Layer: 5
   m_Name: Button_04
   m_TagString: Untagged
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8841447472663308038
+--- !u!114 &4816177590263005981
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 21429123811182399}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 0aeba0b058bcde44783ba7d26b8c47d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -120,6 +120,26 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+  _doubleClickTime: 0.3
+  _hoverTime: 0.1
+  _isDraggable: 1
+  _isClickable: 1
+  _isHoverable: 1
+  OnLeftClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDoubleClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1538181449659833591
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,7 +151,7 @@ GameObject:
   - component: {fileID: 1848317469072252676}
   - component: {fileID: 5765750283464837062}
   - component: {fileID: 638236394661793278}
-  - component: {fileID: 7062777116338947180}
+  - component: {fileID: 3227807970630607922}
   m_Layer: 5
   m_Name: Button_00
   m_TagString: Untagged
@@ -196,7 +216,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7062777116338947180
+--- !u!114 &3227807970630607922
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -205,7 +225,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1538181449659833591}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 0aeba0b058bcde44783ba7d26b8c47d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -240,6 +260,26 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+  _doubleClickTime: 0.3
+  _hoverTime: 0.1
+  _isDraggable: 1
+  _isClickable: 1
+  _isHoverable: 1
+  OnLeftClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDoubleClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2143440897505891788
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,7 +291,7 @@ GameObject:
   - component: {fileID: 461382053006595092}
   - component: {fileID: 4190935634966814525}
   - component: {fileID: 6459666042938373470}
-  - component: {fileID: 7181616025971229190}
+  - component: {fileID: 6429277627271882089}
   m_Layer: 5
   m_Name: Button_03
   m_TagString: Untagged
@@ -316,7 +356,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7181616025971229190
+--- !u!114 &6429277627271882089
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -325,7 +365,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2143440897505891788}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 0aeba0b058bcde44783ba7d26b8c47d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -360,6 +400,26 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+  _doubleClickTime: 0.3
+  _hoverTime: 0.1
+  _isDraggable: 1
+  _isClickable: 1
+  _isHoverable: 1
+  OnLeftClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDoubleClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4071595767569394211
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +431,7 @@ GameObject:
   - component: {fileID: 6974296158890663693}
   - component: {fileID: 327267874798642917}
   - component: {fileID: 4776644575742596956}
-  - component: {fileID: 4771428344145342561}
+  - component: {fileID: 6581190050047154262}
   m_Layer: 5
   m_Name: Button_01
   m_TagString: Untagged
@@ -436,7 +496,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4771428344145342561
+--- !u!114 &6581190050047154262
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -445,7 +505,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4071595767569394211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 0aeba0b058bcde44783ba7d26b8c47d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -480,6 +540,26 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+  _doubleClickTime: 0.3
+  _hoverTime: 0.1
+  _isDraggable: 1
+  _isClickable: 1
+  _isHoverable: 1
+  OnLeftClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDoubleClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5210311422132499274
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,7 +571,7 @@ GameObject:
   - component: {fileID: 7035498033629861430}
   - component: {fileID: 2734125003309654947}
   - component: {fileID: 2337947449593756367}
-  - component: {fileID: 3299355504426176632}
+  - component: {fileID: 3100951989542209280}
   m_Layer: 5
   m_Name: Button_02
   m_TagString: Untagged
@@ -556,7 +636,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3299355504426176632
+--- !u!114 &3100951989542209280
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -565,7 +645,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5210311422132499274}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 0aeba0b058bcde44783ba7d26b8c47d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -598,6 +678,26 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2337947449593756367}
   m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+  _doubleClickTime: 0.3
+  _hoverTime: 0.1
+  _isDraggable: 1
+  _isClickable: 1
+  _isHoverable: 1
+  OnLeftClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDoubleClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverExit:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6941345034737799851

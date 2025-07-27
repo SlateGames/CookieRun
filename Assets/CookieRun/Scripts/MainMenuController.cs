@@ -81,11 +81,11 @@ public class GameInfo
 
 public class MainMenuController : MenuControllerBase
 {
-    public Button modeSelectButton;
-    public Button deckEditorButton;
-    public Button deckSelectButton;
+    public CookieRunButton modeSelectButton;
+    public CookieRunButton deckEditorButton;
+    public CookieRunButton deckSelectButton;
 
-    public Button settingsButton;
+    public CookieRunButton settingsButton;
 
     public override void Start()
     {
@@ -93,10 +93,10 @@ public class MainMenuController : MenuControllerBase
 
         base.Start();
 
-        modeSelectButton.onClick.AddListener(ShowModeOverlay);
-        deckEditorButton.onClick.AddListener(ShowDeckEditorOverlay);
-        deckSelectButton.onClick.AddListener(ShowDeckSelectorOverlay);
-        settingsButton.onClick.AddListener(ShowSettingsOverlay);
+        modeSelectButton.OnLeftClick.AddListener(ShowModeOverlay);
+        deckEditorButton.OnLeftClick.AddListener(ShowDeckEditorOverlay);
+        deckSelectButton.OnLeftClick.AddListener(ShowDeckSelectorOverlay);
+        settingsButton.OnLeftClick.AddListener(ShowSettingsOverlay);
 
         deckSelectButton.interactable = false;
 

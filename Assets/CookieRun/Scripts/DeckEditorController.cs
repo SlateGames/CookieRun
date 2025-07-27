@@ -13,11 +13,11 @@ public class DeckEditorController : MenuControllerBase
 {
     [Header("Deck Editor Settings")]
     [SerializeField] private GameObject[] deckEditorCardSlots = new GameObject[18]; // Array of 18 card slot GameObjects
-    [SerializeField] private Button nextPageButton;
-    [SerializeField] private Button previousPageButton;
-    [SerializeField] private Button saveButton;
-    [SerializeField] private Button cancelButton;
-    [SerializeField] private Button newDeckButton;
+    [SerializeField] private CookieRunButton nextPageButton;
+    [SerializeField] private CookieRunButton previousPageButton;
+    [SerializeField] private CookieRunButton saveButton;
+    [SerializeField] private CookieRunButton cancelButton;
+    [SerializeField] private CookieRunButton newDeckButton;
     [SerializeField] private TMP_Dropdown deckSelectDropdown;
     
     public TMP_InputField deckName;
@@ -114,27 +114,27 @@ public class DeckEditorController : MenuControllerBase
     {
         if (nextPageButton != null)
         {
-            nextPageButton.onClick.AddListener(NextPage);
+            nextPageButton.OnLeftClick.AddListener(NextPage);
         }
 
         if (previousPageButton != null)
         {
-            previousPageButton.onClick.AddListener(PreviousPage);
+            previousPageButton.OnLeftClick.AddListener(PreviousPage);
         }
 
         if (saveButton != null)
         {
-            saveButton.onClick.AddListener(OnSaveClicked);
+            saveButton.OnLeftClick.AddListener(OnSaveClicked);
         }
 
         if (cancelButton != null)
         {
-            cancelButton.onClick.AddListener(OnCancelClicked);
+            cancelButton.OnLeftClick.AddListener(OnCancelClicked);
         }
 
         if (newDeckButton != null)
         {
-            newDeckButton.onClick.AddListener(OnNewDeckClicked);
+            newDeckButton.OnLeftClick.AddListener(OnNewDeckClicked);
         }
     }
 
@@ -157,7 +157,7 @@ public class DeckEditorController : MenuControllerBase
         for (int buttonIndex = 0; buttonIndex < 5; buttonIndex++)
         {
             string buttonName = $"Button_{buttonIndex:00}";
-            Button button = FindButtonInSlot(slot, buttonName);
+            CookieRunButton button = FindButtonInSlot(slot, buttonName);
 
             if (button != null)
             {
@@ -165,7 +165,7 @@ public class DeckEditorController : MenuControllerBase
                 int capturedSlotIndex = slotIndex;
                 int capturedButtonIndex = buttonIndex;
 
-                button.onClick.AddListener(() => OnCardSlotButtonClicked(capturedSlotIndex, capturedButtonIndex));
+                button.OnLeftClick.AddListener(() => OnCardSlotButtonClicked(capturedSlotIndex, capturedButtonIndex));
             }
             else
             {
@@ -174,18 +174,18 @@ public class DeckEditorController : MenuControllerBase
         }
     }
 
-    private Button FindButtonInSlot(GameObject slot, string buttonName)
+    private CookieRunButton FindButtonInSlot(GameObject slot, string buttonName)
     {
         // Search for the button by name in the slot and its children
         Transform buttonTransform = slot.transform.Find(buttonName);
         if (buttonTransform != null)
         {
-            return buttonTransform.GetComponent<Button>();
+            return buttonTransform.GetComponent<CookieRunButton>();
         }
 
         // If not found directly, search recursively in children
-        Button[] buttons = slot.GetComponentsInChildren<Button>();
-        foreach (Button button in buttons)
+        CookieRunButton[] buttons = slot.GetComponentsInChildren<CookieRunButton>();
+        foreach (CookieRunButton button in buttons)
         {
             if (button.name == buttonName)
             {
@@ -207,40 +207,25 @@ public class DeckEditorController : MenuControllerBase
             Transform cardButtonTransform = cardVisual.Find("CardButton");
             if (cardButtonTransform != null)
             {
-                Button cardButton = cardButtonTransform.GetComponent<Button>();
+                CookieRunButton cardButton = cardButtonTransform.GetComponent<CookieRunButton>();
                 if (cardButton != null)
                 {
                     // Capture slot index for closures
                     int capturedSlotIndex = slotIndex;
 
-                    // Add hover events using EventTrigger
-                    EventTrigger eventTrigger = cardButton.gameObject.GetComponent<EventTrigger>();
-                    if (eventTrigger == null)
-                    {
-                        eventTrigger = cardButton.gameObject.AddComponent<EventTrigger>();
-                    }
+                    // Use CookieRunButton's built-in events
+                    cardButton.OnHoverEnter.AddListener(() => OnCardButtonHoverEnter(capturedSlotIndex));
+                    cardButton.OnHoverExit.AddListener(() => OnCardButtonHoverExit(capturedSlotIndex));
+                    cardButton.OnLeftClick.AddListener(() => OnCardButtonLeftClick(capturedSlotIndex));
+                    cardButton.OnRightClick.AddListener(() => OnCardButtonRightClick(capturedSlotIndex));
 
-                    // Pointer Enter (hover start)
-                    EventTrigger.Entry pointerEnter = new EventTrigger.Entry();
-                    pointerEnter.eventID = EventTriggerType.PointerEnter;
-                    pointerEnter.callback.AddListener((data) => OnCardButtonHoverEnter(capturedSlotIndex));
-                    eventTrigger.triggers.Add(pointerEnter);
-
-                    // Pointer Exit (hover end)
-                    EventTrigger.Entry pointerExit = new EventTrigger.Entry();
-                    pointerExit.eventID = EventTriggerType.PointerExit;
-                    pointerExit.callback.AddListener((data) => OnCardButtonHoverExit(capturedSlotIndex));
-                    eventTrigger.triggers.Add(pointerExit);
-
-                    // Right click handling
-                    EventTrigger.Entry pointerClick = new EventTrigger.Entry();
-                    pointerClick.eventID = EventTriggerType.PointerClick;
-                    pointerClick.callback.AddListener((data) => OnCardButtonPointerClick(capturedSlotIndex, (PointerEventData)data));
-                    eventTrigger.triggers.Add(pointerClick);
+                    // If you need left click or double click
+                    // cardButton.OnLeftClick.AddListener(() => OnCardButtonLeftClick(capturedSlotIndex));
+                    // cardButton.OnDoubleClick.AddListener(() => OnCardButtonDoubleClick(capturedSlotIndex));
                 }
                 else
                 {
-                    Debug.LogWarning($"CardButton component not found on CardButton in slot {slotIndex}");
+                    Debug.LogWarning($"CookieRunButton component not found on CardButton in slot {slotIndex}");
                 }
             }
             else
@@ -285,18 +270,14 @@ public class DeckEditorController : MenuControllerBase
         }
     }
 
-    private void OnCardButtonPointerClick(int slotIndex, PointerEventData eventData)
+    private void OnCardButtonLeftClick(int slotIndex)
     {
-        // Calculate the actual card index based on current page and slot
-        int cardIndex = (currentPage * CARDS_PER_PAGE) + slotIndex;
+        Debug.Log($"Left clicked on card in slot {slotIndex}");
+    }
 
-        // Make sure we have a valid card for this slot
-        if (cardIndex >= 0 && cardIndex < allCards.Count)
-        {
-            Card_Base card = allCards[cardIndex];
-            string clickType = eventData.button == PointerEventData.InputButton.Right ? "Right" : "Left";
-            Debug.Log($"CardButton clicked for slot {slotIndex}, card ID: {card.CardId}, card Name: {card.CardName}, click type: {clickType}");
-        }
+    private void OnCardButtonRightClick(int slotIndex)
+    {
+        Debug.Log($"Right clicked on card in slot {slotIndex}");
     }
 
     private void OnCardButtonHoverEnter(int slotIndex)
@@ -385,7 +366,7 @@ public class DeckEditorController : MenuControllerBase
         for (int buttonIndex = 0; buttonIndex < 5; buttonIndex++)
         {
             string buttonName = $"Button_{buttonIndex:00}";
-            Button button = FindButtonInSlot(slot, buttonName);
+            CookieRunButton button = FindButtonInSlot(slot, buttonName);
 
             if (button != null)
             {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7702968270444240329}
   - component: {fileID: 1015467023476514834}
   - component: {fileID: 8559449500358483901}
-  - component: {fileID: 5631999054426732779}
+  - component: {fileID: 145452107876122396}
   m_Layer: 5
   m_Name: CardButton
   m_TagString: Untagged
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5631999054426732779
+--- !u!114 &145452107876122396
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1062400272341630654}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 0aeba0b058bcde44783ba7d26b8c47d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -118,6 +118,35 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 8559449500358483901}
   m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+  _doubleClickTime: 0.3
+  _hoverTime: 0.1
+  _isDraggable: 1
+  _isClickable: 1
+  _isHoverable: 1
+  OnLeftClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDoubleClick:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverExit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDragStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDragging:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDragEnd:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6941345034737799851

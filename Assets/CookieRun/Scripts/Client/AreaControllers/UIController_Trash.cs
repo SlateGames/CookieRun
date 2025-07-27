@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class UIController_Trash : UIController_Base
 {
     [SerializeField] private Transform trashTransform;
-    [SerializeField] private Button trashButton;
+    [SerializeField] private CookieRunButton trashButton;
 
     public override void AddCard(GameObject card)
     {

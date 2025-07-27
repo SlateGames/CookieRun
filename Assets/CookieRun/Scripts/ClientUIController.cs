@@ -13,13 +13,13 @@ public class ClientUIController : MonoBehaviour
 
     public TMP_Text DebugCurrentPhase;
     public TMP_Text DebugPreviousPhase;
-    public Button DebugPassPriority;
+    public CookieRunButton DebugPassPriority;
 
     [Header("Player Controls")]
-    [SerializeField] private Button _buttonSkipSupport;
-    [SerializeField] private Button _buttonEndTurn;
-    [SerializeField] private Button _requestMulligan;
-    [SerializeField] private Button _refuseMulligan;
+    [SerializeField] private CookieRunButton _buttonSkipSupport;
+    [SerializeField] private CookieRunButton _buttonEndTurn;
+    [SerializeField] private CookieRunButton _requestMulligan;
+    [SerializeField] private CookieRunButton _refuseMulligan;
 
     [SerializeField] private TMP_Text _playerDeckCount;
     [SerializeField] private TMP_Text _opponentDeckCount;
@@ -56,9 +56,9 @@ public class ClientUIController : MonoBehaviour
         _buttonSkipSupport.gameObject.SetActive(false);
         _buttonEndTurn.gameObject.SetActive(false);
 
-        DebugPassPriority.onClick.AddListener(PassPriority);
-        _buttonSkipSupport.onClick.AddListener(SkipSupport);
-        _buttonEndTurn.onClick.AddListener(EndTurn);
+        DebugPassPriority.OnLeftClick.AddListener(PassPriority);
+        _buttonSkipSupport.OnLeftClick.AddListener(SkipSupport);
+        _buttonEndTurn.OnLeftClick.AddListener(EndTurn);
     }
 
     private void SubscribeToClientServerBridgeEvents()
@@ -158,8 +158,8 @@ public class ClientUIController : MonoBehaviour
         _requestMulligan.gameObject.SetActive(true);
         _refuseMulligan.gameObject.SetActive(true);
 
-        _requestMulligan.onClick.AddListener(() => OnRequestMulliganClicked());
-        _refuseMulligan.onClick.AddListener(() => OnRefuseMulliganClicked());
+        _requestMulligan.OnLeftClick.AddListener(() => OnRequestMulliganClicked());
+        _refuseMulligan.OnLeftClick.AddListener(() => OnRefuseMulliganClicked());
     }
 
     private void HideMulliganUI()

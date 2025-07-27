@@ -9,7 +9,7 @@ public class QueueTimerController : MenuControllerBase
     [SerializeField] private TextMeshProUGUI queueTimerText;
     [SerializeField] private TextMeshProUGUI queueStatusText;
 
-    [SerializeField] private Button queueCancelButton;
+    [SerializeField] private CookieRunButton queueCancelButton;
 
     private Coroutine timerCoroutine;
 
@@ -19,7 +19,7 @@ public class QueueTimerController : MenuControllerBase
 
         base.Start();
 
-        queueCancelButton.onClick.AddListener(HideOverlay);
+        queueCancelButton.OnLeftClick.AddListener(HideOverlay);
         timerCoroutine = StartCoroutine(UpdateTimerCoroutine());
 
         MatchplayMatchmaker.Instance.OnMatchmakingStatusChanged += OnMatchmakingStatusChanged;

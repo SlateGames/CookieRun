@@ -21,11 +21,11 @@ public class AuthResult
 public class LoginUIController : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private Button anonLoginButton;
-    [SerializeField] private Button emailLoginButton;
-    [SerializeField] private Button recoveryAccountButton;
-    [SerializeField] private Button createAccountButton;
-    [SerializeField] private Button quitButton;
+    [SerializeField] private CookieRunButton anonLoginButton;
+    [SerializeField] private CookieRunButton emailLoginButton;
+    [SerializeField] private CookieRunButton recoveryAccountButton;
+    [SerializeField] private CookieRunButton createAccountButton;
+    [SerializeField] private CookieRunButton quitButton;
     [SerializeField] private TMP_InputField emailInputField;
     [SerializeField] private TMP_InputField passwordInputField;
     [SerializeField] private Toggle AutoSignInToggle;
@@ -111,11 +111,11 @@ public class LoginUIController : MonoBehaviour
             return;
         }
 
-        anonLoginButton.onClick.AddListener(OnAnonymousLoginClicked);
-        emailLoginButton.onClick.AddListener(OnEmailLoginClicked);
-        quitButton.onClick.AddListener(OnQuitClicked);
-        createAccountButton.onClick.AddListener(OnEmailRegistrationClicked);
-        recoveryAccountButton.onClick.AddListener(OnRecoveryAccountClicked);
+        anonLoginButton.OnLeftClick.AddListener(OnAnonymousLoginClicked);
+        emailLoginButton.OnLeftClick.AddListener(OnEmailLoginClicked);
+        quitButton.OnLeftClick.AddListener(OnQuitClicked);
+        createAccountButton.OnLeftClick.AddListener(OnEmailRegistrationClicked);
+        recoveryAccountButton.OnLeftClick.AddListener(OnRecoveryAccountClicked);
         toggleVisibilityPasswordButton.onValueChanged.AddListener(OnPasswordVisibilityToggleChanged);
         quitButton.gameObject.SetActive(false);
         AutoSignInToggle.onValueChanged.AddListener(OnAutoSignInToggleValueChanged);
