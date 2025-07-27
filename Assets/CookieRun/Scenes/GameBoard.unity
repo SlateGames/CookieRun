@@ -348,7 +348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOpponent: 0
   ZoneType: 6
-  Scale: {x: 0, y: 0, z: 0}
+  Scale: {x: 0.4, y: 0.4, z: 0.4}
   supportTransform: {fileID: 46759738}
   offset: 1
 --- !u!1 &97507158
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOpponent: 0
   ZoneType: 3
-  Scale: {x: 0, y: 0, z: 0}
+  Scale: {x: 0.4, y: 0.4, z: 0.4}
   trashTransform: {fileID: 97507159}
   trashButton: {fileID: 97507161}
 --- !u!114 &97507161
@@ -674,7 +674,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOpponent: 1
   ZoneType: 5
-  Scale: {x: 0, y: 0, z: 0}
+  Scale: {x: 0.4, y: 0.4, z: 0.4}
   stageTransform: {fileID: 361322828}
 --- !u!1 &373748495
 GameObject:
@@ -1663,7 +1663,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOpponent: 1
   ZoneType: 6
-  Scale: {x: 0, y: 0, z: 0}
+  Scale: {x: 0.4, y: 0.4, z: 0.4}
   supportTransform: {fileID: 758659438}
   offset: 1
 --- !u!1 &761276818
@@ -2142,7 +2142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOpponent: 1
   ZoneType: 0
-  Scale: {x: 0, y: 0, z: 0}
+  Scale: {x: 0.4, y: 0.4, z: 0.4}
   position1Transform: {fileID: 1061528976}
   position2Transform: {fileID: 1893361479}
 --- !u!1 &1265974003
@@ -2232,7 +2232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOpponent: 0
   ZoneType: 0
-  Scale: {x: 0, y: 0, z: 0}
+  Scale: {x: 0.4, y: 0.4, z: 0.4}
   position1Transform: {fileID: 405777414}
   position2Transform: {fileID: 1265974004}
 --- !u!1 &1324400562
@@ -2594,7 +2594,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOpponent: 1
   ZoneType: 2
-  Scale: {x: 0, y: 0, z: 0}
+  Scale: {x: 0.4, y: 0.4, z: 0.4}
   deckTransform: {fileID: 1459039164}
   deckCountText: {fileID: 713401815}
 --- !u!1 &1611238893
@@ -3056,7 +3056,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOpponent: 0
   ZoneType: 2
-  Scale: {x: 0, y: 0, z: 0}
+  Scale: {x: 0.4, y: 0.4, z: 0.4}
   deckTransform: {fileID: 1840527126}
   deckCountText: {fileID: 1413655033}
 --- !u!1 &1893361478
@@ -3145,7 +3145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOpponent: 1
   ZoneType: 3
-  Scale: {x: 0, y: 0, z: 0}
+  Scale: {x: 0.4, y: 0.4, z: 0.4}
   trashTransform: {fileID: 1911599767}
   trashButton: {fileID: 1911599769}
 --- !u!114 &1911599769
@@ -3243,7 +3243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOpponent: 1
   ZoneType: 1
-  Scale: {x: 0, y: 0, z: 0}
+  Scale: {x: 0.4, y: 0.4, z: 0.4}
   stackTransform: {fileID: 1923382913}
   offset: {x: 0, y: -0.5, z: 0}
   breakScoreText: {fileID: 1066334168}
@@ -3297,7 +3297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOpponent: 0
   ZoneType: 5
-  Scale: {x: 0, y: 0, z: 0}
+  Scale: {x: 0.4, y: 0.4, z: 0.4}
   stageTransform: {fileID: 1924230101}
 --- !u!1 &1962687734
 GameObject:
@@ -3530,7 +3530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOpponent: 0
   ZoneType: 1
-  Scale: {x: 0, y: 0, z: 0}
+  Scale: {x: 0.4, y: 0.4, z: 0.4}
   stackTransform: {fileID: 2069842816}
   offset: {x: 0, y: -0.5, z: 0}
   breakScoreText: {fileID: 646948542}
