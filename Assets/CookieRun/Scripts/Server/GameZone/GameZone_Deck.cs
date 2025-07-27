@@ -42,7 +42,7 @@ public class GameZone_Deck : GameZone_Base
 
         if (CardsInZone.Count == 0)
         {
-            return RulesEngine.INVALID_CARD_MATCH_ID;
+            return CookieRunConstants.INVALID_CARD_MATCH_ID;
         }
 
         return CardsInZone[0];

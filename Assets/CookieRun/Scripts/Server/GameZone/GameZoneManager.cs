@@ -88,7 +88,7 @@ public class GameZoneManager : MonoBehaviour
             Debug.Log($"GameStateManager: Top Card_Base Match ID: {topCardId}.");
 
             drawnCards.Add(topCardId);
-            if (topCardId == RulesEngine.INVALID_CARD_MATCH_ID)
+            if (topCardId == CookieRunConstants.INVALID_CARD_MATCH_ID)
             {
                 //TODO: Shuffle Trash into library
             }
@@ -106,7 +106,7 @@ public class GameZoneManager : MonoBehaviour
         }
 
         ShuffleDeckForPlayer(playerId);
-        DrawCards(playerId, 6, RulesEngine.GAME_ACTION);
+        DrawCards(playerId, 6, CookieRunConstants.GAME_ACTION);
     }
 
     public GameZoneType GetZoneCardIsPresentIn(int cardMatchId)
@@ -154,7 +154,7 @@ public class GameZoneManager : MonoBehaviour
         }
 
         Debug.Log($"No Zone for either player contains {cardMatchId}.");
-        return RulesEngine.INVALID_PLAYER_ID;
+        return CookieRunConstants.INVALID_PLAYER_ID;
     }
 
     public IReadOnlyList<int> GetAllCardMatchIdsForPlayer(ulong playerId)
@@ -219,7 +219,7 @@ public class GameZoneManager : MonoBehaviour
     {
         Debug.Log("GameStateManager::MoveCardFromZoneToZone");
 
-        if (cardMatchId == RulesEngine.INVALID_CARD_MATCH_ID)
+        if (cardMatchId == CookieRunConstants.INVALID_CARD_MATCH_ID)
         {
             Debug.Log("cardMatchId is invalid");
             return;

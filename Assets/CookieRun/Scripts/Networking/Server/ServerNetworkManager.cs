@@ -220,7 +220,7 @@ public class ServerNetworkManager : NetworkManager
 
         try
         {
-            //RulesEngine.Instance.BroadcastPlayerDeathEvent(RulesEngine.INVALID_PLAYER_ID);
+            //RulesEngine.Instance.BroadcastPlayerDeathEvent(CookieRunConstants.INVALID_PLAYER_ID);
 
             _cancellationTokenSource.Cancel();
             Shutdown();

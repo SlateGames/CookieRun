@@ -5,11 +5,6 @@ using UnityEngine;
 
 public class RulesEngine : NetworkBehaviour
 {
-    public const int GAME_ACTION = 1234567890;
-    public const int INVALID_PLAYER_ID = 88888;
-    public const string INVALID_CARD_ID = "INVALID CARD ID";
-    public const int INVALID_CARD_MATCH_ID = 99999;
-
     public static RulesEngine Instance { get; private set; }
 
     private GameStateManager _gameStateManager;

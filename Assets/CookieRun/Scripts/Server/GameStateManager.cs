@@ -51,7 +51,7 @@ public class GameStateManager
         Debug.Log("GameStateManager::GameStateManager");
 
         CurrentTurn = 0;
-        _activePlayerId = RulesEngine.INVALID_PLAYER_ID;
+        _activePlayerId = CookieRunConstants.INVALID_PLAYER_ID;
 
         //RulesEngine.Instance.PlayerDeathEvent += RulesEngine_PlayerDeathEvent;
     }
@@ -84,7 +84,7 @@ public class GameStateManager
     public void RegisterBotPlayer(ulong playerId, Deck deck)
     {
         Debug.Log("GameStateManager::RegisterBotPlayer");
-        RegisterPlayer(RulesEngine.INVALID_PLAYER_ID, deck);
+        RegisterPlayer(CookieRunConstants.INVALID_PLAYER_ID, deck);
     }
 
     public bool ConfigurePlayer(ulong playerId)
@@ -128,7 +128,7 @@ public class GameStateManager
         if (!IsValidPlayer(playerId))
         {
             Debug.LogWarning("This is not a valid player");
-            return RulesEngine.INVALID_PLAYER_ID;
+            return CookieRunConstants.INVALID_PLAYER_ID;
         }
 
         return playerId == Player1Id ? Player2Id : Player1Id;

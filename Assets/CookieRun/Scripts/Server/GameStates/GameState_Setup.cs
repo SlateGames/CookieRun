@@ -91,10 +91,10 @@ public class GameState_Setup : GameState_Base
         ulong player2Id = RulesEngine.Instance.GetGameStateManager().Player2Id;
 
         RulesEngine.Instance.GetGameZoneManager().ShuffleDeckForPlayer(player1Id);
-        RulesEngine.Instance.GetGameZoneManager().DrawCards(player1Id, 6, RulesEngine.GAME_ACTION);
+        RulesEngine.Instance.GetGameZoneManager().DrawCards(player1Id, 6, CookieRunConstants.GAME_ACTION);
 
         RulesEngine.Instance.GetGameZoneManager().ShuffleDeckForPlayer(player2Id);
-        RulesEngine.Instance.GetGameZoneManager().DrawCards(player2Id, 6, RulesEngine.GAME_ACTION);
+        RulesEngine.Instance.GetGameZoneManager().DrawCards(player2Id, 6, CookieRunConstants.GAME_ACTION);
 
         RulesEngine.Instance.BroadcastMulligansStartEvent();
 

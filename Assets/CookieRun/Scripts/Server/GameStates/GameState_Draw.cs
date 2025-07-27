@@ -11,7 +11,7 @@ public class GameState_Draw : GameState_Base
 
         if(RulesEngine.Instance.GetGameStateManager().CurrentTurn > 1)
         {
-            RulesEngine.Instance.GetGameZoneManager().DrawCards(RulesEngine.Instance.GetGameStateManager().GetActivePlayerId(), 2, RulesEngine.GAME_ACTION);
+            RulesEngine.Instance.GetGameZoneManager().DrawCards(RulesEngine.Instance.GetGameStateManager().GetActivePlayerId(), 2, CookieRunConstants.GAME_ACTION);
         }
 
         base.Enter();

@@ -15,7 +15,7 @@ public abstract class Card_Cookie : Card_Base
             return healthPool.Dequeue();
         }
 
-        return RulesEngine.INVALID_CARD_MATCH_ID;
+        return CookieRunConstants.INVALID_CARD_MATCH_ID;
     }
 
     public void Heal(int healAmount)
