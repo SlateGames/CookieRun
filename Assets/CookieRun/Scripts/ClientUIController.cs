@@ -49,6 +49,8 @@ public class ClientUIController : MonoBehaviour
         _ownerClientId = ownerId;
         _clientServerBridge = clientServerBridge;
 
+        HideMulliganUI();
+        
         SubscribeToClientServerBridgeEvents();
 
         _buttonSkipSupport.gameObject.SetActive(false);
@@ -124,6 +126,34 @@ public class ClientUIController : MonoBehaviour
     private void ClientServerBridge_MulligansStart()
     {
         Debug.Log("ClientUIController::ClientServerBridge_MulligansStart");
+        DisplayMulliganUI();
+    }
+
+    private void ClientServerBridge_MulligansEnd()
+    {
+        Debug.Log("ClientUIController::ClientServerBridge_MulligansEnd");
+        HideMulliganUI();
+    }
+
+    private void OnRequestMulliganClicked()
+    {
+        Debug.Log("ClientUIController::OnRequestMulliganClicked");
+
+        _clientServerBridge.PlayerRequestsMulligansServerRpc(_ownerClientId);
+        HideMulliganUI();
+    }
+
+    private void OnRefuseMulliganClicked()
+    {
+        Debug.Log("ClientUIController::OnRefuseMulliganClicked");
+
+        _clientServerBridge.PlayerRefusesMulligansServerRpc(_ownerClientId);
+        HideMulliganUI();
+    }
+
+    private void DisplayMulliganUI()
+    {
+        Debug.Log("ClientUIController::DisplayMulliganUI");
 
         _requestMulligan.gameObject.SetActive(true);
         _refuseMulligan.gameObject.SetActive(true);
@@ -132,27 +162,15 @@ public class ClientUIController : MonoBehaviour
         _refuseMulligan.onClick.AddListener(() => OnRefuseMulliganClicked());
     }
 
-    private void ClientServerBridge_MulligansEnd()
+    private void HideMulliganUI()
     {
-        Debug.Log("ClientUIController::ClientServerBridge_MulligansEnd");
+        Debug.Log("ClientUIController::HideMulliganUI");
 
         _requestMulligan.gameObject.SetActive(false);
         _refuseMulligan.gameObject.SetActive(false);
 
         _requestMulligan.onClick.RemoveAllListeners();
         _refuseMulligan.onClick.RemoveAllListeners();
-    }
-
-    private void OnRequestMulliganClicked()
-    {
-        Debug.Log("ClientUIController::OnRequestMulliganClicked");
-        _clientServerBridge.PlayerRequestsMulligansServerRpc(_ownerClientId);
-    }
-
-    private void OnRefuseMulliganClicked()
-    {
-        Debug.Log("ClientUIController::OnRefuseMulliganClicked");
-        _clientServerBridge.PlayerRefusesMulligansServerRpc(_ownerClientId);
     }
 
     private void ClientServerBridge_GameStart()
