@@ -9,6 +9,9 @@ public class UIController_Deck : UIController_Base
     public override void AddCard(GameObject card)
     {
         base.AddCard(card);
+
+        //TODO: Find a better way. I would rather just not send this data to the client
+        card.GetComponent<CardVisualController>().ClearCard();
         UpdateDeckCount();
     }
 

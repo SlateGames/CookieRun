@@ -4,6 +4,8 @@ public class CardController : MonoBehaviour
 {
     private string cardId;
     private int cardMatchId;
+    private Card_Base card;
+
     [SerializeField] private CardVisualController visualController;
 
     public int GetCardMatchId()
@@ -13,10 +15,23 @@ public class CardController : MonoBehaviour
 
     public void Initialize(Card_Base card)
     {
+        if (card == null)
+        {
+            Debug.LogError("Cannot initialize off a null card");
+            return;
+
+        }
+
+        this.card = card;
+        cardId = card.CardId;
+
+        UpdateCardImage();
+    }
+
+    public void UpdateCardImage()
+    {
         if (card != null)
         {
-            cardId = card.CardId;
-
             if (visualController != null && !string.IsNullOrEmpty(card.ImageName))
             {
                 visualController.LoadImageFromName(card.ImageName);
