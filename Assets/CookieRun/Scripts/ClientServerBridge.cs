@@ -113,7 +113,7 @@ public class ClientServerBridge : NetworkBehaviour
 
         if (playerId != OwnerClientId)
         {
-            if (destinationZone == GameZoneType.Deck || sourceZone == GameZoneType.Hand)
+            if (destinationZone == GameZoneType.Deck || destinationZone == GameZoneType.Hand)
             {
                 Debug.Log($"Player has ID {OwnerClientId}, which does not match passed ID {playerId}. The {destinationZone.ToString()} Zone is private, setting the Card Match ID from {cardMatchId} and the Card ID from {cardId} to UNKNOWN_CARD.");
                 cardMatchId = CookieRunConstants.INVALID_CARD_MATCH_ID;
