@@ -162,6 +162,12 @@ public class GameStateManager
         setupState.PlayerRefusesMulligan(playerId);
     }
 
+    public void HandleCardClickedForPlayer(ulong playerId, int cardMatchId)
+    {
+        Debug.Log("GameStateManager::HandleCardClickedForPlayer");
+        _currentState.HandleCardClick(playerId, cardMatchId);
+    }
+
     private void RulesEngine_PlayerDeathEvent(ulong deadPlayerId)
     {
         Debug.Log("GameStateManager::RulesEngine_PlayerDeathEvent");

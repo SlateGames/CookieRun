@@ -18,6 +18,7 @@ public class ClientServerBridge : NetworkBehaviour
     public event Action MulligansStart;
     public event Action MulligansEnd;
     public event Action GameStart;
+    public event Action PreCookiePlacement;
     public event Action<ulong> NewActivePlayer;
 
     public override void OnNetworkSpawn()
@@ -62,6 +63,7 @@ public class ClientServerBridge : NetworkBehaviour
         RulesEngine.Instance.MulligansStartEvent += RulesEngine_MulligansStartEvent;
         RulesEngine.Instance.MulligansEndEvent += RulesEngine_MulligansEndEvent;
         RulesEngine.Instance.GameStartEvent += RulesEngine_GameStartEvent;
+        RulesEngine.Instance.PreGameCookiePlacementEvent += RulesEngine_PreGameCookiePlacementEvent;
         RulesEngine.Instance.NewActivePlayerEvent += RulesEngine_NewActivePlayerEvent;
         RulesEngine.Instance.PlayerPlayerEnterGamePhaseEvent += RulesEngine_PlayerPlayerEnterGamePhaseEvent;
         RulesEngine.Instance.PlayerPlayerExitGamePhaseEvent += RulesEngine_PlayerPlayerExitGamePhaseEvent;
@@ -198,6 +200,27 @@ public class ClientServerBridge : NetworkBehaviour
         }
 
         GameStart?.Invoke();
+    }
+
+
+    private void RulesEngine_PreGameCookiePlacementEvent()
+    {
+        Debug.Log("ClientServerBridge::RulesEngine_PreGameCookiePlacementEvent");
+        PreCookiePlacementClientRpc();
+    }
+
+    [ClientRpc]
+    private void PreCookiePlacementClientRpc()
+    {
+        Debug.Log("ClientServerBridge::PreCookiePlacementClientRpc");
+
+        if (IsOwner == false)
+        {
+            Debug.Log($"Player {OwnerClientId} does not own this object.");
+            return;
+        }
+
+        PreCookiePlacement?.Invoke();
     }
 
     private void RulesEngine_NewActivePlayerEvent(ulong playerId)
@@ -372,7 +395,8 @@ public class ClientServerBridge : NetworkBehaviour
             return;
         }
 
-        
+        //TODO: Should I be separating these click types?
+        RulesEngine.Instance.GetGameStateManager().HandleCardClickedForPlayer(playerId, cardMatchId);
     }
 
     [ServerRpc]

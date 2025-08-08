@@ -13,7 +13,7 @@ public class UIController_Hand : UIController_Base
     {
         base.AddCard(card);
 
-        CookieRunButton cookieRunButton = card.GetComponent<CookieRunButton>();
+        CookieRunButton cookieRunButton = card.GetComponentInChildren<CookieRunButton>();
         CardController cardController = card.GetComponent<CardController>();
         if (cookieRunButton != null && cardController != null)
         {

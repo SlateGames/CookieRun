@@ -18,6 +18,11 @@ public abstract class GameState_Base
         RulesEngine.Instance.BroadcastPlayerPlayerExitGamePhaseEvent(RulesEngine.Instance.GetGameStateManager().GetActivePlayerId(), _gamePhase);
     }
     
+    public virtual void HandleCardClick(ulong playerId, int cardMatchId)
+    {
+        
+    }
+
     public virtual GamePhase GetPhase()
     {
         return _gamePhase;

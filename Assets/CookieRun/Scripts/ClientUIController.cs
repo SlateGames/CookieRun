@@ -74,6 +74,7 @@ public class ClientUIController : MonoBehaviour
         _clientServerBridge.MulligansStart += ClientServerBridge_MulligansStart;
         _clientServerBridge.MulligansEnd += ClientServerBridge_MulligansEnd;
         _clientServerBridge.GameStart += ClientServerBridge_GameStart;
+        _clientServerBridge.PreCookiePlacement += ClientServerBridge_PreCookiePlacement;
         _clientServerBridge.NewActivePlayer += ClientServerBridge_NewActivePlayer;
         _clientServerBridge.PlayerEnterGamePhase += ClientServerBridge_PlayerEnterGamePhase;
         _clientServerBridge.PlayerExitGamePhase += ClientServerBridge_PlayerExitGamePhase;
@@ -178,6 +179,11 @@ public class ClientUIController : MonoBehaviour
     private void ClientServerBridge_GameStart()
     {
         Debug.Log("ClientUIController::ClientServerBridge_GameStart");
+    }
+
+    private void ClientServerBridge_PreCookiePlacement()
+    {
+        Debug.Log("ClientUIController::ClientServerBridge_PreCookiePlacement");
     }
 
     private void ClientServerBridge_NewActivePlayer(ulong playerId)

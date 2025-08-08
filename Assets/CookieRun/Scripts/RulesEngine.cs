@@ -17,6 +17,7 @@ public class RulesEngine : NetworkBehaviour
     public event Action MulligansStartEvent;
     public event Action MulligansEndEvent;
     public event Action GameStartEvent;
+    public event Action PreGameCookiePlacementEvent;
     public event Action<ulong> NewActivePlayerEvent;
     public event Action<ulong, GamePhase> PlayerPlayerEnterGamePhaseEvent;
     public event Action<ulong, GamePhase> PlayerPlayerExitGamePhaseEvent;
@@ -112,5 +113,10 @@ public class RulesEngine : NetworkBehaviour
     {
         Debug.Log("RulesEngine::BroadcastGameStartEvent");
         GameStartEvent?.Invoke();
+    }
+    public void BroadcastPreGameCookiePlacementEvent()
+    {
+        Debug.Log("RulesEngine::BroadcastPreGameCookiePlacementEvent");
+        PreGameCookiePlacementEvent?.Invoke();
     }
 }

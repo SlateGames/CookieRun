@@ -5,6 +5,7 @@ public class GameState_Setup : GameState_Base
 {
     private SetupPhase _subPhase;
     private int _postMulliganPlayerCount;
+    private int _postCookiePlacementPlayerCount;
     private int _registeredDeckCount;
 
     public override void Enter()
@@ -24,6 +25,22 @@ public class GameState_Setup : GameState_Base
     public override void Exit()
     {
         base.Exit();
+    }
+
+    public override void HandleCardClick(ulong playerId, int cardMatchId)
+    {
+        base.HandleCardClick(playerId, cardMatchId);
+
+        if(_subPhase == SetupPhase.PreGameCookiePlacement)
+        {
+            RulesEngine.Instance.GetGameZoneManager().MoveCardFromZoneToZone(playerId, cardMatchId, GameZoneType.Hand, GameZoneType.Battle);
+
+            _postCookiePlacementPlayerCount++;
+            if (_postCookiePlacementPlayerCount >= 2)
+            {
+                AdvanceSetupPhase();
+            }
+        }
     }
 
     private void RulesEngine_DeckRegisteredForPlayerEvent(DeckDataPayload deckPayload)
@@ -49,6 +66,7 @@ public class GameState_Setup : GameState_Base
                 break;
             case SetupPhase.Mulligans:
                 _subPhase = SetupPhase.PreGameCookiePlacement;
+                RulesEngine.Instance.BroadcastPreGameCookiePlacementEvent();
                 break;
             case SetupPhase.PreGameCookiePlacement:
                 RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Active());
@@ -129,13 +147,7 @@ public class GameState_Setup : GameState_Base
         Debug.Log("GameState_Setup::EndMulligan");
 
         RulesEngine.Instance.BroadcastMulligansEndEvent();
-        StartGame();
-    }
-
-    public void StartGame()
-    {
-        Debug.Log("GameState_Setup::StartGame");
-        RulesEngine.Instance.BroadcastGameStartEvent();
+        AdvanceSetupPhase();
     }
 
     private async void RegisterMatch()
