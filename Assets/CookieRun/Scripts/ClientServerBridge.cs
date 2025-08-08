@@ -385,9 +385,9 @@ public class ClientServerBridge : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void OnHandCardClickedServerRpc(ulong playerId, int cardMatchId)
+    public void OnCardClickedServerRpc(ulong playerId, int cardMatchId)
     {
-        Debug.Log("ClientServerBridge::OnHandCardClicked");
+        Debug.Log("ClientServerBridge::OnCardClickedServerRpc");
 
         if (OwnerClientId != playerId)
         {
@@ -395,21 +395,6 @@ public class ClientServerBridge : NetworkBehaviour
             return;
         }
 
-        //TODO: Should I be separating these click types?
         RulesEngine.Instance.GetGameStateManager().HandleCardClickedForPlayer(playerId, cardMatchId);
-    }
-
-    [ServerRpc]
-    public void OnSupportCardClickedServerRpc(ulong playerId, int cardMatchId)
-    {
-        Debug.Log("ClientServerBridge::OnSupportCardClicked");
-
-        if (OwnerClientId != playerId)
-        {
-            Debug.Log($"Player {OwnerClientId} does not own this object. Player clicking a Support Card: {playerId}");
-            return;
-        }
-
-        
     }
 }

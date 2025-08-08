@@ -1,16 +1,61 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GameState_Main : GameState_Base
 {
+    private Dictionary<int, CardColour> _unspentMana;
+
     public override void Enter()
     {
+        _unspentMana = new Dictionary<int, CardColour>();
         _gamePhase = GamePhase.Main;
         base.Enter();
     }
 
     public override void Exit()
     {
+        _unspentMana.Clear();
         base.Exit();
+    }
+
+    public override void HandleCardClick(ulong playerId, int cardMatchId)
+    {
+        base.HandleCardClick(playerId, cardMatchId);
+
+        GameZoneType zone = RulesEngine.Instance.GetGameZoneManager().GetZoneCardIsPresentIn(cardMatchId);
+        if (zone == GameZoneType.Battle)
+        {
+            //TODO: Request mana if not enough in pool, then shift to battle
+            //TODO: Need to track the card we are entering battle with. Maybe store it in the GSM?
+            //RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Battle());
+        }
+        if (zone == GameZoneType.Support)
+        {
+            bool isCardRested = RulesEngine.Instance.GetCardManager().IsCardRested(cardMatchId);
+            if (isCardRested == false)
+            {
+                RulesEngine.Instance.GetCardManager().RestCard(cardMatchId);
+                CardColour cardColour = RulesEngine.Instance.GetCardManager().GetCardColour(cardMatchId);
+                _unspentMana[cardMatchId] = cardColour;
+
+                Debug.Log($"Rested card {cardMatchId} and added {cardColour} mana");
+            }
+            else
+            {
+                if (_unspentMana.ContainsKey(cardMatchId))
+                {
+                    RulesEngine.Instance.GetCardManager().ActiveCard(cardMatchId);
+                    CardColour removedMana = _unspentMana[cardMatchId];
+                    _unspentMana.Remove(cardMatchId);
+
+                    Debug.Log($"Unrested card {cardMatchId} and removed {removedMana} mana");
+                }
+                else
+                {
+                    Debug.Log($"Card {cardMatchId} is rested but has no unspent mana");
+                }
+            }
+        }
     }
 
     public override void PassPriority(ulong playerId)
@@ -24,10 +69,5 @@ public class GameState_Main : GameState_Base
         }
 
         RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_End());
-    }
-
-    public void EnterBattle()
-    {
-        RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Battle());
     }
 }

@@ -23,9 +23,6 @@ public struct DeckDataPayload : INetworkSerializable
 
 public class CardManager
 {
-    private static SynchronizationContext _mainThreadContext;
-    private string _persistentDataPath;
-
     public int GetNextMatchId() => Interlocked.Increment(ref _nextMatchId);
     private int _nextMatchId;
     private ConcurrentBag<DeckDataPayload> _deckPayloads = new ConcurrentBag<DeckDataPayload>();
@@ -38,9 +35,6 @@ public class CardManager
     public CardManager()
     {
         Debug.Log("CardManager::CardManager");
-
-        _mainThreadContext = SynchronizationContext.Current;
-        _persistentDataPath = Application.persistentDataPath;
 
         _cardsByMatchId = new Dictionary<int, Card_Base>();
         _cardsByCardID = new Dictionary<string, Card_Base>();
@@ -186,5 +180,61 @@ public class CardManager
         }
 
         return _cardsByMatchId[cardMatchId];
+    }
+
+    public bool IsCardRested(int cardMatchId)
+    {
+        Debug.Log("CardManager::IsCardRested");
+
+        var card = GetCardByMatchId(cardMatchId);
+        if(card == null)
+        {
+            Debug.LogError($"Card with match ID {cardMatchId} not found");
+            return false;
+        }
+
+        return card.IsRested;
+    }
+
+    public void RestCard(int cardMatchId)
+    {
+        Debug.Log("CardManager::RestCard");
+
+        var card = GetCardByMatchId(cardMatchId);
+        if (card == null)
+        {
+            Debug.LogError($"Card with match ID {cardMatchId} not found");
+            return;
+        }
+        
+        card.RestCard();
+    }
+
+    public void ActiveCard(int cardMatchId)
+    {
+        Debug.Log("CardManager::ActiveCard");
+
+        var card = GetCardByMatchId(cardMatchId);
+        if (card == null)
+        {
+            Debug.LogError($"Card with match ID {cardMatchId} not found");
+            return;
+        }
+        
+        card.ActiveCard();
+    }
+
+    public CardColour GetCardColour(int cardMatchId)
+    {
+        Debug.Log("CardManager::GetCardColour");
+
+        var card = GetCardByMatchId(cardMatchId);
+        if (card == null)
+        {
+            Debug.LogError($"Card with match ID {cardMatchId} not found");
+            return CardColour.Invalid;
+        }
+        
+        return card.ColourIdentity;
     }
 }

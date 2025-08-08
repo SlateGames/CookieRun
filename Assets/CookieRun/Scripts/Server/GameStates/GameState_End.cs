@@ -6,6 +6,9 @@ public class GameState_End : GameState_Base
     {
         _gamePhase = GamePhase.End;
         base.Enter();
+
+        RulesEngine.Instance.GetGameStateManager().EndTurn();
+        RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Active());
     }
 
     public override void Exit()
@@ -16,14 +19,5 @@ public class GameState_End : GameState_Base
     public override void PassPriority(ulong playerId)
     {
         Debug.Log("GameState_End::PassPriority");
-
-        if (playerId != RulesEngine.Instance.GetGameStateManager().GetActivePlayerId())
-        {
-            Debug.LogError("Only the active player can pass priority");
-            return;
-        }
-
-        RulesEngine.Instance.GetGameStateManager().EndTurn();
-        RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Active());
     }
 }

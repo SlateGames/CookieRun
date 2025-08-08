@@ -8,13 +8,14 @@ public class GameState_Draw : GameState_Base
     public override void Enter()
     {
         _gamePhase = GamePhase.Draw;
+        base.Enter();
 
         if(RulesEngine.Instance.GetGameStateManager().CurrentTurn > 1)
         {
             RulesEngine.Instance.GetGameZoneManager().DrawCards(RulesEngine.Instance.GetGameStateManager().GetActivePlayerId(), 2, CookieRunConstants.GAME_ACTION);
         }
 
-        base.Enter();
+        RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Support());
     }
 
     public override void Exit()
@@ -25,13 +26,5 @@ public class GameState_Draw : GameState_Base
     public override void PassPriority(ulong playerId)
     {
         Debug.Log("GameState_Draw::PassPriority");
-
-        if (playerId != RulesEngine.Instance.GetGameStateManager().GetActivePlayerId())
-        {
-            Debug.LogError("Only the active player can pass priority");
-            return;
-        }
-
-        RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Support());
     }
 }

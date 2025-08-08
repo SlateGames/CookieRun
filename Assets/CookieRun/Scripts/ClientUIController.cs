@@ -312,12 +312,12 @@ public class ClientUIController : MonoBehaviour
     private void PlayerHandController_HandCardClicked(int cardMatchId)
     {
         Debug.Log("ClientUIController::PlayerHandController_HandCardClicked");
-        _clientServerBridge.OnHandCardClickedServerRpc(_ownerClientId, cardMatchId);
+        _clientServerBridge.OnCardClickedServerRpc(_ownerClientId, cardMatchId);
     }
 
     private void PlayerSupportController_SupportCardClicked(int cardMatchId)
     {
         Debug.Log("ClientUIController::PlayerSupportController_SupportCardClicked");
-        _clientServerBridge.OnSupportCardClickedServerRpc(_ownerClientId, cardMatchId);
+        _clientServerBridge.OnCardClickedServerRpc(_ownerClientId, cardMatchId);
     }
 }
