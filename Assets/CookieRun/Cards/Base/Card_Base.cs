@@ -1,6 +1,23 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+[System.Serializable]
+public class CardAbility
+{
+    public List<Cost> Costs = new List<Cost>();
+    public List<string> Qualifiers = new List<string>();
+    public string AbilityText = "";
+}
+
+[System.Serializable]
+public class Cost
+{
+    public bool IsMana;
+    public string CostText;
+    public string ManaColour;
+}
 public class Card_Base : ScriptableObject
 {
     private bool _isRested = false;
