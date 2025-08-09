@@ -5,18 +5,16 @@ public class Card_Base : ScriptableObject
 {
     private bool _isRested = false;
 
-    public virtual string CardId => CookieRunConstants.INVALID_CARD_ID;
-    public virtual string CardNumber => CookieRunConstants.INVALID_CARD_ID;
-    public virtual string CardName => CookieRunConstants.INVALID_CARD_ID;
-    public virtual string CardText => CookieRunConstants.INVALID_CARD_ID;
-    public virtual CardRarity CardRarity => CardRarity.Common;
-    public virtual CardType CardType => CardType.Invalid;
-    public virtual CardColour ColourIdentity => CardColour.Invalid;
-    public virtual string ImageName => CookieRunConstants.CARD_BACK_IMAGE_NAME;
-    public virtual bool IsRested => _isRested;
+    public string CardId = CookieRunConstants.INVALID_CARD_ID;
+    public string CardNumber = CookieRunConstants.INVALID_CARD_ID;
+    public string CardName = CookieRunConstants.INVALID_CARD_ID;
 
-    public GameObject CardVisual;
+    public CardRarity CardRarity = CardRarity.Common;
+    public CardType CardType = CardType.Invalid;
+    public CardColour ColourIdentity = CardColour.Invalid;
 
+    public Texture2D CardTexture;
+    
     public int MatchID;
 
     public void Awake() 
@@ -24,17 +22,20 @@ public class Card_Base : ScriptableObject
         //TODO: Set the data, populate the card visual
     }
 
-    public void OnPlay()
+    public virtual void OnPlay()
     {
-        //TODO: Setup health pool
+        
     }
 
-    public void RestCard()
+    public bool GetIsRested()
+    {
+        return _isRested;
+    }
+    public void ChangeStateToRest()
     {
         _isRested = true;
     }
-    //TODO: Better name
-    public void ActiveCard()
+    public void ChangeStateToActive()
     {
         _isRested = false;
     }
