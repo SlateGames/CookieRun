@@ -5,7 +5,7 @@ public enum CardColour
     Green,
     Blue,
     Purple,
-    Mix,
+    Mix,    //{N}
 
     Invalid
 }

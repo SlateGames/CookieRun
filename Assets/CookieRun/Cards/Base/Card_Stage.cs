@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Card_Stage : Card_Base
+[CreateAssetMenu(fileName = "Card_Stage_", menuName = "Cards/Stage Card", order = 3)]
+public class Card_Stage : Card_Base
 {
+    protected override CardType GetCardType()
+    {
+        return CardType.Stage;
+    }
 }

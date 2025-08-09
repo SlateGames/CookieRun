@@ -1,11 +1,18 @@
 using System.Collections.Generic;
+using UnityEngine;
 
-public abstract class Card_Cookie : Card_Base
+[CreateAssetMenu(fileName = "Card_Cookie_", menuName = "Cards/Cookie Card", order = 1)]
+public class Card_Cookie : Card_Base
 {
-    public virtual int CardHealth => 0;
-    public virtual int CardLevel => 0;
+    public int CardHealth = 0;
+    public int CardLevel = 0;
 
     private Queue<int> healthPool = new Queue<int>();
+
+    protected override CardType GetCardType()
+    {
+        return CardType.Cookie;
+    }
 
     public int TakeDamage()
     {
