@@ -193,12 +193,12 @@ public class CardManager
             return false;
         }
 
-        return card.IsRested;
+        return card.GetIsRested();
     }
 
-    public void RestCard(int cardMatchId)
+    public void SetCardStateToRested(int cardMatchId)
     {
-        Debug.Log("CardManager::RestCard");
+        Debug.Log("CardManager::SetCardStateToRested");
 
         var card = GetCardByMatchId(cardMatchId);
         if (card == null)
@@ -207,12 +207,12 @@ public class CardManager
             return;
         }
         
-        card.RestCard();
+        card.SetStateToRest();
     }
 
-    public void ActiveCard(int cardMatchId)
+    public void SetCardStateToActive(int cardMatchId)
     {
-        Debug.Log("CardManager::ActiveCard");
+        Debug.Log("CardManager::SetCardStateToActive");
 
         var card = GetCardByMatchId(cardMatchId);
         if (card == null)
@@ -221,7 +221,7 @@ public class CardManager
             return;
         }
         
-        card.ActiveCard();
+        card.SetStateToActive();
     }
 
     public CardColour GetCardColour(int cardMatchId)

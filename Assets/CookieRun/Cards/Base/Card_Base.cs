@@ -13,7 +13,6 @@ public class Card_Base : ScriptableObject
     public virtual CardType CardType => CardType.Invalid;
     public virtual CardColour ColourIdentity => CardColour.Invalid;
     public virtual string ImageName => CookieRunConstants.CARD_BACK_IMAGE_NAME;
-    public virtual bool IsRested => _isRested;
 
     public GameObject CardVisual;
 
@@ -29,12 +28,15 @@ public class Card_Base : ScriptableObject
         //TODO: Setup health pool
     }
 
-    public void RestCard()
+    public virtual bool GetIsRested()
+    {
+        return _isRested;
+    }
+    public void SetStateToRest()
     {
         _isRested = true;
     }
-    //TODO: Better name
-    public void ActiveCard()
+    public void SetStateToActive()
     {
         _isRested = false;
     }

@@ -34,7 +34,7 @@ public class GameState_Main : GameState_Base
             bool isCardRested = RulesEngine.Instance.GetCardManager().IsCardRested(cardMatchId);
             if (isCardRested == false)
             {
-                RulesEngine.Instance.GetCardManager().RestCard(cardMatchId);
+                RulesEngine.Instance.GetCardManager().SetCardStateToRested(cardMatchId);
                 CardColour cardColour = RulesEngine.Instance.GetCardManager().GetCardColour(cardMatchId);
                 _unspentMana[cardMatchId] = cardColour;
 
@@ -44,7 +44,7 @@ public class GameState_Main : GameState_Base
             {
                 if (_unspentMana.ContainsKey(cardMatchId))
                 {
-                    RulesEngine.Instance.GetCardManager().ActiveCard(cardMatchId);
+                    RulesEngine.Instance.GetCardManager().SetCardStateToActive(cardMatchId);
                     CardColour removedMana = _unspentMana[cardMatchId];
                     _unspentMana.Remove(cardMatchId);
 
