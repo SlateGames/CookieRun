@@ -33,8 +33,6 @@ public class CardAbility
     public List<AbilityQualifier> Qualifiers = new List<AbilityQualifier>();
 }
 
-//"【Blocker】 《{R}》 (When one of your opponent's Cookies attacks, you can redirect the attack to this Cookie.)《{R}{N}》 Deals 1 damage.";
-
 public abstract class Card_Base : ScriptableObject
 {
     private bool _isRested = false;
