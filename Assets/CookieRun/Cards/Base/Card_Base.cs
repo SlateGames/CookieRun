@@ -1,101 +1,44 @@
-﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-
-public enum AbilityEffect
-{
-    Damage,
-    Draw
-}
-
-public enum AbilityQualifier
-{
-    Activate,
-    Blocker,
-    Flip,
-    OnPlay,
-    OncePerTurn,
-    YourTurn
-}
-
-public enum NonManaCost
-{
-    RestCard,
-    DiscardCard,
-    TrashSupportCard,
-    SacrificeOne,
-    SetHealthToOne,
-    TrashThisCard,
-    BreakThisCard,
-    BounceSupportCard,
-    TuckLevelOneCookie,
-    TrashLevelOneCookie,
-}
-
-[System.Serializable]
-public class AbilityEffectData
-{
-    public AbilityEffect effect;
-    public int value;
-}
-
-[System.Serializable]
-public class CardAbility
-{
-    public List<CardColour> ManaCost = new List<CardColour>();
-    public List<NonManaCost> NonManaCost = new List<NonManaCost>();
-    public List<AbilityQualifier> Qualifiers = new List<AbilityQualifier>();
-    public List<AbilityEffectData> Effects = new List<AbilityEffectData>();
-}
 
 //Some decks: https://firefist.gg/rams-purple-cookies/
 
-public abstract class Card_Base : ScriptableObject
+public abstract class Card_Base
 {
     private bool _isRested = false;
 
-    [SerializeField] protected List<CardAbility> _abilities = new List<CardAbility>();
+    public virtual string CardId => CookieRunConstants.INVALID_CARD_ID;
+    public virtual string CardNumber => CookieRunConstants.INVALID_CARD_ID;
+    public virtual string CardName => CookieRunConstants.INVALID_CARD_ID;
+    public virtual string CardText => CookieRunConstants.INVALID_CARD_ID;
+    public virtual CardRarity CardRarity => CardRarity.Common;
+    public virtual CardType CardType => CardType.Invalid;
+    public virtual CardColour ColourIdentity => CardColour.Invalid;
+    public virtual string ImageName => CookieRunConstants.CARD_BACK_IMAGE_NAME;
 
-    public string CardId = CookieRunConstants.INVALID_CARD_ID;
-    public string CardNumber = CookieRunConstants.INVALID_CARD_ID;
-    public string CardName = CookieRunConstants.INVALID_CARD_ID;
-    public string CardText = CookieRunConstants.INVALID_CARD_ID;
-    public CardRarity CardRarity = CardRarity.Common;
-    public CardType CardType = CardType.Invalid;
-    public CardColour ColourIdentity = CardColour.Invalid;
-    public Texture2D CardTexture = null;
+    public GameObject CardVisual;
 
-    [HideInInspector] public int MatchID;
-    protected abstract CardType GetCardType();
+    public int MatchID;
 
-    protected virtual void OnEnable()
-    {
-        if (CardType == CardType.Invalid)
-        {
-            CardType = GetCardType();
-        }
+    public void Awake() 
+    { 
+        //TODO: Set the data, populate the card visual
     }
 
-    public virtual void OnPlay()
+    public void OnPlay()
     {
         //TODO: Setup health pool
     }
 
-    public virtual void ActivateAbility(int abilityIndex)
-    {
-        //TODO: Get this working
-    }
+    //public 
 
     public virtual bool GetIsRested()
     {
         return _isRested;
     }
-
     public void SetStateToRest()
     {
         _isRested = true;
     }
-
     public void SetStateToActive()
     {
         _isRested = false;

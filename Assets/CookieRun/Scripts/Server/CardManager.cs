@@ -61,7 +61,7 @@ public class CardManager
 
         foreach (var type in cardTypes)
         {
-            Card_Base cardInstance = (Card_Base)ScriptableObject.CreateInstance(type);
+            Card_Base cardInstance = (Card_Base)Activator.CreateInstance(type);
             cards.Add(cardInstance);
         }
 

@@ -27,9 +27,9 @@ public class CardController : MonoBehaviour
     {
         if (card != null)
         {
-            if (visualController != null && card.CardTexture != null)
+            if (visualController != null && !string.IsNullOrEmpty(card.ImageName))
             {
-                visualController.LoadImage(card.CardTexture);
+                visualController.LoadImageFromName(card.ImageName);
             }
         }
     }

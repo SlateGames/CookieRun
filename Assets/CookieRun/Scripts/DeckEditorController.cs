@@ -427,7 +427,7 @@ public class DeckEditorController : MenuControllerBase
         foreach (Type cardType in cardTypes)
         {
             Card_Base cardInstance = (Card_Base)Activator.CreateInstance(cardType);
-            if (cardInstance == null || cardInstance.CardTexture == null)
+            if (cardInstance == null || string.IsNullOrEmpty(cardInstance.ImageName))
             {
                 continue;
             }
@@ -471,7 +471,7 @@ public class DeckEditorController : MenuControllerBase
                 CardVisualController visualController = deckEditorCardSlots[slotIndex].GetComponentInChildren<CardVisualController>();
                 if (visualController != null)
                 {
-                    visualController.LoadImage(allCards[i].CardTexture);
+                    visualController.LoadImageFromName(allCards[i].ImageName);
                 }
                 else
                 {
