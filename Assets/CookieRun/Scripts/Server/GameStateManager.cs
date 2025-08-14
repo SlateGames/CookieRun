@@ -221,9 +221,9 @@ public class GameStateManager
         return _currentState.GetPhase();
     }
 
-    public void DealNonCombatDamageToCookie(int sourceCardMatchId, int targetCardMatchId, int damageAmount)
+    public void DealDamageToCookie(int sourceCardMatchId, int targetCardMatchId, int damageAmount)
     {
-        Debug.Log("GameStateManager::DealNonCombatDamageToCookie");
+        Debug.Log("GameStateManager::DealDamageToCookie");
 
         if (damageAmount <= 0)
         {
@@ -239,8 +239,12 @@ public class GameStateManager
         }
         for (int i = 0; i < damageAmount; i++)
         {
-            //TODO: Flip the card and stuff
+            //TODO: Flip the card and stuff. This should be done elsewhere I think. Flipped cards can interrupt damage while the player makes a decision. 
             int cardToFlip = targetCard.TakeDamage();
+            if(cardToFlip == CookieRunConstants.INVALID_CARD_MATCH_ID)
+            {
+                //TODO: This card is dead
+            }
         }
     }
 

@@ -80,16 +80,6 @@ public class GameState_Battle : GameState_Base
             return;
         }
 
-        Card_Cookie targetCard = (Card_Cookie)RulesEngine.Instance.GetCardManager().GetCardByMatchId(targetCardMatchId);
-        if (targetCard == null)
-        {
-            Debug.LogError("No card with Match ID " + targetCardMatchId + " exists.");
-            return;
-        }
-        for (int i = 0; i < damageAmount; i++)
-        {
-            //TODO: Flip the card and stuff
-            int cardToFlip = targetCard.TakeDamage();
-        }
+        RulesEngine.Instance.GetGameStateManager().DealDamageToCookie(sourceCardMatchId, targetCardMatchId, damageAmount);
     }
 }
