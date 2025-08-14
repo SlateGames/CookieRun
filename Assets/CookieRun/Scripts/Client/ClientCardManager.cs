@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -32,9 +33,19 @@ public class ClientCardManager : MonoBehaviour
 
     private void CacheAllCards()
     {
-        Card_Base[] allCards = Resources.LoadAll<Card_Base>("Cards");
+        var cardTypes = Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .Where(t => t.IsSubclassOf(typeof(Card_Base)) && !t.IsAbstract);
 
-        foreach (var card in allCards)
+        List<Card_Base> cards = new List<Card_Base>();
+
+        foreach (var type in cardTypes)
+        {
+            Card_Base cardInstance = (Card_Base)Activator.CreateInstance(type);
+            cards.Add(cardInstance);
+        }
+        
+        foreach (Card_Base card in cards)
         {
             if (!string.IsNullOrEmpty(card.CardId))
             {
@@ -49,13 +60,12 @@ public class ClientCardManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"Card {card.name} has no Card ID assigned!");
+                Debug.LogError($"Card {card.CardName} has no Card ID assigned!");
             }
         }
 
         Debug.Log($"Cached {cardCache.Count} cards");
     }
-
 
     public GameObject GetCardInstance(string cardId)
     {
