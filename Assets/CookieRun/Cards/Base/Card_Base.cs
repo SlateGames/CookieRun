@@ -1,6 +1,47 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 //Some decks: https://firefist.gg/rams-purple-cookies/
+
+public enum AbilityQualifier
+{
+    Activate,
+    Blocker,
+    Flip,
+    OnPlay,
+    OncePerTurn,
+    YourTurn
+}
+
+public enum NonManaCost
+{
+    RestCard,
+    DiscardCard,
+    TrashSupportCard,
+    SacrificeOne,
+    SetHealthToOne,
+    TrashThisCard,
+    BreakThisCard,
+    BounceSupportCard,
+    TuckLevelOneCookie,
+    TrashLevelOneCookie,
+}
+
+public class AbilityContextData
+{
+    public List<int> TargetMatchIds = new List<int>();
+    public List<ulong> TargetPlayerIds = new List<ulong>();
+    public int Amount = 1;
+    public int AbilityId = 0;
+}
+
+public class CardAbility
+{
+    public string AbilityText = string.Empty;
+    public List<CardColour> ManaCost = new List<CardColour>();
+    public List<NonManaCost> OtherCosts = new List<NonManaCost>();
+    public List<AbilityQualifier> Qualifiers = new List<AbilityQualifier>();
+}
 
 public abstract class Card_Base
 {
@@ -19,17 +60,14 @@ public abstract class Card_Base
 
     public int MatchID;
 
-    public void Awake() 
-    { 
-        //TODO: Set the data, populate the card visual
-    }
+    protected List<CardAbility> _abilities = new List<CardAbility>();
 
-    public void OnPlay()
+    public abstract void ActivateAbility(AbilityContextData abilityContext);
+
+    public virtual void OnEnterZone(GameZoneType gameZone)
     {
-        //TODO: Setup health pool
+        
     }
-
-    //public 
 
     public virtual bool GetIsRested()
     {
@@ -42,5 +80,26 @@ public abstract class Card_Base
     public void SetStateToActive()
     {
         _isRested = false;
+    }
+
+    public virtual List<CardAbility> GetAbilities()
+    {
+        return _abilities;
+    }
+
+    public CardAbility GetAbility(int abilityId)
+    {
+        List<CardAbility> abilities = GetAbilities();
+        if (abilityId >= 0 && abilityId < abilities.Count)
+        {
+            return abilities[abilityId];
+        }
+
+        return null;
+    }
+
+    public bool HasAbilities()
+    {
+        return GetAbilities().Count > 0;
     }
 }

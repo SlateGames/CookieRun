@@ -7,9 +7,18 @@ public abstract class Card_Cookie : Card_Base
 
     private Queue<int> healthPool = new Queue<int>();
 
+    public override void OnEnterZone(GameZoneType gameZone)
+    {
+        base.OnEnterZone(gameZone);
+
+        if(gameZone == GameZoneType.Battle)
+        {
+            Heal(CardHealth);
+        }
+    }
+
     public int TakeDamage()
     {
-        //TODO: Discard that many cards, check for death
         if (healthPool.Count > 0)
         {
             return healthPool.Dequeue();
