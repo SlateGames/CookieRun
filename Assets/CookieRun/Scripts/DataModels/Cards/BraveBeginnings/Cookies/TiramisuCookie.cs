@@ -1,0 +1,28 @@
+using UnityEngine;
+
+public class TiramisuCookie : Card_Cookie
+{
+    public override string CardId => "77212";
+    public override string CardNumber => "BS2-044";
+    public override string CardName => "Tiramisu Cookie";
+    public override string CardText => "《{B}》 Deals 1 damage. Then, 《can be used as {B}.》 If one of your opponent's Cookies is LV.1, deals 3 damage.";
+    public override CardRarity CardRarity => CardRarity.Common;
+    public override CardType CardType => CardType.Cookie;
+    public override CardColour ColourIdentity => CardColour.Blue;
+    public override string ImageName => "BS2_044.png";
+    public override int CardHealth => 3;
+    public override int CardLevel => 2;
+
+    public TiramisuCookie()
+    {
+        Debug.Log("TiramisuCookie::TiramisuCookie");
+        CardAbility cardAbility01 = new CardAbility();
+        CardAbility cardAbility02 = new CardAbility();
+    }
+
+    public override void ActivateAbility(AbilityContextData abilityContext)
+    {
+        Debug.Log("TiramisuCookie::ActivateAbility");
+        throw new System.NotImplementedException();
+    }
+}

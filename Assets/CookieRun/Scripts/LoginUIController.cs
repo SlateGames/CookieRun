@@ -37,7 +37,6 @@ public class LoginUIController : MonoBehaviour
     {
         Debug.Log("LoginUIController::Start");
 
-        FixDuplicatePngExtensions();
         InitializeUI();
         SubscribeToEvents();
 
@@ -49,56 +48,6 @@ public class LoginUIController : MonoBehaviour
         if(ClientStorageManager.Instance.ClientSettingsDataManager.GetAutoLogIn())
         {
             SignInCachedUserAsync();
-        }
-    }
-
-    public static void FixDuplicatePngExtensions()
-    {
-        string directoryPath = @"D:\Projects\CookieRun\Assets\Resources\Cards\BraveBeginnings";
-
-        try
-        {
-            // Check if directory exists
-            if (!Directory.Exists(directoryPath))
-            {
-                Console.WriteLine($"Directory does not exist: {directoryPath}");
-                return;
-            }
-
-            // Get all files in the directory
-            string[] files = Directory.GetFiles(directoryPath);
-            int renamedCount = 0;
-
-            foreach (string filePath in files)
-            {
-                string fileName = Path.GetFileName(filePath);
-
-                // Check if filename contains ".png.png"
-                if (fileName.Contains(".png.png"))
-                {
-                    // Create new filename by replacing ".png.png" with ".png"
-                    string newFileName = fileName.Replace(".png.png", ".png");
-                    string newFilePath = Path.Combine(Path.GetDirectoryName(filePath), newFileName);
-
-                    try
-                    {
-                        // Rename the file
-                        File.Move(filePath, newFilePath);
-                        Console.WriteLine($"Renamed: {fileName} -> {newFileName}");
-                        renamedCount++;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error renaming {fileName}: {ex.Message}");
-                    }
-                }
-            }
-
-            Console.WriteLine($"Process completed. {renamedCount} files renamed.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error accessing directory: {ex.Message}");
         }
     }
 

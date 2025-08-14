@@ -1,0 +1,27 @@
+using UnityEngine;
+
+public class KiwiCookie : Card_Cookie
+{
+    public override string CardId => "77082";
+    public override string CardNumber => "BS1-070";
+    public override string CardName => "Kiwi Cookie";
+    public override string CardText => "《{G}{N}》 Deals 1 damage. Then, return 1 LV.1 Cookie from your support area to your hand.";
+    public override CardRarity CardRarity => CardRarity.Uncommon;
+    public override CardType CardType => CardType.Cookie;
+    public override CardColour ColourIdentity => CardColour.Invalid;
+    public override string ImageName => "BS1_070.png";
+    public override int CardHealth => 3;
+    public override int CardLevel => 2;
+
+    public KiwiCookie()
+    {
+        Debug.Log("KiwiCookie::KiwiCookie");
+        CardAbility cardAbility01 = new CardAbility();
+    }
+
+    public override void ActivateAbility(AbilityContextData abilityContext)
+    {
+        Debug.Log("KiwiCookie::ActivateAbility");
+        throw new System.NotImplementedException();
+    }
+}
