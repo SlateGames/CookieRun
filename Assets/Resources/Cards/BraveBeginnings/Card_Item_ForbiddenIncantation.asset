@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e3562dfd36264a48876455d03488f2f, type: 3}
+  m_Name: Card_Item_ForbiddenIncantation
+  m_EditorClassIdentifier: 
+  _abilities:
+  - ManaCost: 0400000004000000
+    NonManaCost: 00000000
+    Qualifiers: 
+    Effects:
+    - effect: 0
+      value: 2
+  CardId: INVALID CARD ID
+  CardNumber: BS2-077
+  CardName: Forbidden Incantation
+  CardText: INVALID CARD ID
+  CardRarity: 1
+  CardType: 1
+  ColourIdentity: 4
+  CardTexture: {fileID: 2800000, guid: 7c9bfadded5ea384686c4e063ee04ccf, type: 3}
+  MatchID: 0

@@ -2,6 +2,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum AbilityEffect
+{
+    Damage,
+    Draw
+}
+
 public enum AbilityQualifier
 {
     Activate,
@@ -22,7 +28,15 @@ public enum NonManaCost
     TrashThisCard,
     BreakThisCard,
     BounceSupportCard,
-    TuckLevelOneCookie
+    TuckLevelOneCookie,
+    TrashLevelOneCookie,
+}
+
+[System.Serializable]
+public class AbilityEffectData
+{
+    public AbilityEffect effect;
+    public int value;
 }
 
 [System.Serializable]
@@ -31,7 +45,10 @@ public class CardAbility
     public List<CardColour> ManaCost = new List<CardColour>();
     public List<NonManaCost> NonManaCost = new List<NonManaCost>();
     public List<AbilityQualifier> Qualifiers = new List<AbilityQualifier>();
+    public List<AbilityEffectData> Effects = new List<AbilityEffectData>();
 }
+
+//Some decks: https://firefist.gg/rams-purple-cookies/
 
 public abstract class Card_Base : ScriptableObject
 {

@@ -10,25 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b588ad8e401f614488558642069ec017, type: 3}
-  m_Name: Card_Cookie_AffogatoCookie
+  m_Name: TwizzlyGummyCookie
   m_EditorClassIdentifier: 
   _abilities:
-  - ManaCost: 00000000
-    NonManaCost: 
-    Qualifiers: 01000000
-  - ManaCost: 0000000005000000
+  - ManaCost: 04000000
+    NonManaCost: 05000000
+    Qualifiers: 00000000
+    Effects:
+    - effect: 0
+      value: 1
+  - ManaCost: 0400000004000000
     NonManaCost: 
     Qualifiers: 
-  CardId: 76926
-  CardNumber: BS1-009
-  CardName: Affogato Cookie
-  CardText: "\u3010Blocker\u3011 \u300A{R}\u300B (When one of your opponent's Cookies
-    attacks, you can redirect the attack to this Cookie.)\u300A{R}{N}\u300B Deals
-    1 damage."
+    Effects:
+    - effect: 0
+      value: 1
+  CardId: 77284
+  CardNumber: BS2-071
+  CardName: Twizzly Gummy Cookie
+  CardText: INVALID CARD ID
   CardRarity: 2
   CardType: 0
-  ColourIdentity: 0
-  CardTexture: {fileID: 2800000, guid: ad14576f74c735148a79fe3fe8a7609d, type: 3}
+  ColourIdentity: 4
+  CardTexture: {fileID: 2800000, guid: 788365b2492ee5b4cac2c94b003f2c03, type: 3}
   MatchID: 0
   CardHealth: 3
   CardLevel: 1
