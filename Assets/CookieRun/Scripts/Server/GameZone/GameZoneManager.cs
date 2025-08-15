@@ -39,6 +39,9 @@ public class GameZoneManager : MonoBehaviour
         Debug.Log("GameStateManager: Adding Support Zone.");
         GameZone_ForPlayer.Add(GameZoneType.Support, new GameZone_Support());
 
+        Debug.Log("GameStateManager: Adding Health Pool Zone.");
+        GameZone_ForPlayer.Add(GameZoneType.HealthPool, new GameZone_HealthPool());
+
         _gameZonesByTypeByPlayer.Add(playerId, GameZone_ForPlayer);
 
         foreach (var GameZone_ in _gameZonesByTypeByPlayer[playerId])
@@ -95,6 +98,39 @@ public class GameZoneManager : MonoBehaviour
 
             MoveCardFromZoneToZone(playerId, topCardId, GameZoneType.Deck, GameZoneType.Hand);
         }
+    }
+    
+    public List<int> GetTopCardMatchIds(ulong playerId, int amountToDraw, int sourceCardMatchId)
+    {
+        Debug.Log("GameStateManager::GetTopCardMatchIds");
+
+        List<int> drawnCards = new List<int>();
+
+        if (_gameZonesByTypeByPlayer.ContainsKey(playerId) == false)
+        {
+            Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain an entry for {playerId}.");
+            return drawnCards;
+        }
+        if (_gameZonesByTypeByPlayer[playerId].ContainsKey(GameZoneType.Deck) == false)
+        {
+            Debug.Log($"GameStateManager: GameZonesByTypeByPlayer does not contain a deck zone for player {playerId}.");
+            return drawnCards;
+        }
+
+        GameZone_Deck deck = (GameZone_Deck)_gameZonesByTypeByPlayer[playerId][GameZoneType.Deck];
+        for (int i = 0; i < amountToDraw; i++)
+        {
+            int topCardId = deck.GetTopCardMatchID();
+            Debug.Log($"GameStateManager: Top Card_Base Match ID: {topCardId}.");
+
+            drawnCards.Add(topCardId);
+            if (topCardId == CookieRunConstants.INVALID_CARD_MATCH_ID)
+            {
+                //TODO: Shuffle Trash into library
+            }
+        }
+
+        return drawnCards;
     }
 
     public void MulliganCardsForPlayer(ulong playerId)

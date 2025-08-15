@@ -29,6 +29,14 @@ public abstract class Card_Cookie : Card_Base
 
     public void Heal(int healAmount)
     {
-        //TODO: Add that many cards
+        ulong ownerId = RulesEngine.Instance.GetGameZoneManager().GetControllerOfCardByMatchId(MatchID);
+        List<int> topCards = RulesEngine.Instance.GetGameZoneManager().GetTopCardMatchIds(ownerId, healAmount, MatchID);
+
+        foreach (int cardId in topCards)
+        {
+            //TODO: Have to notify the player which card to put these under. Maybe add a special broadcast for the health pool?
+            RulesEngine.Instance.GetGameZoneManager().MoveCardFromZoneToZone(ownerId, cardId, GameZoneType.Deck, GameZoneType.HealthPool);
+            healthPool.Enqueue(cardId);
+        }
     }
 }

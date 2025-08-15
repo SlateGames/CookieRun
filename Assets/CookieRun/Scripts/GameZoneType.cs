@@ -7,5 +7,6 @@ public enum GameZoneType
     Hand,
     Stage,
     Support,
+    HealthPool,
     Invalid
 }
