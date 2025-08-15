@@ -53,6 +53,8 @@ public class ClientUIController : MonoBehaviour
         
         SubscribeToClientServerBridgeEvents();
 
+        _playerBattleController.OnCardRemovedFromHealthPool += PlayerBattleController_OnCardRemovedFromHealthPool;
+
         _buttonSkipSupport.gameObject.SetActive(false);
         _buttonEndTurn.gameObject.SetActive(false);
 
@@ -78,6 +80,12 @@ public class ClientUIController : MonoBehaviour
         _clientServerBridge.NewActivePlayer += ClientServerBridge_NewActivePlayer;
         _clientServerBridge.PlayerEnterGamePhase += ClientServerBridge_PlayerEnterGamePhase;
         _clientServerBridge.PlayerExitGamePhase += ClientServerBridge_PlayerExitGamePhase;
+    }
+
+    private void PlayerBattleController_OnCardRemovedFromHealthPool(int obj)
+    {
+        Debug.Log("ClientUIController::PlayerBattleController_OnCardRemovedFromHealthPool");
+        //TODO: I only really need to do something here if the server requires it. 
     }
 
     private void ClientServerBridge_DeckRegisteredForPlayer(DeckDataPayload deckData)
