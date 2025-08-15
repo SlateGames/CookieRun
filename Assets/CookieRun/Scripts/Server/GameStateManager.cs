@@ -84,7 +84,7 @@ public class GameStateManager
     public void RegisterBotPlayer(ulong playerId, Deck deck)
     {
         Debug.Log("GameStateManager::RegisterBotPlayer");
-        RegisterPlayer(CookieRunConstants.INVALID_PLAYER_ID, deck);
+        RegisterPlayer(CookieRunConstants.BOT_PLAYER_ID, deck);
     }
 
     public bool ConfigurePlayer(ulong playerId)
