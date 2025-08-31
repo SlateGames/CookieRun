@@ -69,7 +69,7 @@ public class GameState_Setup : GameState_Base
                 RulesEngine.Instance.BroadcastPreGameCookiePlacementEvent();
                 break;
             case SetupPhase.PreGameCookiePlacement:
-                RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Active());
+                RulesEngine.Instance.TransitionToStateActive();
                 break;
             default:
                 Debug.LogError($"Unknown setup phase: {_subPhase}");
@@ -115,7 +115,6 @@ public class GameState_Setup : GameState_Base
         RulesEngine.Instance.GetGameZoneManager().DrawCards(player2Id, 6, CookieRunConstants.GAME_ACTION);
 
         RulesEngine.Instance.BroadcastMulligansStartEvent();
-
     }
 
     public void PlayerRefusesMulligan(ulong playerId)

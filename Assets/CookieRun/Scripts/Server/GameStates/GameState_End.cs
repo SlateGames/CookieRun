@@ -8,7 +8,7 @@ public class GameState_End : GameState_Base
         base.Enter();
 
         RulesEngine.Instance.GetGameStateManager().EndTurn();
-        RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Active());
+        RulesEngine.Instance.TransitionToStateActive();
     }
 
     public override void Exit()

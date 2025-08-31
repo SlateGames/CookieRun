@@ -140,15 +140,6 @@ MonoBehaviour:
   OnHoverExit:
     m_PersistentCalls:
       m_Calls: []
-  OnDragStart:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDragging:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDragEnd:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &6941345034737799851
 GameObject:
   m_ObjectHideFlags: 0

@@ -69,6 +69,11 @@ public class GameStateManager
         bool registrationResult = ConfigurePlayer(playerId);
         Debug.Log($"GameStateManager: Registration result {registrationResult}.");
 
+        if(_activePlayerId == CookieRunConstants.INVALID_PLAYER_ID)
+        {
+            _activePlayerId = playerId;
+        }
+
         if (registrationResult)
         {
             Debug.Log("GameStateManager: Registering player zones.");

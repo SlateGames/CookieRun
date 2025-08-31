@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class RulesEngine : NetworkBehaviour
 {
+    public static event Action OnInstanceReady;
     public static RulesEngine Instance { get; private set; }
 
     private GameStateManager _gameStateManager;
@@ -19,8 +20,8 @@ public class RulesEngine : NetworkBehaviour
     public event Action GameStartEvent;
     public event Action PreGameCookiePlacementEvent;
     public event Action<ulong> NewActivePlayerEvent;
-    public event Action<ulong, GamePhase> PlayerPlayerEnterGamePhaseEvent;
-    public event Action<ulong, GamePhase> PlayerPlayerExitGamePhaseEvent;
+    public event Action<ulong, GamePhase> PlayerEnterGamePhaseEvent;
+    public event Action<ulong, GamePhase> PlayerExitGamePhaseEvent;
 
     public GameStateManager GetGameStateManager()
     {
@@ -42,6 +43,7 @@ public class RulesEngine : NetworkBehaviour
         if (Instance == null)
         {
             Instance = this;
+            OnInstanceReady?.Invoke();
         }
 
         if (IsServer)
@@ -57,7 +59,6 @@ public class RulesEngine : NetworkBehaviour
     {
         Debug.Log("RulesEngine::InitializeServerServices");
 
-        // Here is where we instantiate all the server classes
         Debug.Log("RulesEngine: Instantiating GameStateManager.");
         _gameStateManager = new GameStateManager();
         _gameStateManager.Initialize();
@@ -84,13 +85,13 @@ public class RulesEngine : NetworkBehaviour
     public void BroadcastPlayerPlayerEnterGamePhaseEvent(ulong playerId, GamePhase phase)
     {
         Debug.Log("RulesEngine::BroadcastPlayerPlayerEnterGamePhaseEvent");
-        PlayerPlayerEnterGamePhaseEvent?.Invoke(playerId, phase);
+        PlayerEnterGamePhaseEvent?.Invoke(playerId, phase);
     }
     
     public void BroadcastPlayerPlayerExitGamePhaseEvent(ulong playerId, GamePhase phase)
     {
         Debug.Log("RulesEngine::BroadcastPlayerPlayerExitGamePhaseEvent");
-        PlayerPlayerExitGamePhaseEvent?.Invoke(playerId, phase);
+        PlayerExitGamePhaseEvent?.Invoke(playerId, phase);
     }
 
     public void BroadcastCardMovedFromZoneToZone(ulong playerId, string cardId, int cardMatchId, GameZoneType sourceZone, GameZoneType destinationZone)
@@ -118,5 +119,55 @@ public class RulesEngine : NetworkBehaviour
     {
         Debug.Log("RulesEngine::BroadcastPreGameCookiePlacementEvent");
         PreGameCookiePlacementEvent?.Invoke();
+    }
+
+    public void TransitionToStateSetup()
+    {
+        Debug.Log("RulesEngine::TransitionToStateSetup");
+        StartCoroutine(DelayedStateTransition(new GameState_Setup()));
+    }
+
+    public void TransitionToStateActive()
+    {
+        Debug.Log("RulesEngine::TransitionToStateActive");
+        StartCoroutine(DelayedStateTransition(new GameState_Active()));
+    }
+
+    public void TransitionToStateDraw()
+    {
+        Debug.Log("RulesEngine::TransitionToStateDraw");
+        StartCoroutine(DelayedStateTransition(new GameState_Draw()));
+    }
+
+    public void TransitionToStateSupport()
+    {
+        Debug.Log("RulesEngine::TransitionToStateSupport");
+        StartCoroutine(DelayedStateTransition(new GameState_Support()));
+    }
+
+    public void TransitionToStateMain()
+    {
+        Debug.Log("RulesEngine::TransitionToStateMain");
+        StartCoroutine(DelayedStateTransition(new GameState_Main()));
+    }
+
+    public void TransitionToStateBattle()
+    {
+        Debug.Log("RulesEngine::TransitionToStateBattle");
+        StartCoroutine(DelayedStateTransition(new GameState_Battle()));
+    }
+
+    public void TransitionToStateEnd()
+    {
+        Debug.Log("RulesEngine::TransitionToStateEnd");
+        StartCoroutine(DelayedStateTransition(new GameState_End()));
+    }
+
+    private IEnumerator DelayedStateTransition(GameState_Base newState)
+    {
+        Debug.Log("RulesEngine::DelayedStateTransition");
+
+        yield return new WaitForSeconds(1f);
+        GetGameStateManager().ChangeState(newState);
     }
 }

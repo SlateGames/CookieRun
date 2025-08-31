@@ -35,7 +35,7 @@ public class GameState_Battle : GameState_Base
                 _subPhase = BattlePhase.Resolution;
                 break;
             case BattlePhase.Resolution:
-                RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Main());
+                RulesEngine.Instance.TransitionToStateMain();
                 break;
             default:
                 Debug.LogError($"Unknown battle phase: {_subPhase}");

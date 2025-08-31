@@ -17,11 +17,17 @@ public class GameState_Support : GameState_Base
     {
         base.HandleCardClick(playerId, cardMatchId);
 
+        if (RulesEngine.Instance.GetGameStateManager().GetActivePlayerId() != playerId)
+        {
+            Debug.Log($"{playerId} is not the active player, that is {RulesEngine.Instance.GetGameStateManager().GetActivePlayerId()}");
+            return;
+        }
+
         GameZoneType zone = RulesEngine.Instance.GetGameZoneManager().GetZoneCardIsPresentIn(cardMatchId);
         if (zone == GameZoneType.Hand)
         {
             RulesEngine.Instance.GetGameZoneManager().MoveCardFromZoneToZone(playerId, cardMatchId, GameZoneType.Hand, GameZoneType.Support);
-            RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Main());
+            RulesEngine.Instance.TransitionToStateMain();
         }        
     }
 
@@ -35,11 +41,12 @@ public class GameState_Support : GameState_Base
             return;
         }
 
-        RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Main());
+        RulesEngine.Instance.TransitionToStateMain();
     }
 
     public override void PassPriority(ulong playerId)
     {
         Debug.Log("GameState_Support::PassPriority");
+        PlayerRefusesSupport(playerId);
     }
 }

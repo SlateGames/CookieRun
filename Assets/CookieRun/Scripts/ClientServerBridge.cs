@@ -65,8 +65,8 @@ public class ClientServerBridge : NetworkBehaviour
         RulesEngine.Instance.GameStartEvent += RulesEngine_GameStartEvent;
         RulesEngine.Instance.PreGameCookiePlacementEvent += RulesEngine_PreGameCookiePlacementEvent;
         RulesEngine.Instance.NewActivePlayerEvent += RulesEngine_NewActivePlayerEvent;
-        RulesEngine.Instance.PlayerPlayerEnterGamePhaseEvent += RulesEngine_PlayerPlayerEnterGamePhaseEvent;
-        RulesEngine.Instance.PlayerPlayerExitGamePhaseEvent += RulesEngine_PlayerPlayerExitGamePhaseEvent;
+        RulesEngine.Instance.PlayerEnterGamePhaseEvent += RulesEngine_PlayerPlayerEnterGamePhaseEvent;
+        RulesEngine.Instance.PlayerExitGamePhaseEvent += RulesEngine_PlayerPlayerExitGamePhaseEvent;
     }
 
     private void RulesEngine_DeckRegisteredForPlayerEvent(DeckDataPayload deckData)

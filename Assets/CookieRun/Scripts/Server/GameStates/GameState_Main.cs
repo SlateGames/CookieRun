@@ -22,6 +22,12 @@ public class GameState_Main : GameState_Base
     {
         base.HandleCardClick(playerId, cardMatchId);
 
+        if (RulesEngine.Instance.GetGameStateManager().GetActivePlayerId() != playerId)
+        {
+            Debug.Log($"{playerId} is not the active player, that is {RulesEngine.Instance.GetGameStateManager().GetActivePlayerId()}");
+            return;
+        }
+
         GameZoneType zone = RulesEngine.Instance.GetGameZoneManager().GetZoneCardIsPresentIn(cardMatchId);
         if (zone == GameZoneType.Battle)
         {
@@ -56,6 +62,10 @@ public class GameState_Main : GameState_Base
                 }
             }
         }
+        if(zone == GameZoneType.Hand)
+        {
+            //TODO: Play the card
+        }
     }
 
     public override void PassPriority(ulong playerId)
@@ -68,6 +78,6 @@ public class GameState_Main : GameState_Base
             return;
         }
 
-        RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_End());
+        RulesEngine.Instance.TransitionToStateEnd();
     }
 }

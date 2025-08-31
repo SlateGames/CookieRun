@@ -10,7 +10,7 @@ public class GameState_Active : GameState_Base
         //TODO: Refresh all cards 
 
         //TODO: These should be handle by the GSM. The GSM should have a series of `EnterStateX` functions, one for each, that these can call. 
-        RulesEngine.Instance.GetGameStateManager().ChangeState(new GameState_Draw());
+        RulesEngine.Instance.TransitionToStateDraw();
     }
 
     public override void Exit()
