@@ -231,6 +231,19 @@ public class GameZoneManager : MonoBehaviour
         return _gameZonesByTypeByPlayer[playerId][zone].GetCards();
     }
 
+    public List<int> GetCardsInPlayForPlayer(ulong playerId)
+    {
+        Debug.Log("GameStateManager::GetCardsInPlayForPlayer");
+
+        List<int> cards = new List<int>();
+
+        cards.AddRange(GetCardsInZone(playerId, GameZoneType.Support));
+        cards.AddRange(GetCardsInZone(playerId, GameZoneType.Battle));
+        cards.AddRange(GetCardsInZone(playerId, GameZoneType.Stage));
+
+        return cards;
+    }
+
     public List<int> GetCookiesPlayerControls(ulong playerId)
     {
         Debug.Log("GameStateManager::GetCookiesPlayerControls");

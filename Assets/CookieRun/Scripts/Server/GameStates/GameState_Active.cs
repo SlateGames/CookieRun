@@ -7,9 +7,9 @@ public class GameState_Active : GameState_Base
         _gamePhase = GamePhase.Active;
         base.Enter();
 
-        //TODO: Refresh all cards 
+        RefreshCardsForPlayer(RulesEngine.Instance.GetGameStateManager().Player1Id); 
+        RefreshCardsForPlayer(RulesEngine.Instance.GetGameStateManager().Player2Id); 
 
-        //TODO: These should be handle by the GSM. The GSM should have a series of `EnterStateX` functions, one for each, that these can call. 
         RulesEngine.Instance.TransitionToStateDraw();
     }
 
@@ -21,5 +21,14 @@ public class GameState_Active : GameState_Base
     public override void PassPriority(ulong playerId)
     {
         Debug.Log("GameState_Active::PassPriority");
+    }
+
+    private void RefreshCardsForPlayer(ulong playerId)
+    {
+        var cardsToRefresh = RulesEngine.Instance.GetGameZoneManager().GetCardsInPlayForPlayer(playerId);
+        foreach(var cardMatchId in cardsToRefresh)
+        {
+            RulesEngine.Instance.GetCardManager().SetCardStateToActive(cardMatchId);
+        }
     }
 }

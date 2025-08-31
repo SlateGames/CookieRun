@@ -64,7 +64,13 @@ public class GameState_Main : GameState_Base
         }
         if(zone == GameZoneType.Hand)
         {
-            //TODO: Play the card
+            if(RulesEngine.Instance.GetGameZoneManager().CanAddCardToZone(playerId, cardMatchId, GameZoneType.Battle) == false)
+            {
+                Debug.Log($"Player {playerId} cannot add Card {cardMatchId} to the battle zone");
+                return;
+            }
+
+            RulesEngine.Instance.GetGameZoneManager().MoveCardFromZoneToZone(playerId, cardMatchId, GameZoneType.Hand, GameZoneType.Battle);
         }
     }
 
